@@ -394,3 +394,7 @@ FodyWeavers.xsd
 *.exe
 *.out
 *.app
+
+# specific to CodeBlocks IDE
+*.layout
+*.depend
