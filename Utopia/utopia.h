@@ -29,38 +29,46 @@
 #endif
 
 
-#include "glm/glm.hpp"
-#include "glm/gtx/string_cast.hpp"
 
-/////////////
-// CLASSES //
-/////////////
 
 /**
  * @brief Simple static class example.
  */
 class LIB_API Utopia
 {
-	//////////
-public: //
-//////////	   
 
-   // Init/free:
-	static bool init();
-	static bool free();
+public: 
 
-	// Event manager:
-	static bool doNothing();
+	static Utopia& getInstance()
+	{
+		static Utopia m_instance; // Guaranteed to be destroyed.
+		// Instantiated on first use.
+		return m_instance;
+	}
 
+	Utopia(Utopia const&) = delete;
+	void operator=(Utopia const&) = delete;
 
-	///////////
-private:	//
-///////////	   
+	
+	bool init();
+	bool clear();
+	bool free();
+	
+	void setKeyboardCallback(void (*callback)(unsigned char, int, int));
+	void setDisplayCallback(void (*callback)(void));
+	void setReshapeCallback(void (*callback)(int, int));
+	void setSpecialCallback(void (*callback)(int, int, int));
+	void setTestCallBack();
+	void mainLoop();
 
+	bool isRunning();
+
+	void swap();
+
+private:
 	// Const/dest (as private to prevent instanciation):
-	Utopia() {}
+	Utopia() : m_initFlag{ false } {};
 	~Utopia() {}
+	bool m_initFlag;
 
-	// Internal vars:
-	static bool initFlag;
 };

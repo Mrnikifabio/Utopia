@@ -3,7 +3,9 @@
 
 int main()
 {
-	Utopia::init();
-	Utopia::doNothing();
-	Utopia::free();
+	Utopia::getInstance().init();
+	Utopia::getInstance().setTestCallBack();
+	Utopia::getInstance().mainLoop();
+	Utopia::getInstance().free();
+	std::cout << "Terminate" << std::endl;
 }
