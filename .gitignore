@@ -394,5 +394,5 @@ FodyWeavers.xsd
 *.exe
 *.out
 *.app
-Utopia/Utopia.depend
-GraphicsProjectGroup10.workspace.layout
+*.depend
+*.layout
