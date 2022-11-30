@@ -19,9 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UCamera.h" />
+    <ClInclude Include="UMesh.h" />
+    <ClInclude Include="UNode.h" />
+    <ClInclude Include="UObject.h" />
     <ClInclude Include="utopia.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="UCamera.cpp" />
+    <ClCompile Include="UMesh.cpp" />
+    <ClCompile Include="UNode.cpp" />
+    <ClCompile Include="UObject.cpp" />
     <ClCompile Include="utopia.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

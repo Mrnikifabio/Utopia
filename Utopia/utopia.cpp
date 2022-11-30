@@ -190,6 +190,11 @@ void Utopia::mainLoop()
 	std::cout << "[application terminated]" << std::endl;
 }
 
+bool Utopia::isRunning()
+{
+	return true;
+}
+
 void Utopia::swap()
 {
 	glutSwapBuffers();
