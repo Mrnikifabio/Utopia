@@ -4,14 +4,19 @@
 #include "UMesh.h"
 #include "UCamera.h"
 
+void keyboardCallback(unsigned char key, int mouseX, int mouseY);
+void closeCallback();
+
+
 using namespace utopia;
 
 int main()
 {
-	/*Utopia::getInstance().init();
-	Utopia::getInstance().setTestCallBack();
-	Utopia::getInstance().mainLoop();
-	Utopia::getInstance().free();*/
+	Utopia::getInstance().init();
+	Utopia::getInstance().enableDepth();
+	Utopia::getInstance().enableCullFace();
+	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
+	Utopia::getInstance().setCloseCallback(closeCallback);
 
 	auto rootShared = std::make_shared<UNode>("root");
 	auto firstChild = rootShared->addChild(std::make_shared<UNode>("first child"));
@@ -36,7 +41,7 @@ int main()
 
 	auto secChildAnotherWeakPointer = rootShared->getChild(1);
 	assert(!secChildAnotherWeakPointer.expired());
-	
+
 	auto neph = secChildAnotherWeakPointer.lock()->addChild(std::make_shared<UNode>("nephew"));
 
 	auto secChildShared = rootShared->detachChild(1);
@@ -48,5 +53,35 @@ int main()
 	assert(!secChildAnotherWeakPointer.expired());
 	assert(firstChild.expired());
 
-	return 0;
+
+	while (Utopia::getInstance().isRunning())
+	{
+		Utopia::getInstance().mainLoop();
+		Utopia::getInstance().clear();
+		Utopia::getInstance().display();
+		Utopia::getInstance().swap();
+	}
+
+	
+	std::cout << "Terminate" << std::endl;
+}
+
+void keyboardCallback(unsigned char key, int mouseX, int mouseY)
+{
+    switch (key)
+    {
+    
+    case 'w':
+		Utopia::getInstance().enableWireFrameMode();
+		break;
+	case 's':
+		Utopia::getInstance().enableSolidMode();
+		break;
+    }
+
+}
+void closeCallback()
+{
+	std::cout << "Close" << std::endl;
+	Utopia::getInstance().free();
 }

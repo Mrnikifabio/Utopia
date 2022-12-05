@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TowerCraneSimulator2022", "TowerCraneSimulator2022\TowerCraneSimulator2022.vcxproj", "{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253} = {F15B85A8-63F5-4A6F-9E68-8A1A635FF253}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utopia", "Utopia\Utopia.vcxproj", "{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}"
 EndProject
