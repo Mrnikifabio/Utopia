@@ -3,6 +3,7 @@
 #include "UNode.h"
 #include "UMesh.h"
 #include "UCamera.h"
+#include <glm/ext/matrix_transform.hpp>
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY);
 void closeCallback();
@@ -19,45 +20,21 @@ int main()
 	Utopia::getInstance().setCloseCallback(closeCallback);
 
 	auto rootShared = std::make_shared<UNode>("root");
-	auto firstChild = rootShared->addChild(std::make_shared<UNode>("first child"));
-	auto secondChild = rootShared->addChild(std::make_shared<UNode>("second child"));
-
-	for (std::weak_ptr<UNode> child : rootShared->getChildren())
-	{
-		child.lock()->setModelView(child.lock()->getModelView() * glm::mat4(1));
-		std::cout << child.lock()->getName() << std::endl;
-	}
-
-	for (auto& child : rootShared->getChildren())
-	{
-		child->setModelView(child->getModelView() * glm::mat4(1));
-		std::cout << child->getName() << std::endl;
-	}
-
-	secondChild.lock()->addChild(std::make_shared<UNode>("giotto"));
-	assert(rootShared->isChildPresent(3));
-
-	secondChild.reset();
-
-	auto secChildAnotherWeakPointer = rootShared->getChild(1);
-	assert(!secChildAnotherWeakPointer.expired());
-
-	auto neph = secChildAnotherWeakPointer.lock()->addChild(std::make_shared<UNode>("nephew"));
-
-	auto secChildShared = rootShared->detachChild(1);
-
-	std::cout << secChildAnotherWeakPointer.use_count() << std::endl;
-	std::cout << secChildShared.use_count() << std::endl;
-
-	rootShared.reset();
-	assert(!secChildAnotherWeakPointer.expired());
-	assert(firstChild.expired());
-
 
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
+
+
+		auto mesh = rootShared->addChild(std::make_shared<UMesh>("cube"));
+		glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -25.0f));
+		glm::mat4 rotation = glm::rotate(translation, glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		mesh.lock()->setModelView(rotation);
+		mesh.lock()->render();
+
+
+
 		Utopia::getInstance().display();
 		Utopia::getInstance().swap();
 	}

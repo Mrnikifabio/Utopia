@@ -1,6 +1,8 @@
 #include "UNode.h"
 #include "utopia.h"
 #include <stdexcept>
+#include <gl/freeglut.h>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace utopia;
 
@@ -63,6 +65,8 @@ glm::mat4& UNode::getFinalWorldCoordinates() const
 
 void UNode::render()
 {
+	auto m = getFinalWorldCoordinates();
+	glLoadMatrixf(glm::value_ptr(m));
 	if (Utopia::getInstance().isRunning())
 	{
 		for (auto& child : m_pimpl->m_children)

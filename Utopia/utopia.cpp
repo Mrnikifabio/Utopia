@@ -71,16 +71,7 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
  */
 void Utopia::display()
 {
-	static float xAngle = 0;
 
-
-
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -25.0f));
-	glm::mat4 rotation = glm::rotate(translation, glm::radians(xAngle++), glm::vec3(0.0f, 1.0f, 0.0f));
-
-	glLoadMatrixf(glm::value_ptr(rotation));
-	glColor3f(1.f, 0.f, 0.f);
-	glutSolidTorus(3, 4, 10, 10);
 }
 
 void displayCallback()
@@ -234,11 +225,6 @@ void Utopia::setCloseCallback(void(*callback)(void))
 void Utopia::mainLoop()
 {
 	glutMainLoopEvent();
-}
-
-bool Utopia::isRunning()
-{
-	return true;
 }
 
 bool Utopia::isRunning()

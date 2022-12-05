@@ -1,4 +1,6 @@
 #include "UMesh.h"
+#include <gl/freeglut.h>
+
 
 using namespace utopia;
 
@@ -11,6 +13,7 @@ void UMesh::render()
 {
 	//render something somehow and then we make a call to UNode render, to render all of the children
 	UNode::render();
+	glutSolidCube(5);
 }
 
 
