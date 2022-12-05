@@ -65,15 +65,15 @@ glm::mat4& UNode::getFinalWorldCoordinates() const
 
 void UNode::render()
 {
+	if (!Utopia::getInstance().isRunning())
+		return;
+
 	auto m = getFinalWorldCoordinates();
+	for (auto& child : m_pimpl->m_children)
+		child->render();
+
 	glLoadMatrixf(glm::value_ptr(m));
-	if (Utopia::getInstance().isRunning())
-	{
-		for (auto& child : m_pimpl->m_children)
-		{
-			return child->render();
-		}
-	}
+
 }
 
 auto UNode::getModelView() const -> const glm::mat4&

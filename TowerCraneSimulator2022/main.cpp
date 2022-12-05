@@ -28,10 +28,17 @@ int main()
 
 
 		auto mesh = rootShared->addChild(std::make_shared<UMesh>("cube"));
+
 		glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -25.0f));
 		glm::mat4 rotation = glm::rotate(translation, glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		
 		mesh.lock()->setModelView(rotation);
-		mesh.lock()->render();
+
+		auto another_cube = mesh.lock()->addChild(std::make_shared<UMesh>("anotherCube"));
+		another_cube.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5, 0.0f)));
+		mesh.lock()->setModelView(mesh.lock()->getModelView()*glm::translate(glm::mat4(1.0f), glm::vec3(10, 0, 0)));
+
+		rootShared->render();
 
 
 
