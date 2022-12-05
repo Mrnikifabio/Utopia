@@ -6,14 +6,21 @@
  * \date   October 2022
  *********************************************************************/
 
-//include
+ //include
 #include <string.h>
+#include <iostream>
 #include "utopia.h"
 #include <gl/freeglut.h>
-#include "glm/glm.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include <iostream>
 
+
+  // GLM:   
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
+   // Projection matrices:
+glm::mat4 perspective;
 
 
 
@@ -62,39 +69,44 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 /**
  * This is the main rendering routine automatically invoked by FreeGLUT.
  */
+void Utopia::display()
+{
+	static float xAngle = 0;
+
+
+
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -25.0f));
+	glm::mat4 rotation = glm::rotate(translation, glm::radians(xAngle++), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glLoadMatrixf(glm::value_ptr(rotation));
+	glColor3f(1.f, 0.f, 0.f);
+	glutSolidTorus(3, 4, 10, 10);
+}
+
 void displayCallback()
 {
-	// Clear the screen:
-	glClearColor(1.0f, 0.6f, 0.1f, 1.0f); // RGBA components
-	glClear(GL_COLOR_BUFFER_BIT);
 
-	// Swap this context's buffer:
-	glutSwapBuffers();
-
-	// Force another invocation of this rendering callback:
-	glutPostWindowRedisplay(glutGetWindow());
 }
 
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * This callback is invoked each time the window gets resized (and once also when created).
- * @param width new window width
- * @param height new window height
- */
 void reshapeCallback(int width, int height)
 {
-	// For your information...:
-	std::cout << "[reshape func invoked]" << std::endl;
+
+	glViewport(0, 0, width, height);
+	glMatrixMode(GL_PROJECTION);
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
+	glLoadMatrixf(glm::value_ptr(projection));
+	glMatrixMode(GL_MODELVIEW);
+
+	Utopia::getInstance().clear();
+	Utopia::getInstance().display();
+	Utopia::getInstance().swap();
+
+	std::cout << "[reshape func invoked] " << width<< " " << height << std::endl;
+
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Initialization method. Call this before any other Eureka function.
- * @return true on success, false on error
- */
+
 bool LIB_API Utopia::init()
 {
 	// Prevent double init:
@@ -105,22 +117,25 @@ bool LIB_API Utopia::init()
 	}
 
 	// Init context:
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
 
 	char* myargv[1];
 	int myargc = 1;
-	myargv[0] = new char[6]{'U','t','o','p','i','a'};
+	myargv[0] = new char[6] {'U', 't', 'o', 'p', 'i', 'a'};
 	glutInit(&myargc, myargv);
 
 	// Set some optional flags:
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_EXIT);
 
 	// Create the window with a specific title:
 	glutCreateWindow("Utopia Window");
 
 	// The OpenGL context is now initialized...
+	setDisplayCallback(displayCallback);
+	setReshapeCallback(reshapeCallback);
 
+	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 
 
 	// Check OpenGL version:
@@ -129,9 +144,15 @@ bool LIB_API Utopia::init()
 	std::cout << "   vendor . . . : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "   renderer . . : " << glGetString(GL_RENDERER) << std::endl;
 
+
 	// Done:
 	m_initFlag = true;
 	return true;
+}
+
+void Utopia::clear()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
@@ -140,18 +161,48 @@ bool LIB_API Utopia::init()
  * Deinitialization method.
  * @return true on success, false on error
  */
-bool LIB_API Utopia::free()
+void LIB_API Utopia::free()
 {
 	// Really necessary?
 	if (!m_initFlag)
 	{
 		std::cout << "ERROR: class not initialized" << std::endl;
-		return false;
 	}
 
 	// Done:
 	m_initFlag = false;
-	return true;
+}
+
+void Utopia::enableDepth()
+{
+	glEnable(GL_DEPTH_TEST);
+}
+
+void Utopia::enableCullFace()
+{
+	glEnable(GL_CULL_FACE);
+}
+
+
+void Utopia::enableLight0()
+{
+	glEnable(GL_LIGHT0);
+}
+
+void Utopia::enableLighting()
+{
+	glEnable(GL_LIGHTING);
+}
+
+void Utopia::enableWireFrameMode()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
+
+
+void Utopia::enableSolidMode()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 
@@ -175,19 +226,19 @@ void Utopia::setSpecialCallback(void(*callback)(int, int, int))
 	glutSpecialFunc(callback);
 }
 
-void Utopia::setTestCallBack()
+void Utopia::setCloseCallback(void(*callback)(void))
 {
-	setDisplayCallback(displayCallback);
-	setReshapeCallback(reshapeCallback);
+	glutCloseFunc(callback);
 }
 
 void Utopia::mainLoop()
 {
-	// Enter the main FreeGLUT processing loop:
-	glutMainLoop();
+	glutMainLoopEvent();
+}
 
-	// Done:
-	std::cout << "[application terminated]" << std::endl;
+bool Utopia::isRunning()
+{
+	return true;
 }
 
 void Utopia::swap()

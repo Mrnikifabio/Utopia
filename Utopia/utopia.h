@@ -1,18 +1,18 @@
 /*****************************************************************//**
  * \file   Utopia.h
  * \brief  Basic implementation of the gr. eng. lib.
- * 
+ *
  * \author Group10
  * \date   October 2022
  *********************************************************************/
 
 #pragma once
 
-/////////////
-// VERSION //
-/////////////
+ /////////////
+ // VERSION //
+ /////////////
 
-   // Generic info:
+	// Generic info:
 #define LIB_NAME      "Utopia"  ///
 #define LIB_VERSION   10                              ///< Library version (divide by 10)
 
@@ -37,7 +37,7 @@
 class LIB_API Utopia
 {
 
-public: 
+public:
 
 	static Utopia& getInstance()
 	{
@@ -49,16 +49,25 @@ public:
 	Utopia(Utopia const&) = delete;
 	void operator=(Utopia const&) = delete;
 
-	
+
 	bool init();
-	bool clear();
-	bool free();
-	
+	void clear();
+	void free();
+
+	void enableDepth();
+	void enableCullFace();
+	void enableLight0();
+	void enableLighting();
+	void enableWireFrameMode();
+	void enableSolidMode();
+
 	void setKeyboardCallback(void (*callback)(unsigned char, int, int));
 	void setDisplayCallback(void (*callback)(void));
 	void setReshapeCallback(void (*callback)(int, int));
-	void setSpecialCallback(void (*callback)(int, int, int));
-	void setTestCallBack();
+	void setSpecialCallback(void (*callback)(int, int, int)); 
+	void setCloseCallback(void(*callback)(void)); //invoked when the window is closed
+
+	void display();
 	void mainLoop();
 
 	bool isRunning();
