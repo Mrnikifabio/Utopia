@@ -20,14 +20,10 @@ namespace utopia
     {
     private:
         static std::weak_ptr<UCamera> m_mainCamera;
-        struct pimpl;
-        std::unique_ptr<pimpl> m_pimpl;
     public:
         UCamera(const std::string& name);
         virtual ~UCamera() noexcept;
-
         void lookAt(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& up);
-        const glm::mat4& getProjectionMatrix() const;
         static void setMainCamera(std::weak_ptr<UCamera> camera);
         static std::weak_ptr<UCamera>& getMainCamera();
     };

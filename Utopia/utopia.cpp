@@ -22,7 +22,7 @@
    // Projection matrices:
 glm::mat4 perspective;
 
-
+using namespace utopia;
 
 //////////////
 // DLL MAIN //
@@ -235,4 +235,9 @@ bool Utopia::isRunning()
 void Utopia::swap()
 {
 	glutSwapBuffers();
+}
+
+URenderPipeline& Utopia::getRenderPipeline()
+{
+	return *m_renderPipeline.get();
 }

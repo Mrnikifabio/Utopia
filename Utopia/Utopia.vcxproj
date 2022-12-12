@@ -23,6 +23,7 @@
     <ClInclude Include="UMesh.h" />
     <ClInclude Include="UNode.h" />
     <ClInclude Include="UObject.h" />
+    <ClInclude Include="URenderPipeline.h" />
     <ClInclude Include="utopia.h" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +31,7 @@
     <ClCompile Include="UMesh.cpp" />
     <ClCompile Include="UNode.cpp" />
     <ClCompile Include="UObject.cpp" />
+    <ClCompile Include="URenderPipeline.cpp" />
     <ClCompile Include="utopia.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

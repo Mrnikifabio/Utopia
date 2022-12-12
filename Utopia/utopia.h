@@ -28,56 +28,61 @@
 #define LIB_API  // Dummy declaration
 #endif
 
+#include "URenderPipeline.h"
+#include <memory>
 
 
+namespace utopia {
 
-/**
- * @brief Simple static class example.
- */
-class LIB_API Utopia
-{
-
-public:
-
-	static Utopia& getInstance()
+	class LIB_API Utopia
 	{
-		static Utopia m_instance; // Guaranteed to be destroyed.
-		// Instantiated on first use.
-		return m_instance;
-	}
 
-	Utopia(Utopia const&) = delete;
-	void operator=(Utopia const&) = delete;
+	public:
+
+		static Utopia& getInstance()
+		{
+			static Utopia m_instance; // Guaranteed to be destroyed.
+			// Instantiated on first use.
+			return m_instance;
+		}
+
+		Utopia(Utopia const&) = delete;
+		void operator=(Utopia const&) = delete;
 
 
-	bool init();
-	void clear();
-	void free();
+		bool init();
+		void clear();
+		void free();
 
-	void enableDepth();
-	void enableCullFace();
-	void enableLight0();
-	void enableLighting();
-	void enableWireFrameMode();
-	void enableSolidMode();
+		void enableDepth();
+		void enableCullFace();
+		void enableLight0();
+		void enableLighting();
+		void enableWireFrameMode();
+		void enableSolidMode();
 
-	void setKeyboardCallback(void (*callback)(unsigned char, int, int));
-	void setDisplayCallback(void (*callback)(void));
-	void setReshapeCallback(void (*callback)(int, int));
-	void setSpecialCallback(void (*callback)(int, int, int)); 
-	void setCloseCallback(void(*callback)(void)); //invoked when the window is closed
+		void setKeyboardCallback(void (*callback)(unsigned char, int, int));
+		void setDisplayCallback(void (*callback)(void));
+		void setReshapeCallback(void (*callback)(int, int));
+		void setSpecialCallback(void (*callback)(int, int, int)); 
+		void setCloseCallback(void(*callback)(void)); //invoked when the window is closed
 
-	void display();
-	void mainLoop();
+		void display();
+		void mainLoop();
 
-	bool isRunning();
+		bool isRunning();
 
-	void swap();
+		void swap();
 
-private:
-	// Const/dest (as private to prevent instanciation):
-	Utopia() : m_initFlag{ false } {};
-	~Utopia() {}
-	bool m_initFlag;
+		URenderPipeline& getRenderPipeline();
 
-};
+	private:
+		// Const/dest (as private to prevent instanciation):
+		Utopia() : m_initFlag{ false }, m_renderPipeline{std::make_unique<URenderPipeline>("renderPipeline")} {};
+		~Utopia() {}
+		std::unique_ptr<URenderPipeline> m_renderPipeline;
+		bool m_initFlag;
+
+	};
+
+}

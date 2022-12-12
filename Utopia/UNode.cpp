@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
+#include "UCamera.h"
 
 using namespace utopia;
 
@@ -50,7 +51,7 @@ void UNode::setModelView(const glm::mat4& mv)
 glm::mat4& UNode::getFinalWorldCoordinates() const
 {
 	UNode* node = getParent();
-	glm::mat4 m = getModelView();
+	glm::mat4 m = glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * getModelView();
 
 	if (node != nullptr)
 	{
