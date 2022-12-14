@@ -18,12 +18,20 @@ namespace utopia
 {
     class LIB_API UCamera : public UNode
     {
+        struct pimpl;
     private:
+        std::unique_ptr<pimpl> m_pimpl;
         static std::weak_ptr<UCamera> m_mainCamera;
+
     public:
         UCamera(const std::string& name);
         virtual ~UCamera() noexcept;
-        void lookAt(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& up);
+
+        void setCameraPosition(const glm::vec3& position);
+        const glm::vec3& getCameraPosition() const;
+
+        virtual const glm::mat4& getCameraMatrix() const = 0;
+
         static void setMainCamera(std::weak_ptr<UCamera> camera);
         static std::weak_ptr<UCamera>& getMainCamera();
     };

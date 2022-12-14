@@ -10,6 +10,7 @@
 #include <string.h>
 #include <iostream>
 #include "utopia.h"
+#include "UCamera.h"
 #include <gl/freeglut.h>
 
 
@@ -85,8 +86,7 @@ void reshapeCallback(int width, int height)
 
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
-	glLoadMatrixf(glm::value_ptr(projection));
+	glLoadMatrixf(glm::value_ptr(UCamera::getMainCamera().lock()->getCameraMatrix()));
 	glMatrixMode(GL_MODELVIEW);
 
 	Utopia::getInstance().clear();
@@ -240,4 +240,14 @@ void Utopia::swap()
 URenderPipeline& Utopia::getRenderPipeline()
 {
 	return *m_renderPipeline.get();
+}
+
+int Utopia::getWindowWidth()
+{
+	return glutGet(GLUT_WINDOW_HEIGHT);
+}
+
+int Utopia::getWindowHeight()
+{
+	return glutGet(GLUT_WINDOW_WIDTH);
 }

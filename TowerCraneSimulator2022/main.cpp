@@ -2,7 +2,8 @@
 #include "utopia.h"
 #include "UNode.h"
 #include "UMesh.h"
-#include "UCamera.h"
+#include "UPerspectiveCamera.h"
+#include "UOrthographicCamera.h"
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
@@ -12,24 +13,23 @@ void closeCallback();
 
 using namespace utopia;
 
-float g = 0.0f;
-
+float g = -25;
+std::shared_ptr<UCamera> camera;
 auto rootShared = std::make_shared<UNode>("root");
 auto cube = rootShared->addChild(std::make_shared<UMesh>("cube"));
-glm::vec3 cameraPosition;
-std::shared_ptr<UCamera> camera;
+
 
 int main()
 {
-	cameraPosition = glm::vec3(0, 0, -25);
 	Utopia::getInstance().init();
 	Utopia::getInstance().enableDepth();
 	Utopia::getInstance().enableCullFace();
 	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
 	Utopia::getInstance().setCloseCallback(closeCallback);
 
+	
 
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -25.0f));
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, g));
 	glm::mat4 rotation = glm::rotate(translation, glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	cube.lock()->setModelView(rotation);
@@ -37,9 +37,11 @@ int main()
 	auto another_cube = cube.lock()->addChild(std::make_shared<UMesh>("anotherCube"));
 	another_cube.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5, 0.0f)));
 
-	camera = std::make_shared<UCamera>("firstCamera");
+	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
+	camera = std::make_shared<UPerspectiveCamera>("orthoCamera");
+	camera->setCameraPosition(glm::vec3(0, 0, 0));
+	auto c = glm::vec3(0.0f, 0.0f, g);
 
-	camera->lookAt(cameraPosition, glm::vec3(0,0,-25), glm::vec3(0, 1, 0));
 
 	UCamera::setMainCamera(camera);
 	Utopia::getInstance().getRenderPipeline().pass(rootShared, glm::mat4(1));
@@ -52,36 +54,48 @@ int main()
 		Utopia::getInstance().display();
 		Utopia::getInstance().swap();
 	}
-	
+
 	std::cout << "Terminate" << std::endl;
 }
 
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
-    switch (key)
+	glm::vec3 cameraNewPos = glm::vec3(camera->getCameraPosition());
+
+	switch (key)
     {
     
-    case 'w':
-		Utopia::getInstance().enableWireFrameMode();
+    case 'a':
+		cameraNewPos.x -= 1.00f;
+		camera->setCameraPosition(cameraNewPos);
+		break;
+	case 'd':
+		cameraNewPos.x += 1.00f;
+		camera->setCameraPosition(cameraNewPos);
 		break;
 	case 's':
-		Utopia::getInstance().enableSolidMode();
+		cameraNewPos.z += 1.00f;
+		camera->setCameraPosition(cameraNewPos);
 		break;
-	case 'r':
-		cameraPosition += 0.05f * glm::vec3(0, 0, -25);
-		camera->lookAt(cameraPosition, glm::vec3(0, 0, -25), glm::vec3(0, 1, 0));
-		std::cout << "camera" << std::endl;
-		std::cout << glm::to_string(camera->getModelView()) << std::endl;
+	case 'w':
+		cameraNewPos.z -= 1.00f;
+		camera->setCameraPosition(cameraNewPos);
 		break;
-	case 't':	
-		cameraPosition -= 0.05f * glm::vec3(0, 0, -25);
-		camera->lookAt(cameraPosition, glm::vec3(0, 0, -25), glm::vec3(0, 1, 0));
-		std::cout << "camera" << std::endl;
-		std::cout << glm::to_string(camera->getModelView()) << std::endl;
+	case 't':
+		cube.lock()->setModelView(glm::rotate(glm::translate(glm::mat4(1), glm::vec3(0, 0, g += 1.00f)), glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+		std::cout << "cube" << std::endl;
+		std::cout << glm::to_string(cube.lock()->getModelView()) << std::endl;
 		break;
-	
+	case 'y':
+		cube.lock()->setModelView(glm::rotate(glm::translate(glm::mat4(1), glm::vec3(0, 0, g -= 1.00f)) , glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+		std::cout << "cube" << std::endl;
+		std::cout << glm::to_string(cube.lock()->getModelView()) << std::endl;
+		break;
 	}
+
+	std::cout << "camera" << std::endl;
+	std::cout << glm::to_string(camera->getModelView()) << std::endl;
 
 }
 void closeCallback()

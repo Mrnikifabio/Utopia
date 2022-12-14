@@ -76,13 +76,15 @@ namespace utopia {
 
 		URenderPipeline& getRenderPipeline();
 
+		int getWindowWidth();
+		int getWindowHeight();
+
 	private:
 		// Const/dest (as private to prevent instanciation):
 		Utopia() : m_initFlag{ false }, m_renderPipeline{std::make_unique<URenderPipeline>("renderPipeline")} {};
 		~Utopia() {}
 		std::unique_ptr<URenderPipeline> m_renderPipeline;
 		bool m_initFlag;
-
 	};
 
 }

@@ -23,6 +23,8 @@
     <ClInclude Include="UMesh.h" />
     <ClInclude Include="UNode.h" />
     <ClInclude Include="UObject.h" />
+    <ClInclude Include="UOrthographicCamera.h" />
+    <ClInclude Include="UPerspectiveCamera.h" />
     <ClInclude Include="URenderPipeline.h" />
     <ClInclude Include="utopia.h" />
   </ItemGroup>
@@ -31,6 +33,8 @@
     <ClCompile Include="UMesh.cpp" />
     <ClCompile Include="UNode.cpp" />
     <ClCompile Include="UObject.cpp" />
+    <ClCompile Include="UOrthographicCamera.cpp" />
+    <ClCompile Include="UPerspectiveCamera.cpp" />
     <ClCompile Include="URenderPipeline.cpp" />
     <ClCompile Include="utopia.cpp" />
   </ItemGroup>
