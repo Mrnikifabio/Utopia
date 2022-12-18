@@ -13,19 +13,6 @@ struct UCamera::pimpl {
 UCamera::UCamera(const std::string& name) 
 	: m_pimpl{ std::make_unique<pimpl>() }, UNode{ name } {}
 
-void UCamera::setCameraPosition(const glm::vec3& position)
-{
-	auto diff = position - m_pimpl->m_cameraPosition;
-	m_pimpl->m_cameraPosition = position;
-	setModelView(glm::translate(getModelView(), diff));
-}
-
-const glm::vec3& UCamera::getCameraPosition() const
-{
-	return m_pimpl->m_cameraPosition;
-}
-
-
 void UCamera::setMainCamera(std::weak_ptr<UCamera> camera)
 {
 	 m_mainCamera = camera;

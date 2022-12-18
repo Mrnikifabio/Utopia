@@ -39,8 +39,10 @@ int main()
 
 	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
 	camera = std::make_shared<UPerspectiveCamera>("orthoCamera");
-	camera->setCameraPosition(glm::vec3(0, 0, 0));
-	auto c = glm::vec3(0.0f, 0.0f, g);
+	rootShared->addChild(camera);
+
+	auto ccc = rootShared->addChild(std::make_shared<UMesh>("here we go"));
+	ccc.lock()->setModelView(glm::translate(glm::mat4(1), glm::vec3(-10,0,g)));
 
 
 	UCamera::setMainCamera(camera);
@@ -61,26 +63,26 @@ int main()
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
-	glm::vec3 cameraNewPos = glm::vec3(camera->getCameraPosition());
+	glm::vec3 cameraNewPos = camera->getModelView() * glm::vec4(0,0,0,1);
 
 	switch (key)
     {
     
     case 'a':
 		cameraNewPos.x -= 1.00f;
-		camera->setCameraPosition(cameraNewPos);
+		camera->setModelView(glm::translate(glm::mat4(1), cameraNewPos));
 		break;
 	case 'd':
 		cameraNewPos.x += 1.00f;
-		camera->setCameraPosition(cameraNewPos);
+		camera->setModelView(glm::translate(glm::mat4(1), cameraNewPos));
 		break;
 	case 's':
 		cameraNewPos.z += 1.00f;
-		camera->setCameraPosition(cameraNewPos);
+		camera->setModelView(glm::translate(glm::mat4(1), cameraNewPos));
 		break;
 	case 'w':
 		cameraNewPos.z -= 1.00f;
-		camera->setCameraPosition(cameraNewPos);
+		camera->setModelView(glm::translate(glm::mat4(1), cameraNewPos));
 		break;
 	case 't':
 		cube.lock()->setModelView(glm::rotate(glm::translate(glm::mat4(1), glm::vec3(0, 0, g += 1.00f)), glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
