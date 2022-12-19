@@ -1,7 +1,10 @@
- #include <iostream>
+#include <iostream>
 #include "utopia.h"
 #include "UNode.h"
 #include "UMesh.h"
+#include "UOmniLight.h"
+#include "USpotLight.h"
+#include "UDirectionalLight.h"
 #include "UCamera.h"
 #include <glm/ext/matrix_transform.hpp>
 
@@ -28,6 +31,7 @@ int main()
 
 
 		auto mesh = rootShared->addChild(std::make_shared<UMesh>("cube"));
+		
 
 		glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -25.0f));
 		glm::mat4 rotation = glm::rotate(translation, glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -38,10 +42,18 @@ int main()
 		another_cube.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5, 0.0f)));
 		mesh.lock()->setModelView(mesh.lock()->getModelView()*glm::translate(glm::mat4(1.0f), glm::vec3(10, 0, 0)));
 
+		
+		auto light = rootShared->addChild(std::make_shared<UOmniLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0x4000));
+		// auto light = rootShared->addChild(std::make_shared<UDirectionalLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0x4000));
+		// auto light = rootShared->addChild(std::make_shared<USpotLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0x4000, 5.0f, glm::vec3(0.0f, 0.0f, -1.0f)));
+		light.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(6.0f, 4.0f, 0.0f)));
+		
+		
 		rootShared->render();
 
 
-
+		Utopia::getInstance().enableLighting();
+		Utopia::getInstance().enableLight0();
 		Utopia::getInstance().display();
 		Utopia::getInstance().swap();
 	}
