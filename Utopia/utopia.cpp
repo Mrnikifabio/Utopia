@@ -244,10 +244,10 @@ URenderPipeline& Utopia::getRenderPipeline()
 
 int Utopia::getWindowWidth()
 {
-	return glutGet(GLUT_WINDOW_HEIGHT);
+	return glutGet(GLUT_WINDOW_WIDTH);
 }
 
 int Utopia::getWindowHeight()
 {
-	return glutGet(GLUT_WINDOW_WIDTH);
+	return glutGet(GLUT_WINDOW_HEIGHT);
 }
