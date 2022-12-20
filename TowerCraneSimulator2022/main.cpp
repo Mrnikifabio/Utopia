@@ -6,6 +6,7 @@
 #include "UOrthographicCamera.h"
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include "OVOFactory.h"
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY);
 void closeCallback();
@@ -15,8 +16,6 @@ using namespace utopia;
 
 float g = -25;
 std::shared_ptr<UCamera> camera;
-auto rootShared = std::make_shared<UNode>("root");
-auto cube = rootShared->addChild(std::make_shared<UMesh>("cube"));
 
 
 int main()
@@ -32,19 +31,17 @@ int main()
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, g));
 	glm::mat4 rotation = glm::rotate(translation, glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	cube.lock()->setModelView(rotation);
-
-	auto another_cube = cube.lock()->addChild(std::make_shared<UMesh>("anotherCube"));
-	another_cube.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5, 0.0f)));
 
 	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
-	camera = std::make_shared<UPerspectiveCamera>("orthoCamera");
-	camera->setCameraPosition(glm::vec3(0, 0, 0));
-	auto c = glm::vec3(0.0f, 0.0f, g);
+	camera = std::make_shared<UPerspectiveCamera>("orthoCamera", glm::radians(45.0f), 1.0f, 600.0f);
+	camera->setCameraPosition(glm::vec3(0, 4.0f, 0));
+
+	auto root = OVOFactory::getInstance().fromFile("simple3dScene.ovo");
+	root->addChild(camera);
 
 
 	UCamera::setMainCamera(camera);
-	Utopia::getInstance().getRenderPipeline().pass(rootShared, glm::mat4(1));
+	Utopia::getInstance().getRenderPipeline().pass(root, glm::mat4(1));
 
 	while (Utopia::getInstance().isRunning())
 	{
@@ -82,15 +79,13 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		cameraNewPos.z -= 1.00f;
 		camera->setCameraPosition(cameraNewPos);
 		break;
-	case 't':
-		cube.lock()->setModelView(glm::rotate(glm::translate(glm::mat4(1), glm::vec3(0, 0, g += 1.00f)), glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
-		std::cout << "cube" << std::endl;
-		std::cout << glm::to_string(cube.lock()->getModelView()) << std::endl;
+	case 'r':
+		cameraNewPos.y += 1.00f;
+		camera->setCameraPosition(cameraNewPos);
 		break;
-	case 'y':
-		cube.lock()->setModelView(glm::rotate(glm::translate(glm::mat4(1), glm::vec3(0, 0, g -= 1.00f)) , glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
-		std::cout << "cube" << std::endl;
-		std::cout << glm::to_string(cube.lock()->getModelView()) << std::endl;
+	case 'f':
+		cameraNewPos.y -= 1.00f;
+		camera->setCameraPosition(cameraNewPos);
 		break;
 	}
 

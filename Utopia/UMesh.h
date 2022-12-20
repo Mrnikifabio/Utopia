@@ -15,10 +15,42 @@
 
 namespace utopia
 {
+    class OVOMeshStrategy;
+
     class LIB_API UMesh : public UNode
     {
-    public:
+        struct Vertex {
+            glm::vec3 coord;
+            glm::vec3 normal;
+            glm::vec2 uv;
+            glm::vec4 tangent;
+
+            Vertex(const glm::vec3& coord, const glm::vec3& normal, 
+                const glm::vec2& uv, const glm::vec4& tangent)
+            {
+                this->coord = coord;
+                this->normal = normal;
+                this->uv = uv;
+                this->tangent = tangent;
+            }
+        };
+
+        struct Face {
+            std::shared_ptr<Vertex> vertices[3];
+        };
+
+        struct LOD {
+            unsigned int vertices;
+            std::vector<Face> faces;
+        };
+
+    private:
+        std::vector<std::unique_ptr<LOD>> m_lods;
         UMesh(const std::string& name);
+        void pushLOD(std::unique_ptr<LOD>&&);
+        friend OVOMeshStrategy;
+
+    public:
         void render() override;
     };
 }

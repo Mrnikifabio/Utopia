@@ -20,6 +20,11 @@ UObject::UObject(const std::string& name) : m_pimpl{ std::make_unique<pimpl>(nam
 
 UObject::~UObject() noexcept = default;
 
+void UObject::setName(const std::string& name)
+{
+	m_pimpl->m_name = name;
+}
+
 const std::string& UObject::getName() const
 {
 	return m_pimpl->m_name;
