@@ -7,7 +7,6 @@ using namespace utopia;
 
 std::unique_ptr<OVOStrategy::Buffer> OVOStrategy::getChunksByte(std::ifstream& inFile)
 {
-
     unsigned int chunkSize = 0;
     inFile.read(reinterpret_cast<char*>(&chunkSize), sizeof(unsigned int));
     auto buffer = std::make_unique<OVOStrategy::Buffer>(chunkSize);

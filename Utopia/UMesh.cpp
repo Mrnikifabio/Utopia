@@ -5,20 +5,24 @@
 
 using namespace utopia;
 
-UMesh::UMesh(const std::string& name) : UNode{name} {}
+struct UMesh::pimpl {
+	std::vector<std::unique_ptr<LOD>> m_lods;
+};
+
+UMesh::UMesh(const std::string& name) : m_pimpl{std::make_unique<pimpl>()}, UNode{name} {}
 
 void UMesh::pushLOD(std::unique_ptr<LOD>&& lod)
 {
-	m_lods.push_back(std::move(lod));
+	m_pimpl->m_lods.push_back(std::move(lod));
 }
 
 void UMesh::render()
 {
 	UNode::render();
 
-	if (m_lods.size() > 0)
+	if (m_pimpl->m_lods.size() > 0)
 	{
-		auto& lod = m_lods[0];
+		auto& lod = m_pimpl->m_lods[0];
 
 		for (auto& face : lod->faces)
 		{
@@ -33,4 +37,4 @@ void UMesh::render()
 	}
 }
 
-
+UMesh::~UMesh() = default;

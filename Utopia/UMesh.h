@@ -44,14 +44,16 @@ namespace utopia
             std::vector<Face> faces;
         };
 
+        struct pimpl;
     private:
-        std::vector<std::unique_ptr<LOD>> m_lods;
+        std::unique_ptr<pimpl> m_pimpl;
         UMesh(const std::string& name);
         void pushLOD(std::unique_ptr<LOD>&&);
         friend OVOMeshStrategy;
 
     public:
         void render() override;
+        virtual ~UMesh() noexcept;
     };
 }
 
