@@ -57,6 +57,7 @@ namespace utopia
         void render() override;
         virtual ~UMesh() noexcept;
         std::weak_ptr<UMaterial> getMaterial();
+       void setMaterial(std::weak_ptr<UMaterial> material);
     };
 }
 

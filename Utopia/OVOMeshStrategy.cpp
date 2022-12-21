@@ -1,6 +1,7 @@
 #include "OVOMeshStrategy.h"
 #include "OVOFactory.h"
 #include "UMesh.h"
+#include "utopia.h"
 #include "glm/gtc/packing.hpp"
 
 
@@ -39,6 +40,7 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
     // Material name, or [none] if not used:
     std::string materialName = std::string(buffer->data.get()+buffer->position);
     buffer->position += (static_cast<unsigned int>(materialName.length()) + 1);
+    loadMaterial(*mesh, materialName);
     //load material from static material hashMap if exist
 
 
@@ -65,6 +67,13 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
 
 	return std::move(mesh);
 }
+
+void OVOMeshStrategy::loadMaterial(UMesh& mesh, std::string name)
+{
+        std::cout << "sono qui" << std::endl;
+        mesh.setMaterial(Utopia::getInstance().getMaterialByName(name));
+}
+
 
 void OVOMeshStrategy::skipPhysics(Buffer& buffer)
 {

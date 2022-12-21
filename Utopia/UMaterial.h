@@ -30,6 +30,13 @@ namespace utopia
         virtual ~UMaterial() noexcept;
         UMaterial(const std::string& name);
         UMaterial(const std::string& name, glm::vec4 emission, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, int shininess);
+        void setEmission(glm::vec4 emission);
+        void setAmbient(glm::vec4 ambient);
+        void setDiffuse(glm::vec4 diffuse);
+        void setSpecular(glm::vec4 specular);
+        void setShininess(int shininess);
+        
+    
     };
 }
 

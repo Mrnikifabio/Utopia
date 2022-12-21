@@ -79,6 +79,8 @@ namespace utopia {
 		URenderPipeline& getRenderPipeline();
 		std::unordered_map<std::string, std::shared_ptr<UMaterial>> getMaterialsMap();
 		std::weak_ptr<UMaterial> getDefaultMaterial();
+		std::weak_ptr<UMaterial> getMaterialByName(std::string name);
+		void addMaterial(std::string name, std::shared_ptr<UMaterial> material);
 
 
 		int getWindowWidth();

@@ -40,6 +40,12 @@ std::weak_ptr<UMaterial> UMesh::getMaterial()
 	return m_pimpl.get()->m_material;
 }
 
+void UMesh::setMaterial(std::weak_ptr<UMaterial> material)
+{
+	if(!material.expired())
+		m_pimpl.get()->m_material = material;
+}
+
 
 void UMesh::render()
 {

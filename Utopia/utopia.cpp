@@ -243,9 +243,14 @@ URenderPipeline& Utopia::getRenderPipeline()
 	return *m_renderPipeline.get();
 }
 
-std::unordered_map<std::string, std::shared_ptr<UMaterial>> Utopia::getMaterialsMap()
+std::weak_ptr<UMaterial> Utopia::getMaterialByName(std::string name)
 {
-	return m_materials;
+	return m_materials.at(name);
+}
+
+void Utopia::addMaterial(std::string name, std::shared_ptr<UMaterial> material)
+{
+	m_materials.insert(std::pair<std::string, std::shared_ptr<UMaterial>>(name, material));
 }
 
 std::weak_ptr<UMaterial> Utopia::getDefaultMaterial()
