@@ -25,7 +25,7 @@ namespace utopia
 		OVOStrategy& operator= (const OVOStrategy&) = delete;
 		OVOStrategy& operator= (OVOStrategy&&) = delete;
 
-		std::unique_ptr<Buffer> getChunksByte(std::ifstream& inFile);
+		std::unique_ptr<Buffer> getChunkBytes(std::ifstream& inFile);
 		virtual std::unique_ptr<UNode> decodeChunk(std::ifstream& inFile) = 0;
 	};
 }

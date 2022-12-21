@@ -22,7 +22,7 @@ enum class OVOMeshStrategy::Subtype: int
 */
 std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
 {	
-    const auto buffer = getChunksByte(inFile);
+    const auto buffer = getChunkBytes(inFile);
 
 	unsigned int children = 0;
 	auto mesh = std::unique_ptr<UMesh>(new UMesh("")); //name will be correctly setted by populate node
