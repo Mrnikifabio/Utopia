@@ -19,6 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OVONodeConcreteStrategy.h" />
+    <ClInclude Include="OVOObject.h" />
+    <ClInclude Include="OVOMeshStrategy.h" />
+    <ClInclude Include="OVONodeAbstractStrategy.h" />
+    <ClInclude Include="OVOStrategy.h" />
+    <ClInclude Include="OVOFactory.h" />
     <ClInclude Include="USpotLight.h" />
     <ClInclude Include="UCamera.h" />
     <ClInclude Include="UDirectionalLight.h" />
@@ -33,6 +39,11 @@
     <ClInclude Include="utopia.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="OVOMeshStrategy.cpp" />
+    <ClCompile Include="OVONodeConcreteStrategy.cpp" />
+    <ClCompile Include="OVONodeAbstractStrategy.cpp" />
+    <ClCompile Include="OVOStrategy.cpp" />
+    <ClCompile Include="OvoFactory.cpp" />
     <ClCompile Include="UCamera.cpp" />
     <ClCompile Include="UDirectionalLight.cpp" />
     <ClCompile Include="ULight.cpp" />

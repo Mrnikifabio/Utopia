@@ -31,6 +31,7 @@ namespace utopia
 		UObject& operator= (const UObject&) = delete;
 		UObject& operator= (UObject&&) = delete;
 
+		void setName(const std::string& name);
 		const std::string& getName() const;
 		unsigned int getId() const;
 		virtual void render() = 0;

@@ -39,6 +39,24 @@
     <ClInclude Include="UOrthographicCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OVOFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OVOObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OVOStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OVOMeshStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OVONodeAbstractStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OVONodeConcreteStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ULight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,6 +105,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="USpotLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OvoFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OVOMeshStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OVONodeAbstractStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OVOStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OVONodeConcreteStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
