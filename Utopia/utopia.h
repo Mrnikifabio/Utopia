@@ -58,6 +58,7 @@ public:
 	void enableCullFace();
 	void enableLight0();
 	void enableLighting();
+	void enableShadeModel();
 	void enableWireFrameMode();
 	void enableSolidMode();
 

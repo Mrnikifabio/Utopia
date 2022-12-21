@@ -185,6 +185,10 @@ void Utopia::enableLighting()
 	glEnable(GL_LIGHTING);
 }
 
+void Utopia::enableShadeModel() {
+	glEnable(GL_SMOOTH);
+}
+
 void Utopia::enableWireFrameMode()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

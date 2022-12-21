@@ -21,16 +21,18 @@ namespace utopia
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
     public:
-		ULight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, int lightID);
+		ULight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient, const int lightID);
         virtual ~ULight() noexcept;
         void render() override;
 
         void setAmbient(const glm::vec4& ambient);
         void setDiffuse(const glm::vec4& diffuse);
         void setSpecular(const glm::vec4& specular);
+		void setGlobalAmbient(const glm::vec4& gAmbient);
         auto getAmbient()									const -> const glm::vec4&;
         auto getDiffuse()									const -> const glm::vec4&;
         auto getSpecular()									const -> const glm::vec4&;
+		auto getGlobalAmbient()								const -> const glm::vec4&;
         auto getLightID()									const -> int;
     };
 }

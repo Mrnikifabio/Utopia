@@ -6,13 +6,20 @@
 using namespace utopia;
 
 struct USpotLight::pimpl {
-	float cutoff;
-	glm::vec3 direction;
-	
-	pimpl(const float cutoff, const glm::vec3& direction)
+	float m_cutoff;
+	glm::vec3 m_direction;
+	float m_constantAttenuation;
+	float m_linearAttenuation;
+	float m_quadraticAttenuation;
+
+
+	pimpl(const float cutoff, const glm::vec3& direction, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation)
 	{
-		this->cutoff = cutoff;
-		this->direction = direction;
+		this->m_cutoff = cutoff;
+		this->m_direction = direction;
+		this->m_constantAttenuation = constantAttenuation;
+		this->m_linearAttenuation = linearAttenuation;
+		this->m_quadraticAttenuation = quadraticAttenuation;
 	}
 };
 
@@ -22,28 +29,61 @@ void USpotLight::render()
 {
 	ULight::render();
 	glLightfv(getLightID(), GL_POSITION, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
-	glLightfv(getLightID(), GL_SPOT_CUTOFF, &m_pimpl->cutoff);
-	glLightfv(getLightID(), GL_SPOT_DIRECTION, glm::value_ptr(m_pimpl->direction));
+	glLightfv(getLightID(), GL_SPOT_CUTOFF, &m_pimpl->m_cutoff);
+	glLightfv(getLightID(), GL_SPOT_DIRECTION, glm::value_ptr(m_pimpl->m_direction));
+	glLightf(getLightID(), GL_CONSTANT_ATTENUATION, m_pimpl->m_constantAttenuation);
+	glLightf(getLightID(), GL_LINEAR_ATTENUATION, m_pimpl->m_linearAttenuation);
+	glLightf(getLightID(), GL_QUADRATIC_ATTENUATION, m_pimpl->m_quadraticAttenuation);
 }
 
-USpotLight::USpotLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, int lightID, float cutoff, const glm::vec3& direction) : m_pimpl{ std::make_unique<pimpl>(cutoff, direction) }, ULight{ name, ambient, diffuse, specular, lightID } {}	
+USpotLight::USpotLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient, const int lightID, const float cutoff, const glm::vec3& direction, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation) : m_pimpl{ std::make_unique<pimpl>(cutoff, direction, constantAttenuation, linearAttenuation, quadraticAttenuation) }, ULight{ name, ambient, diffuse, specular, gAmbient, lightID } {}
 
 void USpotLight::setDirection(const glm::vec3& direction)
 {
-	m_pimpl->direction = direction;
+	m_pimpl->m_direction = direction;
 }
 
 auto USpotLight::getDirection() const -> const glm::vec3&
 {
-	return m_pimpl->direction;
+	return m_pimpl->m_direction;
 }
 
 void USpotLight::setCutoff(const float& cutoff)
 {
-	m_pimpl->cutoff = cutoff;
+	m_pimpl->m_cutoff = cutoff;
 }
 
 auto USpotLight::getCutoff() const -> const float&
 {
-	return m_pimpl->cutoff;
+	return m_pimpl->m_cutoff;
+}
+
+void USpotLight::setConstantAttenuation(const float& constantAttenuation)
+{
+	m_pimpl->m_constantAttenuation = constantAttenuation;
+}
+
+auto USpotLight::getConstantAttenuation() const -> const float&
+{
+	return m_pimpl->m_constantAttenuation;
+}
+
+void USpotLight::setLinearAttenuation(const float& linearAttenuation)
+{
+	m_pimpl->m_linearAttenuation = linearAttenuation;
+}
+
+auto USpotLight::getLinearAttenuation() const -> const float&
+{
+	return m_pimpl->m_linearAttenuation;
+}
+
+void USpotLight::setQuadraticAttenuation(const float& quadraticAttenuation)
+{
+	m_pimpl->m_quadraticAttenuation = quadraticAttenuation;
+}
+
+auto USpotLight::getQuadraticAttenuation() const -> const float&
+{
+	return m_pimpl->m_quadraticAttenuation;
 }

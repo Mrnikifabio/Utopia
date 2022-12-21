@@ -43,9 +43,9 @@ int main()
 		mesh.lock()->setModelView(mesh.lock()->getModelView()*glm::translate(glm::mat4(1.0f), glm::vec3(10, 0, 0)));
 
 		
-		auto light = rootShared->addChild(std::make_shared<UOmniLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0x4000));
-		// auto light = rootShared->addChild(std::make_shared<UDirectionalLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0x4000));
-		// auto light = rootShared->addChild(std::make_shared<USpotLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0x4000, 5.0f, glm::vec3(0.0f, 0.0f, -1.0f)));
+		// auto light = rootShared->addChild(std::make_shared<UOmniLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0.2f,0.2f,0.2f,1.0f), 0x4000));
+		auto light = rootShared->addChild(std::make_shared<UDirectionalLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f ,1.0f ,1.0f ,1.0f), 0x4000));
+		// auto light = rootShared->addChild(std::make_shared<USpotLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0.2f,0.2f,0.2f,1.0f), 0x4000, 5.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
 		light.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(6.0f, 4.0f, 0.0f)));
 		
 		
