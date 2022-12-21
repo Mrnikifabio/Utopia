@@ -12,6 +12,7 @@
 #include "utopia.h"
 #include "UCamera.h"
 #include <gl/freeglut.h>
+#include <unordered_map>
 
 
   // GLM:   
@@ -241,6 +242,17 @@ URenderPipeline& Utopia::getRenderPipeline()
 {
 	return *m_renderPipeline.get();
 }
+
+std::unordered_map<std::string, std::shared_ptr<UMaterial>> Utopia::getMaterialsMap()
+{
+	return m_materials;
+}
+
+std::weak_ptr<UMaterial> Utopia::getDefaultMaterial()
+{
+	return m_defaultMaterial;
+}
+
 
 int Utopia::getWindowWidth()
 {

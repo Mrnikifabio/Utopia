@@ -29,7 +29,9 @@
 #endif
 
 #include "URenderPipeline.h"
+#include "UMaterial.h"
 #include <memory>
+#include <unordered_map>
 
 
 namespace utopia {
@@ -75,15 +77,21 @@ namespace utopia {
 		void swap();
 
 		URenderPipeline& getRenderPipeline();
+		std::unordered_map<std::string, std::shared_ptr<UMaterial>> getMaterialsMap();
+		std::weak_ptr<UMaterial> getDefaultMaterial();
+
 
 		int getWindowWidth();
 		int getWindowHeight();
 
 	private:
 		// Const/dest (as private to prevent instanciation):
-		Utopia() : m_initFlag{ false }, m_renderPipeline{std::make_unique<URenderPipeline>("renderPipeline")} {};
+		Utopia() : m_initFlag{ false }, m_renderPipeline{ std::make_unique<URenderPipeline>("renderPipeline") }, m_defaultMaterial{std::make_shared<UMaterial>("default")} {};
 		~Utopia() {}
 		std::unique_ptr<URenderPipeline> m_renderPipeline;
+		std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
+		std::shared_ptr<UMaterial> m_defaultMaterial;
+		
 		bool m_initFlag;
 	};
 

@@ -25,6 +25,7 @@
     <ClInclude Include="OVONodeAbstractStrategy.h" />
     <ClInclude Include="OVOStrategy.h" />
     <ClInclude Include="OVOFactory.h" />
+    <ClInclude Include="UMaterial.h" />
     <ClInclude Include="USpotLight.h" />
     <ClInclude Include="UCamera.h" />
     <ClInclude Include="UDirectionalLight.h" />
@@ -47,6 +48,7 @@
     <ClCompile Include="UCamera.cpp" />
     <ClCompile Include="UDirectionalLight.cpp" />
     <ClCompile Include="ULight.cpp" />
+    <ClCompile Include="UMaterial.cpp" />
     <ClCompile Include="UMesh.cpp" />
     <ClCompile Include="UNode.cpp" />
     <ClCompile Include="UObject.cpp" />
