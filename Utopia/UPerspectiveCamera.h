@@ -23,7 +23,7 @@ namespace utopia
 		UPerspectiveCamera(const std::string& name, float fovRadians, float near, float far);
 		UPerspectiveCamera(const std::string& name);
 		
-		const glm::mat4& getCameraMatrix() const override;
+		const glm::mat4 getCameraMatrix() const override;
 	};
 }
 

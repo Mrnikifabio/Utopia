@@ -8,7 +8,7 @@ UOrthographicCamera::UOrthographicCamera(const std::string& name, float right, f
 
 UOrthographicCamera::UOrthographicCamera(const std::string& name) : UOrthographicCamera(name, 10,-10, 10, -10, 1.0f, 100.0f) {}
 
-const glm::mat4& UOrthographicCamera::getCameraMatrix() const
+const glm::mat4 UOrthographicCamera::getCameraMatrix() const
 {
 	return glm::ortho(left, right, bottom, top, near, far);
 }

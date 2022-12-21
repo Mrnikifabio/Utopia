@@ -9,7 +9,7 @@ UPerspectiveCamera::UPerspectiveCamera(const std::string& name, float fovRadians
 
 UPerspectiveCamera::UPerspectiveCamera(const std::string& name) : UPerspectiveCamera(name, glm::radians(45.0f), 1.0f, 100.0f){}
 
-const glm::mat4& UPerspectiveCamera::getCameraMatrix() const
+const glm::mat4 UPerspectiveCamera::getCameraMatrix() const
 {
 	auto aspect = (float)Utopia::getInstance().getWindowWidth() / (float)Utopia::getInstance().getWindowHeight();
 	return glm::perspective(fovRadians, aspect, near, far);

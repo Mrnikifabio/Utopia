@@ -22,7 +22,7 @@ namespace utopia
 
 		UOrthographicCamera(const std::string& name, float right, float left, float top, float bottom, float far, float near);
 		UOrthographicCamera(const std::string& name);
-		const glm::mat4& getCameraMatrix() const override;
+		const glm::mat4 getCameraMatrix() const override;
 	};
 }
 

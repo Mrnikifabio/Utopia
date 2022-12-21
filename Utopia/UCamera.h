@@ -27,7 +27,7 @@ namespace utopia
         UCamera(const std::string& name);
         virtual ~UCamera() noexcept;
 
-        virtual const glm::mat4& getCameraMatrix() const = 0;
+        virtual const glm::mat4 getCameraMatrix() const = 0;
 
         static void setMainCamera(std::weak_ptr<UCamera> camera);
         static std::weak_ptr<UCamera>& getMainCamera();
