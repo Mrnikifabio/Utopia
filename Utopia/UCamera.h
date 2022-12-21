@@ -29,6 +29,11 @@ namespace utopia
 
         virtual const glm::mat4 getCameraMatrix() const = 0;
 
+        float getFar() const;
+        float getNear() const;
+        void setFar(const float far);
+        void setNear(const float near);
+
         static void setMainCamera(std::weak_ptr<UCamera> camera);
         static std::weak_ptr<UCamera>& getMainCamera();
     };

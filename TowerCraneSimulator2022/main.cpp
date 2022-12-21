@@ -38,7 +38,7 @@ int main()
 	another_cube.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5, 0.0f)));
 
 	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
-	camera = std::make_shared<UPerspectiveCamera>("orthoCamera");
+	camera = std::make_shared<UPerspectiveCamera>("perspectiveCamera");
 	rootShared->addChild(camera);
 
 	auto ccc = rootShared->addChild(std::make_shared<UMesh>("here we go"));

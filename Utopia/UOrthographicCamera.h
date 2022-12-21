@@ -17,10 +17,20 @@ namespace utopia
 {
 	class LIB_API UOrthographicCamera : public UCamera
 	{
-	public:
-		float right, left, top, bottom, far, near;
+	private:
+		float m_right, m_left, m_top, m_bottom;
 
-		UOrthographicCamera(const std::string& name, float right, float left, float top, float bottom, float far, float near);
+	public:
+		float getRight() const;
+		float getLeft() const;
+		float getTop() const;
+		float getBottom() const;
+
+		void setRight(const float right);
+		void setLeft(const float left);
+		void setTop(const float top);
+		void setBottom(const float bottom);
+
 		UOrthographicCamera(const std::string& name);
 		const glm::mat4 getCameraMatrix() const override;
 	};
