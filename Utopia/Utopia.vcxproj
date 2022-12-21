@@ -19,7 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="USpotLight.h" />
     <ClInclude Include="UCamera.h" />
+    <ClInclude Include="UDirectionalLight.h" />
+    <ClInclude Include="ULight.h" />
+    <ClInclude Include="UOmniLight.h" />
     <ClInclude Include="UMesh.h" />
     <ClInclude Include="UNode.h" />
     <ClInclude Include="UObject.h" />
@@ -30,12 +34,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UCamera.cpp" />
+    <ClCompile Include="UDirectionalLight.cpp" />
+    <ClCompile Include="ULight.cpp" />
     <ClCompile Include="UMesh.cpp" />
     <ClCompile Include="UNode.cpp" />
     <ClCompile Include="UObject.cpp" />
     <ClCompile Include="UOrthographicCamera.cpp" />
     <ClCompile Include="UPerspectiveCamera.cpp" />
     <ClCompile Include="URenderPipeline.cpp" />
+    <ClCompile Include="UOmniLight.cpp" />
+    <ClCompile Include="USpotLight.cpp" />
     <ClCompile Include="utopia.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
