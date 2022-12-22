@@ -70,7 +70,7 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
 
 void OVOMeshStrategy::loadMaterial(UMesh& mesh, std::string name)
 {
-        std::cout << "sono qui" << std::endl;
+        std::cout << "uso del materiale "<<name << std::endl;
         mesh.setMaterial(Utopia::getInstance().getMaterialByName(name));
 }
 

@@ -1,4 +1,4 @@
-#include "OVOMaterialStrategy.h"
+﻿#include "OVOMaterialStrategy.h"
 #include "OVOMeshStrategy.h"
 #include "OVOFactory.h"
 #include "glm/gtc/packing.hpp"
@@ -29,18 +29,27 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 	glm::vec3 emission;
 	std::memcpy(&emission, buffer.data.get() + buffer.position, sizeof(glm::vec3));
 	buffer.position += sizeof(glm::vec3);
-	material.setEmission(glm::vec4(emission, 1.0f));
 
-	//albedo?
+	//albedo
 	glm::vec3 albedo;
 	std::memcpy(&albedo, buffer.data.get() + buffer.position, sizeof(glm::vec3));
-	material.setDiffuse(glm::vec4(albedo, 1.0f));
-
 	buffer.position += sizeof(glm::vec3);
+
+	//ambient=albedox0.2
+	material.setAmbient(glm::vec4(albedo * 0.2f, 1.0f));
+
+	//specular=albedox0.4
+	material.setSpecular(glm::vec4(albedo * 0.4f, 1.0f));
+
+	//diffuse=albedox0.6
+	material.setDiffuse(glm::vec4(albedo * 0.6f, 1.0f));
+
 
 	float roughness;
 	std::memcpy(&roughness, buffer.data.get() + buffer.position, sizeof(float));
 	buffer.position += sizeof(float);
+	//shininess=(1−roughness)x128
+	material.setShininess((1.f - sqrt(roughness)) * 128);
 
 	float metalness;
 	std::memcpy(&metalness, buffer.data.get() + buffer.position, sizeof(float));
