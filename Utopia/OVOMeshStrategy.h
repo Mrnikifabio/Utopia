@@ -18,7 +18,7 @@ namespace utopia
 
 		void skipPhysics(Buffer& buffer);
 		void loadLODs(UMesh& mesh, Buffer& buffer);
-		void loadMaterial(UMesh& mesh, std::string name);
+		void loadMaterial(UMesh& mesh, const std::string& name);
 
 	public:
 		std::unique_ptr<UNode> decodeChunk(std::ifstream& inFile) override;

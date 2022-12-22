@@ -46,11 +46,103 @@ void UMesh::setMaterial(std::weak_ptr<UMaterial> material)
 		m_pimpl.get()->m_material = material;
 }
 
+void displayCube(float edge)
+{
+	float size = edge / 2.0f;
+	float tiling = 1.f;
+
+	// Texture mapping just on the cube:
+	glEnable(GL_TEXTURE_2D);
+
+
+	// Back:
+	glBegin(GL_TRIANGLE_STRIP);
+	glNormal3f(0.0f, 0.0f, -1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(size, -size, -size);
+	glTexCoord2f(tiling, 0.0f);
+	glVertex3f(-size, -size, -size);
+	glTexCoord2f(0.0f, tiling);
+	glVertex3f(size, size, -size);
+	glTexCoord2f(tiling, tiling);
+	glVertex3f(-size, size, -size);
+	glEnd();
+
+	// Front:
+	glBegin(GL_TRIANGLE_STRIP);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-size, -size, size);
+	glTexCoord2f(tiling, 0.0f);
+	glVertex3f(size, -size, size);
+	glTexCoord2f(0.0f, tiling);
+	glVertex3f(-size, size, size);
+	glTexCoord2f(tiling, tiling);
+	glVertex3f(size, size, size);
+	glEnd();
+
+	// Left:
+	glBegin(GL_TRIANGLE_STRIP);
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-size, -size, -size);
+	glTexCoord2f(tiling, 0.0f);
+	glVertex3f(-size, -size, size);
+	glTexCoord2f(0.0f, tiling);
+	glVertex3f(-size, size, -size);
+	glTexCoord2f(tiling, tiling);
+	glVertex3f(-size, size, size);
+	glEnd();
+
+	// Right:
+	glBegin(GL_TRIANGLE_STRIP);
+	glNormal3f(1.0f, 0.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(size, -size, -size);
+	glTexCoord2f(tiling, 0.0f);
+	glVertex3f(size, -size, size);
+	glTexCoord2f(0.0f, tiling);
+	glVertex3f(size, size, -size);
+	glTexCoord2f(tiling, tiling);
+	glVertex3f(size, size, size);
+	glEnd();
+
+	// Bottom:
+	glBegin(GL_TRIANGLE_STRIP);
+	glNormal3f(0.0f, -1.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(size, -size, size);
+	glTexCoord2f(tiling, 0.0f);
+	glVertex3f(-size, -size, size);
+	glTexCoord2f(0.0f, tiling);
+	glVertex3f(size, -size, -size);
+	glTexCoord2f(tiling, tiling);
+	glVertex3f(-size, -size, -size);
+	glEnd();
+
+	// Top:
+	glBegin(GL_TRIANGLE_STRIP);
+	glNormal3f(0.0f, 1.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(size, size, size);
+	glTexCoord2f(tiling, 0.0f);
+	glVertex3f(-size, size, size);
+	glTexCoord2f(0.0f, tiling);
+	glVertex3f(size, size, -size);
+	glTexCoord2f(tiling, tiling);
+	glVertex3f(-size, size, -size);
+	glEnd();
+
+	// Done with the cube, done with the texturing:
+	glDisable(GL_TEXTURE_2D);
+}
+
 
 void UMesh::render()
 {
 	UNode::render();
-	getMaterial().lock().get()->render();
+	getMaterial().lock()->render();
+
 
 	if (m_pimpl->m_lods.size() > 0)
 	{
@@ -61,12 +153,18 @@ void UMesh::render()
 			glBegin(GL_TRIANGLES);
 			for (auto& vertex : face.vertices)
 			{
-				glVertex3fv(glm::value_ptr(vertex->coord));
 				glNormal3fv(glm::value_ptr(vertex->normal));
+				glVertex3fv(glm::value_ptr(vertex->coord));
+				glTexCoord2fv(glm::value_ptr(vertex->uv));
 			}
 			glEnd();
 		}
 	}
+	//displayCube(30);
+
+	getMaterial().lock()->disable();
+
+
 }
 
 UMesh::~UMesh() = default;

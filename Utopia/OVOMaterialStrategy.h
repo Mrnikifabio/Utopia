@@ -7,11 +7,7 @@ namespace utopia
 {
 	class OVOMaterialStrategy : public OVOStrategy
 	{
-		/**
-		 * Mesh subtypes.
-		 */
-		enum class Subtype : int;
-
+		
 	private:
 		OVOMaterialStrategy() {};
 		~OVOMaterialStrategy() {};

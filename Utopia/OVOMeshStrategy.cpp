@@ -40,8 +40,9 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
     // Material name, or [none] if not used:
     std::string materialName = std::string(buffer->data.get()+buffer->position);
     buffer->position += (static_cast<unsigned int>(materialName.length()) + 1);
-    loadMaterial(*mesh, materialName);
+    
     //load material from static material hashMap if exist
+    loadMaterial(*mesh, materialName);
 
 
 
@@ -68,9 +69,9 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
 	return std::move(mesh);
 }
 
-void OVOMeshStrategy::loadMaterial(UMesh& mesh, std::string name)
+void OVOMeshStrategy::loadMaterial(UMesh& mesh,const std::string& name)
 {
-        std::cout << "uso del materiale "<<name << std::endl;
+        std::cout << "setting material "<<name << std::endl;
         mesh.setMaterial(Utopia::getInstance().getMaterialByName(name));
 }
 
@@ -177,6 +178,11 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
             memcpy(face, buffer.data.get() + buffer.position, sizeof(unsigned int) * 3);
             buffer.position += sizeof(unsigned int) * 3;
             UMesh::Face f;
+
+            glm::vec2 temp0 = vertex[face[0]].uv;
+            glm::vec2 temp1 = vertex[face[1]].uv;
+            glm::vec2 temp2 = vertex[face[2]].uv;
+
             f.vertices[0] = std::make_shared<UMesh::Vertex>(vertex[face[0]]);
             f.vertices[1] = std::make_shared<UMesh::Vertex>(vertex[face[1]]);
             f.vertices[2] = std::make_shared<UMesh::Vertex>(vertex[face[2]]);

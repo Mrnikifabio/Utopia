@@ -3,6 +3,7 @@
 #include "UObject.h"
 #include <iostream>
 #include "glm/glm.hpp"
+#include "UTexture.h"
 
 #ifdef _WINDOWS 	
 // Export API:
@@ -26,15 +27,17 @@ namespace utopia
         std::unique_ptr<pimpl> m_pimpl;
 
     public:
+        void disable();
         void render() override;
         virtual ~UMaterial() noexcept;
         UMaterial(const std::string& name);
-        UMaterial(const std::string& name, glm::vec4 emission, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, int shininess);
-        void setEmission(glm::vec4 emission);
-        void setAmbient(glm::vec4 ambient);
-        void setDiffuse(glm::vec4 diffuse);
-        void setSpecular(glm::vec4 specular);
+        UMaterial(const std::string& name, const glm::vec4& emission, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, int shininess);
+        void setEmission(const glm::vec4& emission);
+        void setAmbient(const glm::vec4& ambient);
+        void setDiffuse(const glm::vec4& diffuse);
+        void setSpecular(const glm::vec4& specular);
         void setShininess(int shininess);
+        void setTexture(std::shared_ptr<UTexture> texture);
         
     
     };

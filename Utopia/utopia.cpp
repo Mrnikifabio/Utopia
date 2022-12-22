@@ -13,6 +13,7 @@
 #include "UCamera.h"
 #include <gl/freeglut.h>
 #include <unordered_map>
+#include "UTexture.h"
 
 
   // GLM:   
@@ -250,7 +251,7 @@ std::weak_ptr<UMaterial> Utopia::getMaterialByName(std::string name)
 
 void Utopia::addMaterial(std::string name, std::shared_ptr<UMaterial> material)
 {
-	m_materials.insert(std::pair<std::string, std::shared_ptr<UMaterial>>(name, material));
+	m_materials.insert(std::pair<std::string, std::shared_ptr<UMaterial>>(name, material));	
 }
 
 std::weak_ptr<UMaterial> Utopia::getDefaultMaterial()
@@ -268,3 +269,20 @@ int Utopia::getWindowHeight()
 {
 	return glutGet(GLUT_WINDOW_HEIGHT);
 }
+
+
+std::shared_ptr<UTexture> Utopia::getTextureByName(std::string name)
+{
+	return m_textures.at(name);
+}
+void Utopia::addTexture(std::string name, std::shared_ptr<UTexture> texture)
+{
+	m_textures.insert(std::pair<std::string, std::shared_ptr<UTexture>>(name, texture));
+}
+
+bool Utopia::containTexture(const std::string& name)
+{
+	return !(m_textures.find(name) == m_textures.end());
+}
+
+

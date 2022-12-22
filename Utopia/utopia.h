@@ -33,7 +33,6 @@
 #include <memory>
 #include <unordered_map>
 
-
 namespace utopia {
 
 	class LIB_API Utopia
@@ -79,8 +78,13 @@ namespace utopia {
 		URenderPipeline& getRenderPipeline();
 		std::unordered_map<std::string, std::shared_ptr<UMaterial>> getMaterialsMap();
 		std::weak_ptr<UMaterial> getDefaultMaterial();
+
 		std::weak_ptr<UMaterial> getMaterialByName(std::string name);
 		void addMaterial(std::string name, std::shared_ptr<UMaterial> material);
+
+		std::shared_ptr<UTexture> getTextureByName(std::string name);
+		void addTexture(std::string name, std::shared_ptr<UTexture> texture);
+		bool containTexture(const std::string& name);
 
 
 		int getWindowWidth();
@@ -91,7 +95,10 @@ namespace utopia {
 		Utopia() : m_initFlag{ false }, m_renderPipeline{ std::make_unique<URenderPipeline>("renderPipeline") }, m_defaultMaterial{std::make_shared<UMaterial>("default")} {};
 		~Utopia() {}
 		std::unique_ptr<URenderPipeline> m_renderPipeline;
+
 		std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
+		std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
+
 		std::shared_ptr<UMaterial> m_defaultMaterial;
 		
 		bool m_initFlag;

@@ -3,6 +3,7 @@
 #include "OVOFactory.h"
 #include "glm/gtc/packing.hpp"
 #include "utopia.h"
+#include "ImageReader.h"
 
 
 using namespace utopia;
@@ -61,25 +62,36 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 
 
 	// Optional target node, [none] if not used:
-	std::string targetName = std::string(buffer.data.get() + buffer.position);
-	buffer.position += static_cast<unsigned int>(targetName.length() + 1);
+	std::string albedoMap = std::string(buffer.data.get() + buffer.position);
+	buffer.position += static_cast<unsigned int>(albedoMap.length() + 1);
+	if (albedoMap != "[none]")
+	{
+		std::cout<<"loading texture "<< albedoMap<<std::endl;
+
+		if (Utopia::getInstance().containTexture(albedoMap))
+			material.setTexture(Utopia::getInstance().getTextureByName(albedoMap));
+		else
+			material.setTexture(ImageReader::getInstance().fromFile(albedoMap));
+	}
+	
 
 	// Optional target node, [none] if not used:
-	targetName = std::string(buffer.data.get() + buffer.position);
-	buffer.position += static_cast<unsigned int>(targetName.length() + 1);
+	std::string normalMap = std::string(buffer.data.get() + buffer.position);
+	buffer.position += static_cast<unsigned int>(normalMap.length() + 1);
 
 
 	// Optional target node, [none] if not used:
-	targetName = std::string(buffer.data.get() + buffer.position);
-	buffer.position += static_cast<unsigned int>(targetName.length() + 1);
+	std::string heightMap = std::string(buffer.data.get() + buffer.position);
+	buffer.position += static_cast<unsigned int>(heightMap.length() + 1);
 
+	
+	// Optional target node, [none] if not used:
+	std::string roughtnessMap = std::string(buffer.data.get() + buffer.position);
+	buffer.position += static_cast<unsigned int>(roughtnessMap.length() + 1);
 
 	// Optional target node, [none] if not used:
-	targetName = std::string(buffer.data.get() + buffer.position);
-	buffer.position += static_cast<unsigned int>(targetName.length() + 1);
+	std::string metalnessMap = std::string(buffer.data.get() + buffer.position);
+	buffer.position += static_cast<unsigned int>(metalnessMap.length() + 1);
 
-	// Optional target node, [none] if not used:
-	targetName = std::string(buffer.data.get() + buffer.position);
-	buffer.position += static_cast<unsigned int>(targetName.length() + 1);
 
 }
