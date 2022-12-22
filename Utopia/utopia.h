@@ -54,12 +54,12 @@ namespace utopia {
 		void clear();
 		void free();
 
-		void enableDepth();
-		void enableCullFace();
-		void enableLight0();
-		void enableLighting();
-		void enableWireFrameMode();
-		void enableSolidMode();
+	void enableDepth();
+	void enableCullFace();
+	void enableLighting();
+	void enableShadeModel();
+	void enableWireFrameMode();
+	void enableSolidMode();
 
 		void setKeyboardCallback(void (*callback)(unsigned char, int, int));
 		void setDisplayCallback(void (*callback)(void));

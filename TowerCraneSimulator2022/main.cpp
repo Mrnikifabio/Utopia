@@ -58,7 +58,7 @@ int main()
 		Utopia::getInstance().clear();
 		Utopia::getInstance().getRenderPipeline().render();
 		Utopia::getInstance().enableLighting();
-		Utopia::getInstance().enableLight0();
+		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().display();
 		Utopia::getInstance().swap();
 	}

@@ -23,11 +23,17 @@ namespace utopia
     public:
         virtual ~USpotLight() noexcept;
         void render() override;
-		USpotLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, int lightID, float cutoff, const glm::vec3& direction);        
+		USpotLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient, const float cutoff, const glm::vec3& direction, const float constantAttenuation = 1.0f, const float linearAttenuation = 0.0f, const float quadraticAttenuation = 0.0f);
 		
         void setCutoff(const float& cutoff);
 		void setDirection(const glm::vec3& direction);
+		void setConstantAttenuation(const float& constantAttenuation);
+		void setLinearAttenuation(const float& linearAttenuation);
+		void setQuadraticAttenuation(const float& quadraticAttenuation); 
 		auto getCutoff()									const -> const float&;
 		auto getDirection()									const -> const glm::vec3&;
+		auto getConstantAttenuation()						const -> const float&;
+		auto getLinearAttenuation()							const -> const float&;
+		auto getQuadraticAttenuation()						const -> const float&;
 	};
 }
