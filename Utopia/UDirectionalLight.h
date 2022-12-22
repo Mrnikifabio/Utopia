@@ -18,7 +18,7 @@ namespace utopia
     class LIB_API UDirectionalLight : public ULight
     {
     public:
-		UDirectionalLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient, const int lightID);
+		UDirectionalLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient);
         virtual ~UDirectionalLight() noexcept;
         void render() override;
     };

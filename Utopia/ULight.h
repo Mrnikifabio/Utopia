@@ -1,5 +1,6 @@
 #pragma once
 #include "UNode.h"
+#include <stack>
 
 #ifdef _WINDOWS 	
 // Export API:
@@ -20,10 +21,14 @@ namespace utopia
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
+        static std::stack<int> m_freeLightIDs;
+
     public:
-		ULight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient, const int lightID);
+	
+		ULight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient);
         virtual ~ULight() noexcept;
         void render() override;
+		static void initIDs();
 
         void setAmbient(const glm::vec4& ambient);
         void setDiffuse(const glm::vec4& diffuse);

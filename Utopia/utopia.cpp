@@ -11,6 +11,7 @@
 #include <iostream>
 #include "utopia.h"
 #include <gl/freeglut.h>
+#include "ULight.h"
 
 
   // GLM:   
@@ -106,7 +107,7 @@ bool LIB_API Utopia::init()
 		std::cout << "ERROR: class already initialized" << std::endl;
 		return false;
 	}
-
+	
 	// Init context:
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
@@ -134,8 +135,10 @@ bool LIB_API Utopia::init()
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "   vendor . . . : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "   renderer . . : " << glGetString(GL_RENDERER) << std::endl;
-
-
+	
+	//Init Light IDs:
+	utopia::ULight::initIDs();
+	
 	// Done:
 	m_initFlag = true;
 	return true;
@@ -172,12 +175,6 @@ void Utopia::enableDepth()
 void Utopia::enableCullFace()
 {
 	glEnable(GL_CULL_FACE);
-}
-
-
-void Utopia::enableLight0()
-{
-	glEnable(GL_LIGHT0);
 }
 
 void Utopia::enableLighting()

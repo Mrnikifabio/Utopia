@@ -23,7 +23,7 @@ namespace utopia
     public:
         virtual ~UOmniLight() noexcept;
         void render() override;
-		UOmniLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient, const int lightID, const float constantAttenuation = 1.0f, const float linearAttenuation = 0.0f, const float quadraticAttenuation = 0.0f);
+		UOmniLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient, const float constantAttenuation = 1.0f, const float linearAttenuation = 0.0f, const float quadraticAttenuation = 0.0f);
 		void setConstantAttenuation(const float& constantAttenuation);
 		void setLinearAttenuation(const float& linearAttenuation);
 		void setQuadraticAttenuation(const float& quadraticAttenuation);

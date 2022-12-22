@@ -24,6 +24,12 @@ int main()
 
 	auto rootShared = std::make_shared<UNode>("root");
 
+
+	auto light = rootShared->addChild(std::make_shared<UOmniLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0.2f,0.2f,0.2f,1.0f)));
+	// auto light = rootShared->addChild(std::make_shared<UDirectionalLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+	// auto light = rootShared->addChild(std::make_shared<USpotLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0.2f,0.2f,0.2f,1.0f), 5.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
+	light.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(6.0f, 4.0f, 0.0f)));
+
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
@@ -41,19 +47,13 @@ int main()
 		auto another_cube = mesh.lock()->addChild(std::make_shared<UMesh>("anotherCube"));
 		another_cube.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5, 0.0f)));
 		mesh.lock()->setModelView(mesh.lock()->getModelView()*glm::translate(glm::mat4(1.0f), glm::vec3(10, 0, 0)));
-
-		
-		// auto light = rootShared->addChild(std::make_shared<UOmniLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0.2f,0.2f,0.2f,1.0f), 0x4000));
-		auto light = rootShared->addChild(std::make_shared<UDirectionalLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f ,1.0f ,1.0f ,1.0f), 0x4000));
-		// auto light = rootShared->addChild(std::make_shared<USpotLight>("light", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(0.2f,0.2f,0.2f,1.0f), 0x4000, 5.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
-		light.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(6.0f, 4.0f, 0.0f)));
 		
 		
 		rootShared->render();
 
 
 		Utopia::getInstance().enableLighting();
-		Utopia::getInstance().enableLight0();
+		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().display();
 		Utopia::getInstance().swap();
 	}
