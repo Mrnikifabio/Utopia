@@ -154,9 +154,6 @@ void UMesh::render()
 				glNormal3fv(glm::value_ptr(vertex->normal));
 				glTexCoord2fv(glm::value_ptr(vertex->uv));
 				glVertex3fv(glm::value_ptr(vertex->coord));
-
-				if (UNode::getName() == "Box001")
-					std::cout << vertex->uv.x << " " << vertex->uv.y << std::endl;
 			}
 			glEnd();
 		}
