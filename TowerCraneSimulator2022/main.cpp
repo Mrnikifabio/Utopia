@@ -92,6 +92,17 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case 'f':
 		cameraNewPos.y -= 1.00f;
 		break;
+
+	case 'z':
+		Utopia::getInstance().enableSolidMode();
+		break;
+
+	case 'x':
+		Utopia::getInstance().enableWireFrameMode();
+
+		break;
+
+
 	}
 
 	camera->setModelView(glm::translate(glm::mat4(1), cameraNewPos));

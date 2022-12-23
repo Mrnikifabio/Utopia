@@ -68,9 +68,9 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 	{
 		std::cout<<"loading texture "<< albedoMap<<std::endl;
 
-		if (Utopia::getInstance().containTexture(albedoMap))
-			material.setTexture(Utopia::getInstance().getTextureByName(albedoMap));
-		else
+		//if (Utopia::getInstance().containTexture(albedoMap))
+		//	material.setTexture(Utopia::getInstance().getTextureByName(albedoMap));
+		//else
 			material.setTexture(ImageReader::getInstance().fromFile(albedoMap));
 	}
 	

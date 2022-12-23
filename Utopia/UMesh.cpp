@@ -52,7 +52,6 @@ void displayCube(float edge)
 	float tiling = 1.f;
 
 	// Texture mapping just on the cube:
-	glEnable(GL_TEXTURE_2D);
 
 
 	// Back:
@@ -134,7 +133,7 @@ void displayCube(float edge)
 	glEnd();
 
 	// Done with the cube, done with the texturing:
-	glDisable(GL_TEXTURE_2D);
+	//glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -142,7 +141,6 @@ void UMesh::render()
 {
 	UNode::render();
 	getMaterial().lock()->render();
-
 
 	if (m_pimpl->m_lods.size() > 0)
 	{
@@ -154,8 +152,11 @@ void UMesh::render()
 			for (auto& vertex : face.vertices)
 			{
 				glNormal3fv(glm::value_ptr(vertex->normal));
-				glVertex3fv(glm::value_ptr(vertex->coord));
 				glTexCoord2fv(glm::value_ptr(vertex->uv));
+				glVertex3fv(glm::value_ptr(vertex->coord));
+
+				if (UNode::getName() == "Box001")
+					std::cout << vertex->uv.x << " " << vertex->uv.y << std::endl;
 			}
 			glEnd();
 		}

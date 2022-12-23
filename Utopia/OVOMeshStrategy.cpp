@@ -118,6 +118,8 @@ void OVOMeshStrategy::skipPhysics(Buffer& buffer)
     }
 }
 
+static bool check = false;;
+
 void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
 {
     // Nr. of LODs:
@@ -161,6 +163,8 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
             glm::vec2 uv = glm::unpackHalf2x16(textureData);
             buffer.position += sizeof(unsigned int);
 
+            
+
             // Tangent vector:
             unsigned int tangentData;
             memcpy(&tangentData, buffer.data.get() + buffer.position, sizeof(unsigned int));
@@ -170,8 +174,12 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
             vertex.push_back(UMesh::Vertex(coord, normal, uv, tangent));
         }
 
+
         // Faces:
-        for (unsigned int c = 0; c < nrFaces; c++)
+
+
+
+        for (unsigned int c = 0, i=0; c < nrFaces; c++,i++)
         {
             // Face indexes:
             unsigned int face[3];
@@ -179,9 +187,8 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
             buffer.position += sizeof(unsigned int) * 3;
             UMesh::Face f;
 
-            glm::vec2 temp0 = vertex[face[0]].uv;
-            glm::vec2 temp1 = vertex[face[1]].uv;
-            glm::vec2 temp2 = vertex[face[2]].uv;
+            
+
 
             f.vertices[0] = std::make_shared<UMesh::Vertex>(vertex[face[0]]);
             f.vertices[1] = std::make_shared<UMesh::Vertex>(vertex[face[1]]);

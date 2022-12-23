@@ -91,9 +91,9 @@ void reshapeCallback(int width, int height)
 	glLoadMatrixf(glm::value_ptr(UCamera::getMainCamera().lock()->getCameraMatrix()));
 	glMatrixMode(GL_MODELVIEW);
 
-	Utopia::getInstance().clear();
+	//Utopia::getInstance().clear();
 	Utopia::getInstance().display();
-	Utopia::getInstance().swap();
+	//Utopia::getInstance().swap();
 
 	std::cout << "[reshape func invoked] " << width<< " " << height << std::endl;
 
@@ -113,6 +113,8 @@ bool LIB_API Utopia::init()
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(100, 100);
 
+
+
 	char* myargv[1];
 	int myargc = 1;
 	myargv[0] = new char[6] {'U', 't', 'o', 'p', 'i', 'a'};
@@ -127,6 +129,14 @@ bool LIB_API Utopia::init()
 	// The OpenGL context is now initialized...
 	setDisplayCallback(displayCallback);
 	setReshapeCallback(reshapeCallback);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	//glEnable(GL_TEXTURE_2D);
+	glEnable(GL_NORMALIZE);
 
 	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 

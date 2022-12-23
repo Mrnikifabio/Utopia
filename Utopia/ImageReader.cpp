@@ -21,10 +21,17 @@ std::shared_ptr<UTexture> ImageReader::fromFile(const std::string& name)
     glGenTextures(1, &texId);
     glBindTexture(GL_TEXTURE_2D, texId);
 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    unsigned char fuffa[] = {255, 0, 0, 255};
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-    FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap),
+        //1,1,
+        FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap),
         0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, // FreeImage uses BGR
         (void*)FreeImage_GetBits(bitmap));
+        //(void *) fuffa);
 
     //FreeImage_Unload(bitmap);
     FreeImage_DeInitialise();
