@@ -41,7 +41,7 @@ namespace utopia
         static void enableTexturesRepeat();
         static void enableTexturesClampToEdge();
         static void setAnisotropyLevel(int level);
-        void updateTextureParametri(void (*parametriSetMethod)(void));
+        void updateTextureParameteri(void (*parametriSetMethod)(void));
     };
 }
 

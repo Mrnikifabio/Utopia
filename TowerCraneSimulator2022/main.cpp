@@ -99,7 +99,22 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 	case 'x':
 		Utopia::getInstance().enableWireFrameMode();
+		break;
 
+	case '1':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableNearestFilter);
+		break;
+	case '2':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableNearestBipmapNearestFilter);
+		break;
+	case '3':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearFilter);
+		break;
+	case '4':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearBipmapNearestFilter);
+		break;
+	case '5':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearBipmapLinearFilter);
 		break;
 
 

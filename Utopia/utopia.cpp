@@ -14,6 +14,8 @@
 #include <gl/freeglut.h>
 #include <unordered_map>
 #include "UTexture.h"
+#include <memory>
+
 
 
   // GLM:   
@@ -26,6 +28,27 @@
 glm::mat4 perspective;
 
 using namespace utopia;
+
+
+struct Utopia::pimpl
+{
+	std::unique_ptr<URenderPipeline> m_renderPipeline;
+	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
+	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
+	std::shared_ptr<UMaterial> m_defaultMaterial;
+	bool m_initFlag;
+
+	pimpl(bool initFlag, std::unique_ptr<URenderPipeline> renderPipeline, std::shared_ptr<UMaterial> defaultMaterial)
+	{
+		m_initFlag = initFlag;
+		m_renderPipeline = move(renderPipeline);
+		m_defaultMaterial = defaultMaterial;
+	}
+	
+};
+
+Utopia::Utopia() : m_pimpl{ std::make_unique<Utopia::pimpl>(false, std::make_unique<URenderPipeline>("renderPipeline"), std::make_shared<UMaterial>("default")) }  {};
+Utopia::~Utopia() {}
 
 //////////////
 // DLL MAIN //
@@ -103,7 +126,7 @@ void reshapeCallback(int width, int height)
 bool LIB_API Utopia::init()
 {
 	// Prevent double init:
-	if (m_initFlag)
+	if (m_pimpl->m_initFlag)
 	{
 		std::cout << "ERROR: class already initialized" << std::endl;
 		return false;
@@ -147,7 +170,7 @@ bool LIB_API Utopia::init()
 
 
 	// Done:
-	m_initFlag = true;
+	m_pimpl->m_initFlag = true;
 	return true;
 }
 
@@ -165,13 +188,13 @@ void Utopia::clear()
 void LIB_API Utopia::free()
 {
 	// Really necessary?
-	if (!m_initFlag)
+	if (!m_pimpl.get())
 	{
 		std::cout << "ERROR: class not initialized" << std::endl;
 	}
 
 	// Done:
-	m_initFlag = false;
+	m_pimpl->m_initFlag = false;
 }
 
 void Utopia::enableDepth()
@@ -249,22 +272,22 @@ void Utopia::swap()
 
 URenderPipeline& Utopia::getRenderPipeline()
 {
-	return *m_renderPipeline.get();
+	return *m_pimpl->m_renderPipeline.get();
 }
 
 std::weak_ptr<UMaterial> Utopia::getMaterialByName(const std::string& name)
 {
-	return m_materials.at(name);
+	return m_pimpl->m_materials.at(name);
 }
 
 void Utopia::addMaterial(std::string name, std::shared_ptr<UMaterial> material)
 {
-	m_materials.insert(std::pair<std::string, std::shared_ptr<UMaterial>>(name, material));	
+	m_pimpl->m_materials.insert(std::pair<std::string, std::shared_ptr<UMaterial>>(name, material));
 }
 
 std::weak_ptr<UMaterial> Utopia::getDefaultMaterial()
 {
-	return m_defaultMaterial;
+	return m_pimpl->m_defaultMaterial;
 }
 
 
@@ -281,38 +304,50 @@ int Utopia::getWindowHeight()
 
 std::shared_ptr<UTexture> Utopia::getTextureByName(const std::string& name)
 {
-	return m_textures.at(name);
+	return m_pimpl->m_textures.at(name);
 }
 void Utopia::addTexture(const std::string& name, std::shared_ptr<UTexture> texture)
 {
-	m_textures.insert(std::pair<std::string, std::shared_ptr<UTexture>>(name, texture));
+	m_pimpl->m_textures.insert(std::pair<std::string, std::shared_ptr<UTexture>>(name, texture));
 
-	std::cout << "n textures: " << m_textures.size() << std::endl;
+	std::cout << "n textures: " << m_pimpl->m_textures.size() << std::endl;
 }
 
 bool Utopia::containTexture(const std::string& name)
 {
-	return m_textures.count(name)>=1;
+	return m_pimpl->m_textures.count(name) >= 1;
+}
+
+bool Utopia::containMaterial(const std::string& name)
+{
+	return m_pimpl->m_materials.count(name) >= 1;
 }
 
 void Utopia::updateAllTexturesParameteri(void(*parametriSetMethod)(void))
 {
-	std::cout << "n textures to upload: " << m_textures.size() << std::endl;
+	std::cout << "n textures to upload: " << m_pimpl->m_textures.size() << std::endl;
 
-	for (const auto& kv : m_textures)
+	for (const auto& kv : m_pimpl->m_textures)
 		{
-			kv.second->updateTextureParametri(parametriSetMethod);
+			kv.second->updateTextureParameteri(parametriSetMethod);
 			std::cout<<"upload texture: " << kv.first << std::endl;
 		}
 }
 
 int Utopia::texturesMapSize()
 {
-	return m_textures.size();
+	return m_pimpl->m_textures.size();
 }
 int Utopia::materialsMapSize()
 {
-	return m_materials.size();
+	return m_pimpl->m_materials.size();
+}
+
+Utopia& Utopia::getInstance()
+{
+	static Utopia m_instance; // Guaranteed to be destroyed.
+	// Instantiated on first use.
+	return m_instance;
 }
 
 

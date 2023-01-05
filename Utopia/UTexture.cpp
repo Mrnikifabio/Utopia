@@ -109,7 +109,7 @@ void UTexture::setAnisotropyLevel(int level)
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, level);
 }
 
-void utopia::UTexture::updateTextureParametri(void(*parametriSetMethod)(void))
+void utopia::UTexture::updateTextureParameteri(void(*parametriSetMethod)(void))
 {
     glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
     glEnable(GL_TEXTURE_2D);

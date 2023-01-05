@@ -7,6 +7,12 @@
 
 using namespace utopia;
 
+OVOMeshStrategy& OVOMeshStrategy::getInstance()
+{
+    static OVOMeshStrategy m_instance;
+    return m_instance;
+}
+
 enum class OVOMeshStrategy::Subtype: int
 {
 	// Foundation types:

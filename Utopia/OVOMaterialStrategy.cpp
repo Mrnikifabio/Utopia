@@ -8,6 +8,13 @@
 
 using namespace utopia;
 
+
+OVOMaterialStrategy& OVOMaterialStrategy::getInstance()
+{
+	static OVOMaterialStrategy m_instance;
+	return m_instance;
+}
+
 std::unique_ptr<UNode> OVOMaterialStrategy::decodeChunk(std::ifstream& inFile)
 {
 	const auto buffer = getChunksByte(inFile);
