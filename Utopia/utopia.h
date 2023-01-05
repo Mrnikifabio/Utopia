@@ -79,18 +79,24 @@ namespace utopia {
 		std::unordered_map<std::string, std::shared_ptr<UMaterial>> getMaterialsMap();
 		std::weak_ptr<UMaterial> getDefaultMaterial();
 
-		std::weak_ptr<UMaterial> getMaterialByName(std::string name);
+		std::weak_ptr<UMaterial> getMaterialByName(const std::string& name);
 		void addMaterial(std::string name, std::shared_ptr<UMaterial> material);
 
-		std::shared_ptr<UTexture> getTextureByName(std::string name);
-		void addTexture(std::string name, std::shared_ptr<UTexture> texture);
+		std::shared_ptr<UTexture> getTextureByName(const std::string& name);
+		void addTexture(const std::string&, std::shared_ptr<UTexture> texture);
 		bool containTexture(const std::string& name);
+
+		void updateAllTexturesParameteri(void(*parametriSetMethod)(void));
+		
+		int texturesMapSize();
+		int materialsMapSize();
 
 
 		int getWindowWidth();
 		int getWindowHeight();
 
 	private:
+		
 		// Const/dest (as private to prevent instanciation):
 		Utopia() : m_initFlag{ false }, m_renderPipeline{ std::make_unique<URenderPipeline>("renderPipeline") }, m_defaultMaterial{std::make_shared<UMaterial>("default")} {};
 		~Utopia() {}

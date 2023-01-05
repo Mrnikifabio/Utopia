@@ -130,10 +130,8 @@ bool LIB_API Utopia::init()
 	setDisplayCallback(displayCallback);
 	setReshapeCallback(reshapeCallback);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	UTexture::enableTexturesRepeat();
+	UTexture::enableLinearFilter();
 
 	//glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
@@ -254,7 +252,7 @@ URenderPipeline& Utopia::getRenderPipeline()
 	return *m_renderPipeline.get();
 }
 
-std::weak_ptr<UMaterial> Utopia::getMaterialByName(std::string name)
+std::weak_ptr<UMaterial> Utopia::getMaterialByName(const std::string& name)
 {
 	return m_materials.at(name);
 }
@@ -281,18 +279,40 @@ int Utopia::getWindowHeight()
 }
 
 
-std::shared_ptr<UTexture> Utopia::getTextureByName(std::string name)
+std::shared_ptr<UTexture> Utopia::getTextureByName(const std::string& name)
 {
 	return m_textures.at(name);
 }
-void Utopia::addTexture(std::string name, std::shared_ptr<UTexture> texture)
+void Utopia::addTexture(const std::string& name, std::shared_ptr<UTexture> texture)
 {
 	m_textures.insert(std::pair<std::string, std::shared_ptr<UTexture>>(name, texture));
+
+	std::cout << "n textures: " << m_textures.size() << std::endl;
 }
 
 bool Utopia::containTexture(const std::string& name)
 {
-	return !(m_textures.find(name) == m_textures.end());
+	return m_textures.count(name)>=1;
+}
+
+void Utopia::updateAllTexturesParameteri(void(*parametriSetMethod)(void))
+{
+	std::cout << "n textures to upload: " << m_textures.size() << std::endl;
+
+	for (const auto& kv : m_textures)
+		{
+			kv.second->updateTextureParametri(parametriSetMethod);
+			std::cout<<"upload texture: " << kv.first << std::endl;
+		}
+}
+
+int Utopia::texturesMapSize()
+{
+	return m_textures.size();
+}
+int Utopia::materialsMapSize()
+{
+	return m_materials.size();
 }
 
 
