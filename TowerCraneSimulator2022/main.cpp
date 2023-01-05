@@ -27,7 +27,7 @@ int main()
 	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
 	Utopia::getInstance().setCloseCallback(closeCallback);
 
-	
+
 
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, g));
 	glm::mat4 rotation = glm::rotate(translation, glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -46,7 +46,6 @@ int main()
 	light.lock()->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(6.0f, 4.0f, 0.0f)));
 
 	root->addChild(camera);
-
 
 
 	UCamera::setMainCamera(camera);
@@ -73,7 +72,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 	switch (key)
     {
-    
+
     case 'a':
 		cameraNewPos.x -= 1.00f;
 		break;

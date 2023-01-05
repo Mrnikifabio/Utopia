@@ -18,7 +18,7 @@
 
 
 
-  // GLM:   
+  // GLM:
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -44,7 +44,7 @@ struct Utopia::pimpl
 		m_renderPipeline = move(renderPipeline);
 		m_defaultMaterial = defaultMaterial;
 	}
-	
+
 };
 
 Utopia::Utopia() : m_pimpl{ std::make_unique<Utopia::pimpl>(false, std::make_unique<URenderPipeline>("renderPipeline"), std::make_shared<UMaterial>("default")) }  {};
@@ -171,6 +171,7 @@ bool LIB_API Utopia::init()
 
 	// Done:
 	m_pimpl->m_initFlag = true;
+
 	return true;
 }
 

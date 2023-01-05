@@ -39,7 +39,7 @@ namespace utopia
 		auto getChild(const unsigned int i)					const -> std::weak_ptr<UNode>;
 		auto getChildren()									const -> const std::vector<std::shared_ptr<UNode>>&;
 		auto getChildCount()								const -> unsigned int;
-		auto getFinalWorldCoordinates()						const -> glm::mat4&;
+		auto getFinalWorldCoordinates()						const -> glm::mat4;
 	};
 
 }
