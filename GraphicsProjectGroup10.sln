@@ -3,37 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TowerCraneSimulator2022", "TowerCraneSimulator2022\TowerCraneSimulator2022.vcxproj", "{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TowerCraneSimulator2022", "client\TowerCraneSimulator2022.vcxproj", "{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253} = {F15B85A8-63F5-4A6F-9E68-8A1A635FF253}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utopia", "Utopia\Utopia.vcxproj", "{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utopia", "engine\Utopia.vcxproj", "{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}.Debug|x64.ActiveCfg = Debug|x64
 		{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}.Debug|x64.Build.0 = Debug|x64
-		{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}.Debug|x86.ActiveCfg = Debug|Win32
-		{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}.Debug|x86.Build.0 = Debug|Win32
 		{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}.Release|x64.ActiveCfg = Release|x64
 		{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}.Release|x64.Build.0 = Release|x64
-		{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}.Release|x86.ActiveCfg = Release|Win32
-		{0C453D13-A7DB-4060-BCF7-E7FAC402FA27}.Release|x86.Build.0 = Release|Win32
 		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}.Debug|x64.ActiveCfg = Debug|x64
 		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}.Debug|x64.Build.0 = Debug|x64
-		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}.Debug|x86.ActiveCfg = Debug|Win32
-		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}.Debug|x86.Build.0 = Debug|Win32
 		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}.Release|x64.ActiveCfg = Release|x64
 		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}.Release|x64.Build.0 = Release|x64
-		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}.Release|x86.ActiveCfg = Release|Win32
-		{F15B85A8-63F5-4A6F-9E68-8A1A635FF253}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
