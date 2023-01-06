@@ -15,11 +15,11 @@
 
 namespace utopia
 {
-    class LIB_API UDirectionalLight : public ULight
+    class UDirectionalLight : public ULight
     {
     public:
-		UDirectionalLight(const std::string& name);
-        virtual ~UDirectionalLight() noexcept;
+        LIB_API UDirectionalLight(const std::string& name);
+        LIB_API virtual ~UDirectionalLight() noexcept;
         void render() override;
     };
 }

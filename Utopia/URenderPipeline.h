@@ -17,16 +17,16 @@
 
 namespace utopia
 {
-	class LIB_API URenderPipeline : public UObject
+	class URenderPipeline : public UObject
 	{
 		struct pimpl;
 		struct URenderNode;
 	private:
 		std::unique_ptr<pimpl> m_pimpl;
 	public:
-		URenderPipeline(const std::string& name);
-		virtual ~URenderPipeline() noexcept;
-		void pass(std::weak_ptr<UNode> node, const glm::mat4& mat);
+		LIB_API URenderPipeline(const std::string& name);
+		LIB_API virtual ~URenderPipeline() noexcept;
+		LIB_API void pass(std::weak_ptr<UNode> node, const glm::mat4& mat);
 		void render() override;
 	};
 }

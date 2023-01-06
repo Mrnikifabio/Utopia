@@ -18,14 +18,14 @@
 namespace utopia
 {
 	class OVONodeAbstractStrategy;
-	class LIB_API OVOFactory
+	class OVOFactory
 	{
 		struct pimpl;
 	private:
 		std::unique_ptr<pimpl> m_pimpl;
 		
-		OVOFactory();
-		virtual ~OVOFactory() noexcept;
+		LIB_API OVOFactory();
+		LIB_API virtual ~OVOFactory() noexcept;
 		
 		void loadStrategies();
 		std::unique_ptr<UNode> recursiveFetch(std::ifstream& inFile);
@@ -33,7 +33,7 @@ namespace utopia
 		friend OVONodeAbstractStrategy;
 
 	public:
-		static OVOFactory& getInstance()
+		LIB_API static OVOFactory& getInstance()
 		{
 			static OVOFactory m_instance;
 			return m_instance;
@@ -42,8 +42,7 @@ namespace utopia
 		OVOFactory(OVOFactory const&) = delete;
 		void operator=(OVOFactory const&) = delete;
 
-		std::shared_ptr<UNode> fromFile(const std::string& path);
-
+		LIB_API std::shared_ptr<UNode> fromFile(const std::string& path);
 	};
 }
 

@@ -19,7 +19,7 @@
 
 namespace utopia
 {
-    class LIB_API UMaterial : public UObject
+    class UMaterial : public UObject
     {
 
     private:
@@ -27,19 +27,17 @@ namespace utopia
         std::unique_ptr<pimpl> m_pimpl;
 
     public:
-        void disable();
+        LIB_API void disable();
         void render() override;
-        virtual ~UMaterial() noexcept;
-        UMaterial(const std::string& name);
-        UMaterial(const std::string& name, const glm::vec4& emission, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, int shininess);
-        void setEmission(const glm::vec4& emission);
-        void setAmbient(const glm::vec4& ambient);
-        void setDiffuse(const glm::vec4& diffuse);
-        void setSpecular(const glm::vec4& specular);
-        void setShininess(int shininess);
-        void setTexture(std::shared_ptr<UTexture> texture);
-        
-    
+        LIB_API virtual ~UMaterial() noexcept;
+        LIB_API UMaterial(const std::string& name);
+        LIB_API UMaterial(const std::string& name, const glm::vec4& emission, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, int shininess);
+        LIB_API void setEmission(const glm::vec4& emission);
+        LIB_API void setAmbient(const glm::vec4& ambient);
+        LIB_API void setDiffuse(const glm::vec4& diffuse);
+        LIB_API void setSpecular(const glm::vec4& specular);
+        LIB_API void setShininess(int shininess);
+        LIB_API void setTexture(std::shared_ptr<UTexture> texture);
     };
 }
 

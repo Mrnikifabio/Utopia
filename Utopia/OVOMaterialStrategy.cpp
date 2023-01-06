@@ -57,7 +57,7 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 	std::memcpy(&roughness, buffer.data.get() + buffer.position, sizeof(float));
 	buffer.position += sizeof(float);
 	//shininess=(1−roughness)x128
-	material.setShininess((1.f - sqrt(roughness)) * 128);
+	material.setShininess((int)((1.f - sqrt((int)roughness)) * 128));
 
 	float metalness;
 	std::memcpy(&metalness, buffer.data.get() + buffer.position, sizeof(float));

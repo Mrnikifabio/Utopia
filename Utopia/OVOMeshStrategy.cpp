@@ -40,7 +40,6 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
     // Mesh subtype (see OvMesh SUBTYPE enum):
     unsigned char subtype;
     memcpy(&subtype, buffer->data.get() + buffer->position, sizeof(unsigned char));
-    char subtypeName[FILENAME_MAX]; //might be necessary?
     buffer->position += sizeof(unsigned char);
 
     // Material name, or [none] if not used:

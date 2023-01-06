@@ -335,13 +335,13 @@ void Utopia::updateAllTexturesParameteri(void(*parametriSetMethod)(void))
 		}
 }
 
-int Utopia::texturesMapSize()
+unsigned int Utopia::texturesMapSize()
 {
-	return m_pimpl->m_textures.size();
+	return (unsigned int)m_pimpl->m_textures.size();
 }
-int Utopia::materialsMapSize()
+unsigned int Utopia::materialsMapSize()
 {
-	return m_pimpl->m_materials.size();
+	return (unsigned int)m_pimpl->m_materials.size();
 }
 
 Utopia& Utopia::getInstance()

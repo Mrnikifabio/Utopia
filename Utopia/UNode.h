@@ -18,7 +18,7 @@
 
 namespace utopia
 {
-	class LIB_API UNode : public UObject
+	class UNode : public UObject
 	{
 	private:
 		struct pimpl;
@@ -26,20 +26,20 @@ namespace utopia
 		bool setParent(UNode* parent);
 
 	public:
-		UNode(const std::string& name);
-		virtual ~UNode() noexcept;
+		LIB_API UNode(const std::string& name);
+		LIB_API virtual ~UNode() noexcept;
 
 		void render()									    override;
-		void setModelView(const glm::mat4& mv);
-		auto addChild(std::shared_ptr<UNode> child)				  -> std::weak_ptr<UNode>;
-		auto detachChild(const unsigned int i)					  -> std::shared_ptr<UNode>;
-		auto getParent()									const -> UNode*;
-		auto getModelView()									const -> const glm::mat4&;
-		auto isChildPresent(const unsigned int id)			const -> bool;
-		auto getChild(const unsigned int i)					const -> std::weak_ptr<UNode>;
-		auto getChildren()									const -> const std::vector<std::shared_ptr<UNode>>&;
-		auto getChildCount()								const -> unsigned int;
-		auto getFinalWorldCoordinates()						const -> glm::mat4;
+		LIB_API void setModelView(const glm::mat4& mv);
+		LIB_API auto addChild(std::shared_ptr<UNode> child)				  -> std::weak_ptr<UNode>;
+		LIB_API auto detachChild(const unsigned int i)					  -> std::shared_ptr<UNode>;
+		LIB_API auto getParent()									const -> UNode*;
+		LIB_API auto getModelView()									const -> const glm::mat4&;
+		LIB_API auto isChildPresent(const unsigned int id)			const -> bool;
+		LIB_API auto getChild(const unsigned int i)					const -> std::weak_ptr<UNode>;
+		LIB_API auto getChildren()									const -> const std::vector<std::shared_ptr<UNode>>&;
+		LIB_API auto getChildCount()								const -> unsigned int;
+		LIB_API auto getFinalWorldCoordinates()						const -> glm::mat4;
 	};
 
 }

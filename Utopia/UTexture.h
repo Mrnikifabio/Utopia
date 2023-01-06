@@ -18,7 +18,7 @@
 
 namespace utopia
 {
-    class LIB_API UTexture : public UObject
+    class UTexture : public UObject
     {
 
     private:
@@ -28,20 +28,20 @@ namespace utopia
 
     public:
         void render() override;
-        virtual ~UTexture() noexcept;
-        UTexture(const std::string& name, unsigned int texId);
+        LIB_API virtual ~UTexture() noexcept;
+        LIB_API UTexture(const std::string& name, unsigned int texId);
 
-        static void enableNearestFilter();
-        static void enableNearestBipmapNearestFilter();
-        static void enableLinearFilter();
-        static void enableLinearBipmapNearestFilter();
-        static void enableLinearBipmapLinearFilter();
+        LIB_API static void enableNearestFilter();
+        LIB_API static void enableNearestBipmapNearestFilter();
+        LIB_API static void enableLinearFilter();
+        LIB_API static void enableLinearBipmapNearestFilter();
+        LIB_API static void enableLinearBipmapLinearFilter();
 
 
-        static void enableTexturesRepeat();
-        static void enableTexturesClampToEdge();
-        static void setAnisotropyLevel(int level);
-        void updateTextureParameteri(void (*parametriSetMethod)(void));
+        LIB_API static void enableTexturesRepeat();
+        LIB_API static void enableTexturesClampToEdge();
+        LIB_API static void setAnisotropyLevel(int level);
+        LIB_API void updateTextureParameteri(void (*parametriSetMethod)(void));
     };
 }
 

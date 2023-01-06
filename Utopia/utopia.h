@@ -35,7 +35,7 @@
 
 namespace utopia {
 
-	class LIB_API Utopia
+	class Utopia
 	{
 
 	private:
@@ -48,55 +48,53 @@ namespace utopia {
 
 	public:
 
-		static Utopia& getInstance();
+		LIB_API static Utopia& getInstance();
 		
 		Utopia(Utopia const&) = delete;
 		void operator=(Utopia const&) = delete;
 
-		bool init();
-		void clear();
-		void free();
+		LIB_API bool init();
+		LIB_API void clear();
+		LIB_API void free();
 
-	void enableDepth();
-	void enableCullFace();
-	void enableLighting();
-	void enableShadeModel();
-	void enableWireFrameMode();
-	void enableSolidMode();
+		LIB_API void enableDepth();
+		LIB_API void enableCullFace();
+		LIB_API void enableLighting();
+		LIB_API void enableShadeModel();
+		LIB_API void enableWireFrameMode();
+		LIB_API void enableSolidMode();
 
-		void setKeyboardCallback(void (*callback)(unsigned char, int, int));
-		void setDisplayCallback(void (*callback)(void));
-		void setReshapeCallback(void (*callback)(int, int));
-		void setSpecialCallback(void (*callback)(int, int, int)); 
-		void setCloseCallback(void(*callback)(void)); //invoked when the window is closed
+		LIB_API void setKeyboardCallback(void (*callback)(unsigned char, int, int));
+		LIB_API void setDisplayCallback(void (*callback)(void));
+		LIB_API void setReshapeCallback(void (*callback)(int, int));
+		LIB_API void setSpecialCallback(void (*callback)(int, int, int));
+		LIB_API void setCloseCallback(void(*callback)(void)); //invoked when the window is closed
 
-		void display();
-		void mainLoop();
-		bool isRunning();
-		void swap();
+		LIB_API void display();
+		LIB_API void mainLoop();
+		LIB_API bool isRunning();
+		LIB_API void swap();
 
-		URenderPipeline& getRenderPipeline();
+		LIB_API URenderPipeline& getRenderPipeline();
 
-		std::weak_ptr<UMaterial> getDefaultMaterial();
-		std::weak_ptr<UMaterial> getMaterialByName(const std::string& name);
-		void addMaterial(std::string name, std::shared_ptr<UMaterial> material);
-		bool containMaterial(const std::string& name);
+		LIB_API std::weak_ptr<UMaterial> getDefaultMaterial();
+		LIB_API std::weak_ptr<UMaterial> getMaterialByName(const std::string& name);
+		LIB_API void addMaterial(std::string name, std::shared_ptr<UMaterial> material);
+		LIB_API bool containMaterial(const std::string& name);
 
 
-		std::shared_ptr<UTexture> getTextureByName(const std::string& name);
-		void addTexture(const std::string&, std::shared_ptr<UTexture> texture);
-		bool containTexture(const std::string& name);
+		LIB_API std::shared_ptr<UTexture> getTextureByName(const std::string& name);
+		LIB_API void addTexture(const std::string&, std::shared_ptr<UTexture> texture);
+		LIB_API bool containTexture(const std::string& name);
 
-		void updateAllTexturesParameteri(void(*parametriSetMethod)(void));
+		LIB_API void updateAllTexturesParameteri(void(*parametriSetMethod)(void));
 		
-		int texturesMapSize();
-		int materialsMapSize();
+		LIB_API unsigned int texturesMapSize();
+		LIB_API unsigned int materialsMapSize();
 
-		int getWindowWidth();
-		int getWindowHeight();
+		LIB_API int getWindowWidth();
+		LIB_API int getWindowHeight();
 
-	
-		
 	};
 
 }

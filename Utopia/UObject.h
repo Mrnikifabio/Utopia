@@ -17,23 +17,24 @@
 namespace utopia 
 {
 
-	class LIB_API UObject
+	class UObject
 	{
 	private:
 		static unsigned int m_id_counter;
 		struct pimpl;
 		std::unique_ptr<pimpl> m_pimpl;
 	public:
-		UObject(const std::string& name);
+		LIB_API UObject(const std::string& name);
+		
 		UObject(const UObject&) = delete;
 		UObject(UObject&&) noexcept = delete;
-		virtual ~UObject() noexcept;
+		LIB_API virtual ~UObject() noexcept;
 		UObject& operator= (const UObject&) = delete;
 		UObject& operator= (UObject&&) = delete;
 
-		void setName(const std::string& name);
-		const std::string& getName() const;
-		unsigned int getId() const;
+		LIB_API void setName(const std::string& name);
+		LIB_API const std::string& getName() const;
+		LIB_API unsigned int getId() const;
 		virtual void render() = 0;
 	};
 

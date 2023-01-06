@@ -38,7 +38,7 @@ std::shared_ptr<UNode> OVOFactory::fromFile(const std::string& path)
     std::ifstream inFile(path, std::ios::binary | std::ios_base::ate);
     std::shared_ptr<UNode> newNode = nullptr;
 
-    unsigned int size = inFile.tellg();
+    unsigned int size = (unsigned int)inFile.tellg();
     inFile.seekg(std::ios_base::beg);
 
     while (inFile.tellg() < size)

@@ -16,7 +16,7 @@
 
 namespace utopia
 {
-    class LIB_API UCamera : public UNode
+    class UCamera : public UNode
     {
         struct pimpl;
     private:
@@ -24,17 +24,17 @@ namespace utopia
         static std::weak_ptr<UCamera> m_mainCamera;
 
     public:
-        UCamera(const std::string& name);
-        virtual ~UCamera() noexcept;
+        LIB_API UCamera(const std::string& name);
+        LIB_API virtual ~UCamera() noexcept;
 
-        virtual const glm::mat4 getCameraMatrix() const = 0;
+        LIB_API virtual const glm::mat4 getCameraMatrix() const = 0;
 
-        float getFar() const;
-        float getNear() const;
-        void setFar(const float far);
-        void setNear(const float near);
+        LIB_API float getFar() const;
+        LIB_API float getNear() const;
+        LIB_API void setFar(const float far);
+        LIB_API void setNear(const float near);
 
-        static void setMainCamera(std::weak_ptr<UCamera> camera);
-        static std::weak_ptr<UCamera>& getMainCamera();
+        LIB_API static void setMainCamera(std::weak_ptr<UCamera> camera);
+        LIB_API static std::weak_ptr<UCamera>& getMainCamera();
     };
 }

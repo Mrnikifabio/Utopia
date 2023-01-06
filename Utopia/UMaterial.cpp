@@ -56,7 +56,7 @@ void utopia::UMaterial::render()
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_pimpl->m_ambient));
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_pimpl->m_diffuse));
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_pimpl->m_specular));
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m_pimpl->m_shininess);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, (GLfloat)m_pimpl->m_shininess);
     
     if(m_pimpl->m_texture!=nullptr)
         m_pimpl->m_texture->render();

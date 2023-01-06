@@ -18,7 +18,7 @@ namespace utopia
 {
     class OVOMeshStrategy;
 
-    class LIB_API UMesh : public UNode
+    class UMesh : public UNode
     {
         struct Vertex {
             glm::vec3 coord;
@@ -55,9 +55,9 @@ namespace utopia
 
     public:
         void render() override;
-        virtual ~UMesh() noexcept;
-        std::weak_ptr<UMaterial> getMaterial();
-       void setMaterial(std::weak_ptr<UMaterial> material);
+        LIB_API virtual ~UMesh() noexcept;
+        LIB_API std::weak_ptr<UMaterial> getMaterial();
+        LIB_API void setMaterial(std::weak_ptr<UMaterial> material);
     };
 }
 

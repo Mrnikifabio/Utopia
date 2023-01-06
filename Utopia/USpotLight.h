@@ -15,25 +15,25 @@
 
 namespace utopia
 {
-    class LIB_API USpotLight : public ULight
+    class USpotLight : public ULight
     {
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
     public:
-        virtual ~USpotLight() noexcept;
-        void render() override;
-		USpotLight(const std::string& name, const float cutoff, const glm::vec3& direction, const float constantAttenuation = 1.0f, const float linearAttenuation = 0.0f, const float quadraticAttenuation = 0.0f);
+		LIB_API virtual ~USpotLight() noexcept;
+		void render() override;
+		LIB_API USpotLight(const std::string& name, const float cutoff, const glm::vec3& direction, const float constantAttenuation = 1.0f, const float linearAttenuation = 0.0f, const float quadraticAttenuation = 0.0f);
 		
-        void setCutoff(const float& cutoff);
-		void setDirection(const glm::vec3& direction);
-		void setConstantAttenuation(const float& constantAttenuation);
-		void setLinearAttenuation(const float& linearAttenuation);
-		void setQuadraticAttenuation(const float& quadraticAttenuation); 
-		auto getCutoff()									const -> const float&;
-		auto getDirection()									const -> const glm::vec3&;
-		auto getConstantAttenuation()						const -> const float&;
-		auto getLinearAttenuation()							const -> const float&;
-		auto getQuadraticAttenuation()						const -> const float&;
+		LIB_API void setCutoff(const float& cutoff);
+		LIB_API void setDirection(const glm::vec3& direction);
+		LIB_API void setConstantAttenuation(const float& constantAttenuation);
+		LIB_API void setLinearAttenuation(const float& linearAttenuation);
+		LIB_API void setQuadraticAttenuation(const float& quadraticAttenuation);
+		LIB_API auto getCutoff()									const -> const float&;
+		LIB_API auto getDirection()									const -> const glm::vec3&;
+		LIB_API auto getConstantAttenuation()						const -> const float&;
+		LIB_API auto getLinearAttenuation()							const -> const float&;
+		LIB_API auto getQuadraticAttenuation()						const -> const float&;
 	};
 }

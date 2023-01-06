@@ -16,7 +16,7 @@
 
 namespace utopia
 {
-    class LIB_API ULight : public UNode
+    class ULight : public UNode
     {
     private:
         struct pimpl;
@@ -25,19 +25,19 @@ namespace utopia
 
     public:
 	
-		ULight(const std::string& name);
-        virtual ~ULight() noexcept;
+        LIB_API ULight(const std::string& name);
+        LIB_API virtual ~ULight() noexcept;
         void render() override;
-		static void initIDs();
+        LIB_API static void initIDs();
 
-        void setAmbient(const glm::vec4& ambient);
-        void setDiffuse(const glm::vec4& diffuse);
-        void setSpecular(const glm::vec4& specular);
-		void setGlobalAmbient(const glm::vec4& gAmbient);
-        auto getAmbient()									const -> const glm::vec4&;
-        auto getDiffuse()									const -> const glm::vec4&;
-        auto getSpecular()									const -> const glm::vec4&;
-		auto getGlobalAmbient()								const -> const glm::vec4&;
-        auto getLightID()									const -> int;
+        LIB_API void setAmbient(const glm::vec4& ambient);
+        LIB_API void setDiffuse(const glm::vec4& diffuse);
+        LIB_API void setSpecular(const glm::vec4& specular);
+        LIB_API void setGlobalAmbient(const glm::vec4& gAmbient);
+        LIB_API auto getAmbient()									const -> const glm::vec4&;
+        LIB_API auto getDiffuse()									const -> const glm::vec4&;
+        LIB_API auto getSpecular()									const -> const glm::vec4&;
+        LIB_API auto getGlobalAmbient()								const -> const glm::vec4&;
+        LIB_API auto getLightID()									const -> int;
     };
 }

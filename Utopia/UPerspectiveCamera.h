@@ -15,15 +15,15 @@
 
 namespace utopia 
 {
-	class LIB_API UPerspectiveCamera : public UCamera
+	class UPerspectiveCamera : public UCamera
 	{
 	private:
 		float m_fovRadians;
 	public:
-		float getFovRadians() const;
-		void setFovRadians(float fovRadians);
-		UPerspectiveCamera(const std::string& name);
-		const glm::mat4 getCameraMatrix() const override;
+		LIB_API float getFovRadians() const;
+		LIB_API void setFovRadians(float fovRadians);
+		LIB_API UPerspectiveCamera(const std::string& name);
+		LIB_API const glm::mat4 getCameraMatrix() const override;
 	};
 }
 
