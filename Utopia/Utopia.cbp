@@ -16,9 +16,7 @@
 				<Compiler>
 					<Add option="-fPIC" />
 					<Add option="-g" />
-					<Add option="-std=c++11" />
-					<Add directory="../dependencies/freeglut/include" />
-					<Add directory="../dependencies/glm/include" />
+					<Add option="-std=c++14" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -31,9 +29,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-fPIC" />
-					<Add option="-std=c++11" />
-					<Add directory="../dependencies/freeglut/include" />
-					<Add directory="../dependencies/glm/include" />
+					<Add option="-std=c++14" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -43,19 +39,62 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fPIC" />
-			<Add option="-std=c++11" />
+			<Add option="-std=c++14" />
 			<Add option="-fexceptions" />
 			<Add directory="../dependencies/freeglut/include" />
 			<Add directory="../dependencies/glm/include" />
 		</Compiler>
-		<ResourceCompiler>
-			<Add directory="dependencies" />
-		</ResourceCompiler>
 		<Linker>
 			<Add library="GL" />
 			<Add library="glut" />
-			<Add directory="dependencies" />
+			<Add library="freeimage" />
+			<Add library="GLU" />
 		</Linker>
+		<Unit filename="ImageReader.cpp" />
+		<Unit filename="ImageReader.h" />
+		<Unit filename="OVOFactory.h" />
+		<Unit filename="OVOMaterialStrategy.cpp" />
+		<Unit filename="OVOMaterialStrategy.h" />
+		<Unit filename="OVOMeshStrategy.cpp" />
+		<Unit filename="OVOMeshStrategy.h" />
+		<Unit filename="OVONodeAbstractStrategy.cpp" />
+		<Unit filename="OVONodeAbstractStrategy.h" />
+		<Unit filename="OVONodeConcreteStrategy.cpp" />
+		<Unit filename="OVONodeConcreteStrategy.h" />
+		<Unit filename="OVOObject.h" />
+		<Unit filename="OVOStrategy.cpp" />
+		<Unit filename="OVOStrategy.h" />
+		<Unit filename="OvoFactory.cpp" />
+		<Unit filename="UCamera.cpp" />
+		<Unit filename="UCamera.h" />
+		<Unit filename="UDirectionalLight.cpp" />
+		<Unit filename="UDirectionalLight.h" />
+		<Unit filename="ULight.cpp" />
+		<Unit filename="ULight.h" />
+		<Unit filename="UMaterial.cpp" />
+		<Unit filename="UMaterial.h" />
+		<Unit filename="UMesh.cpp" />
+		<Unit filename="UMesh.h" />
+		<Unit filename="UNode.cpp" />
+		<Unit filename="UNode.h" />
+		<Unit filename="UObject.cpp" />
+		<Unit filename="UObject.h" />
+		<Unit filename="UOmniLight.cpp" />
+		<Unit filename="UOmniLight.h" />
+		<Unit filename="UOrthographicCamera.cpp" />
+		<Unit filename="UOrthographicCamera.h" />
+		<Unit filename="UPerspectiveCamera.cpp" />
+		<Unit filename="UPerspectiveCamera.h" />
+		<Unit filename="URenderPipeline.cpp" />
+		<Unit filename="URenderPipeline.h" />
+		<Unit filename="USpotLight.cpp" />
+		<Unit filename="USpotLight.h" />
+		<Unit filename="UTexture.cpp" />
+		<Unit filename="UTexture.h" />
+		<Unit filename="Utopia.layout" />
+		<Unit filename="Utopia.vcxproj" />
+		<Unit filename="Utopia.vcxproj.filters" />
+		<Unit filename="Utopia.vcxproj.user" />
 		<Unit filename="utopia.cpp" />
 		<Unit filename="utopia.h" />
 		<Extensions />

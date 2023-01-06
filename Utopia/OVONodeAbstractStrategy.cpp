@@ -1,6 +1,8 @@
 #include "OVONodeAbstractStrategy.h"
 #include "OVOFactory.h"
 #include <iostream>
+#include <cstring>
+
 
 using namespace utopia;
 

@@ -48,7 +48,7 @@ void UNode::setModelView(const glm::mat4& mv)
 	m_pimpl->m_nodeMatrix = mv;
 }
 
-glm::mat4& UNode::getFinalWorldCoordinates() const
+glm::mat4 UNode::getFinalWorldCoordinates() const
 {
 	UNode* node = getParent();
 	glm::mat4 m = glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * getModelView();
@@ -70,6 +70,7 @@ void UNode::render()
 		return;
 
 	auto m = getFinalWorldCoordinates();
+
 	for (auto& child : m_pimpl->m_children)
 		child->render();
 

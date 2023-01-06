@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImageReader.h" />
+    <ClInclude Include="OVOMaterialStrategy.h" />
     <ClInclude Include="OVOLightStrategy.h" />
     <ClInclude Include="OVONodeConcreteStrategy.h" />
     <ClInclude Include="OVOObject.h" />
@@ -26,6 +28,7 @@
     <ClInclude Include="OVONodeAbstractStrategy.h" />
     <ClInclude Include="OVOStrategy.h" />
     <ClInclude Include="OVOFactory.h" />
+    <ClInclude Include="UMaterial.h" />
     <ClInclude Include="USpotLight.h" />
     <ClInclude Include="UCamera.h" />
     <ClInclude Include="UDirectionalLight.h" />
@@ -37,9 +40,12 @@
     <ClInclude Include="UOrthographicCamera.h" />
     <ClInclude Include="UPerspectiveCamera.h" />
     <ClInclude Include="URenderPipeline.h" />
+    <ClInclude Include="UTexture.h" />
     <ClInclude Include="utopia.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ImageReader.cpp" />
+    <ClCompile Include="OVOMaterialStrategy.cpp" />
     <ClCompile Include="OVOLightStrategy.cpp" />
     <ClCompile Include="OVOMeshStrategy.cpp" />
     <ClCompile Include="OVONodeConcreteStrategy.cpp" />
@@ -49,6 +55,7 @@
     <ClCompile Include="UCamera.cpp" />
     <ClCompile Include="UDirectionalLight.cpp" />
     <ClCompile Include="ULight.cpp" />
+    <ClCompile Include="UMaterial.cpp" />
     <ClCompile Include="UMesh.cpp" />
     <ClCompile Include="UNode.cpp" />
     <ClCompile Include="UObject.cpp" />
@@ -57,6 +64,7 @@
     <ClCompile Include="URenderPipeline.cpp" />
     <ClCompile Include="UOmniLight.cpp" />
     <ClCompile Include="USpotLight.cpp" />
+    <ClCompile Include="UTexture.cpp" />
     <ClCompile Include="utopia.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -136,6 +144,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>FreeImageLib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,24 +164,26 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>FreeImageLib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>FREEGLUT_STATIC;_DEBUG;UTOPIA_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEGLUT_STATIC;FREEIMAGE_LIB;_DEBUG;UTOPIA_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\freeimage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FreeImageLib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -181,12 +192,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>FREEGLUT_STATIC;NDEBUG;UTOPIA_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEGLUT_STATIC;FREEIMAGE_LIB;NDEBUG;UTOPIA_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -194,7 +205,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\freeimage\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FreeImageLib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -29,26 +29,29 @@
 #endif
 
 #include "URenderPipeline.h"
+#include "UMaterial.h"
 #include <memory>
-
+#include <unordered_map>
 
 namespace utopia {
 
 	class LIB_API Utopia
 	{
 
+	private:
+		struct pimpl;
+		std::unique_ptr<pimpl> m_pimpl;
+
+		// Const/dest (as private to prevent instanciation):
+		Utopia();
+		~Utopia();
+
 	public:
 
-		static Utopia& getInstance()
-		{
-			static Utopia m_instance; // Guaranteed to be destroyed.
-			// Instantiated on first use.
-			return m_instance;
-		}
-
+		static Utopia& getInstance();
+		
 		Utopia(Utopia const&) = delete;
 		void operator=(Utopia const&) = delete;
-
 
 		bool init();
 		void clear();
@@ -69,22 +72,31 @@ namespace utopia {
 
 		void display();
 		void mainLoop();
-
 		bool isRunning();
-
 		void swap();
 
 		URenderPipeline& getRenderPipeline();
 
+		std::weak_ptr<UMaterial> getDefaultMaterial();
+		std::weak_ptr<UMaterial> getMaterialByName(const std::string& name);
+		void addMaterial(std::string name, std::shared_ptr<UMaterial> material);
+		bool containMaterial(const std::string& name);
+
+
+		std::shared_ptr<UTexture> getTextureByName(const std::string& name);
+		void addTexture(const std::string&, std::shared_ptr<UTexture> texture);
+		bool containTexture(const std::string& name);
+
+		void updateAllTexturesParameteri(void(*parametriSetMethod)(void));
+		
+		int texturesMapSize();
+		int materialsMapSize();
+
 		int getWindowWidth();
 		int getWindowHeight();
 
-	private:
-		// Const/dest (as private to prevent instanciation):
-		Utopia() : m_initFlag{ false }, m_renderPipeline{std::make_unique<URenderPipeline>("renderPipeline")} {};
-		~Utopia() {}
-		std::unique_ptr<URenderPipeline> m_renderPipeline;
-		bool m_initFlag;
+	
+		
 	};
 
 }

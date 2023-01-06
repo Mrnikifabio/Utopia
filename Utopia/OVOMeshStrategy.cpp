@@ -1,10 +1,17 @@
 #include "OVOMeshStrategy.h"
 #include "OVOFactory.h"
 #include "UMesh.h"
+#include "utopia.h"
 #include "glm/gtc/packing.hpp"
 
 
 using namespace utopia;
+
+OVOMeshStrategy& OVOMeshStrategy::getInstance()
+{
+    static OVOMeshStrategy m_instance;
+    return m_instance;
+}
 
 enum class OVOMeshStrategy::Subtype: int
 {
@@ -39,7 +46,9 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
     // Material name, or [none] if not used:
     std::string materialName = std::string(buffer->data.get()+buffer->position);
     buffer->position += (static_cast<unsigned int>(materialName.length()) + 1);
+    
     //load material from static material hashMap if exist
+    loadMaterial(*mesh, materialName);
 
 
 
@@ -65,6 +74,13 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
 
 	return std::move(mesh);
 }
+
+void OVOMeshStrategy::loadMaterial(UMesh& mesh,const std::string& name)
+{
+        std::cout << "setting material "<<name << std::endl;
+        mesh.setMaterial(Utopia::getInstance().getMaterialByName(name));
+}
+
 
 void OVOMeshStrategy::skipPhysics(Buffer& buffer)
 {
@@ -107,6 +123,8 @@ void OVOMeshStrategy::skipPhysics(Buffer& buffer)
         }
     }
 }
+
+static bool check = false;;
 
 void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
 {
@@ -151,6 +169,8 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
             glm::vec2 uv = glm::unpackHalf2x16(textureData);
             buffer.position += sizeof(unsigned int);
 
+            
+
             // Tangent vector:
             unsigned int tangentData;
             memcpy(&tangentData, buffer.data.get() + buffer.position, sizeof(unsigned int));
@@ -160,14 +180,22 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
             vertex.push_back(UMesh::Vertex(coord, normal, uv, tangent));
         }
 
+
         // Faces:
-        for (unsigned int c = 0; c < nrFaces; c++)
+
+
+
+        for (unsigned int c = 0, i=0; c < nrFaces; c++,i++)
         {
             // Face indexes:
             unsigned int face[3];
             memcpy(face, buffer.data.get() + buffer.position, sizeof(unsigned int) * 3);
             buffer.position += sizeof(unsigned int) * 3;
             UMesh::Face f;
+
+            
+
+
             f.vertices[0] = std::make_shared<UMesh::Vertex>(vertex[face[0]]);
             f.vertices[1] = std::make_shared<UMesh::Vertex>(vertex[face[1]]);
             f.vertices[2] = std::make_shared<UMesh::Vertex>(vertex[face[2]]);

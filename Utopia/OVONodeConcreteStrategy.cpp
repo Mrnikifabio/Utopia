@@ -2,8 +2,15 @@
 
 using namespace utopia;
 
+OVONodeConcreteStrategy& OVONodeConcreteStrategy::getInstance()
+{
+	static OVONodeConcreteStrategy m_instance;
+	return m_instance;
+}
+
 std::unique_ptr<UNode> OVONodeConcreteStrategy::decodeChunk(std::ifstream& inFile)
 {
+
 	auto buffer = getChunksByte(inFile);
 	unsigned int children = 0;
 

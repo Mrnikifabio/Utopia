@@ -38,10 +38,11 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
+			<Add option="-std=c++14" />
 			<Add option="-fexceptions" />
 			<Add directory="../Utopia" />
 			<Add directory="../Utopia/dependencies" />
+			<Add directory="../dependencies/glm/include" />
 		</Compiler>
 		<Unit filename="main.cpp" />
 		<Extensions />

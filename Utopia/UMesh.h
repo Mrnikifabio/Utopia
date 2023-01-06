@@ -1,5 +1,6 @@
 #pragma once
 #include "UNode.h"
+#include "UMaterial.h"
 
 #ifdef _WINDOWS 	
 // Export API:
@@ -48,12 +49,15 @@ namespace utopia
     private:
         std::unique_ptr<pimpl> m_pimpl;
         UMesh(const std::string& name);
+        UMesh(const std::string& name, std::weak_ptr<UMaterial> material);
         void pushLOD(std::unique_ptr<LOD>&&);
         friend OVOMeshStrategy;
 
     public:
         void render() override;
         virtual ~UMesh() noexcept;
+        std::weak_ptr<UMaterial> getMaterial();
+       void setMaterial(std::weak_ptr<UMaterial> material);
     };
 }
 

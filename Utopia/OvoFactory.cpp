@@ -5,6 +5,7 @@
 #include "UObject.h"
 #include "OVOObject.h"
 #include "OVOStrategy.h"
+#include "OVOMaterialStrategy.h"
 #include <iostream>
 #include <fstream>
 #include <exception>
@@ -28,6 +29,8 @@ void OVOFactory::loadStrategies()
     m_pimpl->ovoStrategies.insert(std::make_pair<OVOObject::Type, std::reference_wrapper<OVOMeshStrategy>>(OVOObject::Type::MESH, OVOMeshStrategy::getInstance()));
 	m_pimpl->ovoStrategies.insert(std::make_pair<OVOObject::Type, std::reference_wrapper<OVOLightStrategy>>(OVOObject::Type::LIGHT, OVOLightStrategy::getInstance()));
     m_pimpl->ovoStrategies.insert(std::make_pair<OVOObject::Type, std::reference_wrapper<OVONodeConcreteStrategy>>(OVOObject::Type::NODE, OVONodeConcreteStrategy::getInstance()));
+    m_pimpl->ovoStrategies.insert(std::make_pair<OVOObject::Type, std::reference_wrapper<OVOMaterialStrategy>>(OVOObject::Type::MATERIAL, OVOMaterialStrategy::getInstance()));
+    m_pimpl->ovoStrategies.insert(std::make_pair<OVOObject::Type, std::reference_wrapper<OVOMaterialStrategy>>(OVOObject::Type::TEXTURE, OVOMaterialStrategy::getInstance()));
 }
 
 std::shared_ptr<UNode> OVOFactory::fromFile(const std::string& path)

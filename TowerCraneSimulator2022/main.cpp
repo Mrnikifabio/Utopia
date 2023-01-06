@@ -65,7 +65,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 	switch (key)
     {
-    
+
     case 'a':
 		cameraNewPos.x -= 1.00f;
 		break;
@@ -84,6 +84,32 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case 'f':
 		cameraNewPos.y -= 1.00f;
 		break;
+
+	case 'z':
+		Utopia::getInstance().enableSolidMode();
+		break;
+
+	case 'x':
+		Utopia::getInstance().enableWireFrameMode();
+		break;
+
+	case '1':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableNearestFilter);
+		break;
+	case '2':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableNearestBipmapNearestFilter);
+		break;
+	case '3':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearFilter);
+		break;
+	case '4':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearBipmapNearestFilter);
+		break;
+	case '5':
+		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearBipmapLinearFilter);
+		break;
+
+
 	}
 
 	camera->setModelView(glm::translate(glm::mat4(1), cameraNewPos));
