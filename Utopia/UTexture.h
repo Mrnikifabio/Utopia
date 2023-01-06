@@ -18,18 +18,21 @@
 
 namespace utopia
 {
+    class UTextureFactory;
+
     class UTexture : public UObject
     {
-
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
         static int getMaxAnisotropicLevel();
+        UTexture(const std::string& name, unsigned int texId);
+        friend UTextureFactory;
 
     public:
-        void render() override;
         LIB_API virtual ~UTexture() noexcept;
-        LIB_API UTexture(const std::string& name, unsigned int texId);
+
+        void render() override;
 
         LIB_API static void enableNearestFilter();
         LIB_API static void enableNearestBipmapNearestFilter();

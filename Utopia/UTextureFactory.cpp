@@ -45,7 +45,7 @@ std::shared_ptr<UTexture> UTextureFactory::fromFile(const std::string& name)
 
 
 
-	auto texture = std::make_shared<UTexture>(name, texId);
+	auto texture = std::shared_ptr<UTexture>(new UTexture(name, texId));
 	Utopia::getInstance().addTexture(name, texture);
 	return texture;
 }
