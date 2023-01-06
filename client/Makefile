@@ -12,7 +12,7 @@ LD = g++
 WINDRES = windres
 
 INC = -I../engine/include -I../dependencies/glm/include -Iinclude
-CFLAGS = -Wall -std=c++1y -fexceptions
+CFLAGS = -Wall -std=c++14 -fexceptions
 RESINC = 
 LIBDIR = 
 SRCDIR = src
