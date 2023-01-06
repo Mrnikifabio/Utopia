@@ -122,7 +122,7 @@
     <ClCompile Include="USpotLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OvoFactory.cpp">
+    <ClCompile Include="OVOFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OVOMeshStrategy.cpp">

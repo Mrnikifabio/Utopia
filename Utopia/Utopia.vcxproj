@@ -51,7 +51,7 @@
     <ClCompile Include="OVONodeConcreteStrategy.cpp" />
     <ClCompile Include="OVONodeAbstractStrategy.cpp" />
     <ClCompile Include="OVOStrategy.cpp" />
-    <ClCompile Include="OvoFactory.cpp" />
+    <ClCompile Include="OVOFactory.cpp" />
     <ClCompile Include="UCamera.cpp" />
     <ClCompile Include="UDirectionalLight.cpp" />
     <ClCompile Include="ULight.cpp" />
