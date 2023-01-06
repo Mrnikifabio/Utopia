@@ -1,6 +1,6 @@
 #include "UTextureFactory.h"
 #include "UTexture.h"
-#include "utopia.h"
+#include "Utopia.h"
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
 

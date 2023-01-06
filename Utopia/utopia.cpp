@@ -9,7 +9,7 @@
  //include
 #include <string.h>
 #include <iostream>
-#include "utopia.h"
+#include "Utopia.h"
 #include "UCamera.h"
 #include <gl/freeglut.h>
 #include <unordered_map>

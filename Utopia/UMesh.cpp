@@ -1,6 +1,6 @@
 #include "UMesh.h"
 #include "UMaterial.h"
-#include "utopia.h"
+#include "Utopia.h"
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
 

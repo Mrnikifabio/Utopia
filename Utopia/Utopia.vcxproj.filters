@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="utopia.h">
+    <ClInclude Include="Utopia.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UCamera.h">
@@ -86,7 +86,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="utopia.cpp">
+    <ClCompile Include="Utopia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UCamera.cpp">

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "utopia.h"
+#include "Utopia.h"
 #include "UNode.h"
 #include "UMesh.h"
 #include "UPerspectiveCamera.h"

@@ -41,7 +41,7 @@
     <ClInclude Include="UPerspectiveCamera.h" />
     <ClInclude Include="URenderPipeline.h" />
     <ClInclude Include="UTexture.h" />
-    <ClInclude Include="utopia.h" />
+    <ClInclude Include="Utopia.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UTextureFactory.cpp" />
@@ -65,7 +65,7 @@
     <ClCompile Include="UOmniLight.cpp" />
     <ClCompile Include="USpotLight.cpp" />
     <ClCompile Include="UTexture.cpp" />
-    <ClCompile Include="utopia.cpp" />
+    <ClCompile Include="Utopia.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -1,5 +1,5 @@
 #include "UNode.h"
-#include "utopia.h"
+#include "Utopia.h"
 #include <stdexcept>
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>

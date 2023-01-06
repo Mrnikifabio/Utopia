@@ -1,7 +1,7 @@
 #include "OVOMeshStrategy.h"
 #include "OVOFactory.h"
 #include "UMesh.h"
-#include "utopia.h"
+#include "Utopia.h"
 #include "glm/gtc/packing.hpp"
 
 
