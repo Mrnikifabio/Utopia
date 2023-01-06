@@ -81,9 +81,6 @@
     <ClInclude Include="ImageReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utopia.cpp">
@@ -147,9 +144,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImageReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -67,8 +67,6 @@
 		<Unit filename="OvoFactory.cpp" />
 		<Unit filename="UCamera.cpp" />
 		<Unit filename="UCamera.h" />
-		<Unit filename="UCube.cpp" />
-		<Unit filename="UCube.h" />
 		<Unit filename="UDirectionalLight.cpp" />
 		<Unit filename="UDirectionalLight.h" />
 		<Unit filename="ULight.cpp" />
