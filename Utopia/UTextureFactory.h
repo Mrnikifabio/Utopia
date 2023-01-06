@@ -6,19 +6,19 @@
 
 namespace utopia
 {
-	class  TextureFactory
+	class UTextureFactory
 	{
 	private:
 
-		TextureFactory();
-		~TextureFactory();
+		UTextureFactory();
+		~UTextureFactory();
 
 	public:
 
-		static TextureFactory& getInstance();
+		static UTextureFactory& getInstance();
 
-		TextureFactory(TextureFactory const&) = delete;
-		void operator=(TextureFactory const&) = delete;
+		UTextureFactory(UTextureFactory const&) = delete;
+		void operator=(UTextureFactory const&) = delete;
 
 		std::shared_ptr<UTexture> fromFile(const std::string& name);
 	};

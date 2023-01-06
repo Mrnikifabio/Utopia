@@ -3,7 +3,7 @@
 #include "OVOFactory.h"
 #include "glm/gtc/packing.hpp"
 #include "utopia.h"
-#include "TextureFactory.h"
+#include "UTextureFactory.h"
 
 
 using namespace utopia;
@@ -81,7 +81,7 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 			material.setTexture(Utopia::getInstance().getTextureByName(albedoMap));
 		}
 		else
-			material.setTexture(TextureFactory::getInstance().fromFile(albedoMap));
+			material.setTexture(UTextureFactory::getInstance().fromFile(albedoMap));
 	}
 	
 

@@ -1,4 +1,4 @@
-#include "TextureFactory.h"
+#include "UTextureFactory.h"
 #include "UTexture.h"
 #include "utopia.h"
 #include <gl/freeglut.h>
@@ -9,16 +9,16 @@
 
 using namespace utopia;
 
-TextureFactory::TextureFactory() {};
-TextureFactory::~TextureFactory() {};
+UTextureFactory::UTextureFactory() {};
+UTextureFactory::~UTextureFactory() {};
 
-TextureFactory& TextureFactory::getInstance()
+UTextureFactory& UTextureFactory::getInstance()
 {
-	static TextureFactory m_instance;
+	static UTextureFactory m_instance;
 	return m_instance;
 }
 
-std::shared_ptr<UTexture> TextureFactory::fromFile(const std::string& name)
+std::shared_ptr<UTexture> UTextureFactory::fromFile(const std::string& name)
 {
 	FreeImage_Initialise();
 
