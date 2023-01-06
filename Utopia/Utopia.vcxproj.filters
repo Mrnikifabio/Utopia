@@ -78,7 +78,7 @@
     <ClInclude Include="UTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImageReader.h">
+    <ClInclude Include="TextureFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OVOLightStrategy.h">
@@ -146,7 +146,7 @@
     <ClCompile Include="UTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageReader.cpp">
+    <ClCompile Include="TextureFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OVOLightStrategy.cpp">

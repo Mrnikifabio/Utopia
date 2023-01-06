@@ -1,4 +1,4 @@
-#include "ImageReader.h"
+#include "TextureFactory.h"
 #include "UTexture.h"
 #include "utopia.h"
 #include <gl/freeglut.h>
@@ -9,7 +9,16 @@
 
 using namespace utopia;
 
-std::shared_ptr<UTexture> ImageReader::fromFile(const std::string& name)
+TextureFactory::TextureFactory() {};
+TextureFactory::~TextureFactory() {};
+
+TextureFactory& TextureFactory::getInstance()
+{
+	static TextureFactory m_instance;
+	return m_instance;
+}
+
+std::shared_ptr<UTexture> TextureFactory::fromFile(const std::string& name)
 {
 	FreeImage_Initialise();
 
