@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OVOLightStrategy.h" />
     <ClInclude Include="OVONodeConcreteStrategy.h" />
     <ClInclude Include="OVOObject.h" />
     <ClInclude Include="OVOMeshStrategy.h" />
@@ -39,6 +40,7 @@
     <ClInclude Include="utopia.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="OVOLightStrategy.cpp" />
     <ClCompile Include="OVOMeshStrategy.cpp" />
     <ClCompile Include="OVONodeConcreteStrategy.cpp" />
     <ClCompile Include="OVONodeAbstractStrategy.cpp" />

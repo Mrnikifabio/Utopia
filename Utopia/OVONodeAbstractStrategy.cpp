@@ -29,6 +29,16 @@ int OVONodeAbstractStrategy::populateUNode(UNode& nodeToMake, Buffer& buffer)
 	return children;
 }
 
+int OVONodeAbstractStrategy::tellUNodeSize(const Buffer& buffer)
+{
+	int size = 0;
+	size += static_cast<unsigned int>(std::string(buffer.data.get()).length() + 1);
+	size += sizeof(glm::mat4);
+	size += sizeof(unsigned int);
+	size += static_cast<unsigned int>(std::string(buffer.data.get() + size).length() + 1);
+	return size;
+}
+
 void OVONodeAbstractStrategy::populateWithChildren(UNode& node, std::ifstream& inFile, unsigned int children)
 {
 	unsigned int n = 0;

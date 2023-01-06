@@ -8,18 +8,14 @@ using namespace utopia;
 
 struct ULight::pimpl {
 	
-	glm::vec4 m_ambient;
-	glm::vec4 m_diffuse;
-	glm::vec4 m_specular;
-	glm::vec4 m_gAmbient;
+	glm::vec4 m_ambient = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::vec4 m_diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::vec4 m_specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::vec4 m_gAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
 	int m_lightID;
 	
-	pimpl(const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular,const glm::vec4& gAmbient,const int lightID)
+	pimpl(const int lightID)
 	{
-		this->m_ambient = ambient;
-		this->m_diffuse = diffuse;
-		this->m_specular = specular;
-		this->m_gAmbient = gAmbient;
 		this->m_lightID = lightID;
 	}
 };
@@ -37,13 +33,13 @@ void ULight::initIDs()
 	}
 }
 
-ULight::ULight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient) : UNode{ name }
+ULight::ULight(const std::string& name) : UNode{ name }
 {
 	if (m_freeLightIDs.empty())
 	{
 		throw std::runtime_error("No more lights available");
 	}
-	m_pimpl = std::make_unique<pimpl>(ambient, diffuse, specular, gAmbient, m_freeLightIDs.top());
+	m_pimpl = std::make_unique<pimpl>(m_freeLightIDs.top());
 	m_freeLightIDs.pop();
 }
 

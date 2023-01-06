@@ -7,7 +7,7 @@ using namespace utopia;
 
 UDirectionalLight::~UDirectionalLight() noexcept = default;
 
-UDirectionalLight::UDirectionalLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient) : ULight {name,ambient,diffuse,specular,gAmbient} {}
+UDirectionalLight::UDirectionalLight(const std::string& name) : ULight {name} {}
 
 void UDirectionalLight::render()
 {

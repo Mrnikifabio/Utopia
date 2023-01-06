@@ -25,7 +25,7 @@ namespace utopia
 
     public:
 	
-		ULight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient);
+		ULight(const std::string& name);
         virtual ~ULight() noexcept;
         void render() override;
 		static void initIDs();

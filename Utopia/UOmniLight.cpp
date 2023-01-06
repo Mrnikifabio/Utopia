@@ -11,7 +11,7 @@ struct UOmniLight::pimpl {
 	float m_quadraticAttenuation;
 
 
-	pimpl(const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation)
+	pimpl(const float constantAttenuation = 1, const float linearAttenuation = 0, const float quadraticAttenuation = 0)
 	{
 		this->m_constantAttenuation = constantAttenuation;
 		this->m_linearAttenuation = linearAttenuation;
@@ -32,7 +32,7 @@ void UOmniLight::render()
 	glLightf(getLightID(), GL_QUADRATIC_ATTENUATION, m_pimpl->m_quadraticAttenuation);
 }
 
-UOmniLight::UOmniLight(const std::string& name, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, const glm::vec4& gAmbient, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation) : m_pimpl{ std::make_unique<pimpl>(constantAttenuation, linearAttenuation, quadraticAttenuation) }, ULight{ name, ambient, diffuse, specular, gAmbient} {}
+UOmniLight::UOmniLight(const std::string& name, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation) : m_pimpl{ std::make_unique<pimpl>(constantAttenuation, linearAttenuation, quadraticAttenuation) }, ULight{ name} {}
 
 void UOmniLight::setConstantAttenuation(const float& constantAttenuation)
 {

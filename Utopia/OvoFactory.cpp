@@ -1,6 +1,7 @@
 #include "OVOFactory.h"
 #include "OVOMeshStrategy.h"
 #include "OVONodeConcreteStrategy.h"
+#include "OVOLightStrategy.h"
 #include "UObject.h"
 #include "OVOObject.h"
 #include "OVOStrategy.h"
@@ -25,6 +26,7 @@ OVOFactory::~OVOFactory() = default;
 void OVOFactory::loadStrategies()
 {
     m_pimpl->ovoStrategies.insert(std::make_pair<OVOObject::Type, std::reference_wrapper<OVOMeshStrategy>>(OVOObject::Type::MESH, OVOMeshStrategy::getInstance()));
+	m_pimpl->ovoStrategies.insert(std::make_pair<OVOObject::Type, std::reference_wrapper<OVOLightStrategy>>(OVOObject::Type::LIGHT, OVOLightStrategy::getInstance()));
     m_pimpl->ovoStrategies.insert(std::make_pair<OVOObject::Type, std::reference_wrapper<OVONodeConcreteStrategy>>(OVOObject::Type::NODE, OVONodeConcreteStrategy::getInstance()));
 }
 
