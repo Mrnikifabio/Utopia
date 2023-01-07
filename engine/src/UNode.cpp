@@ -51,15 +51,18 @@ void UNode::setModelView(const glm::mat4& mv)
 glm::mat4 UNode::getFinalWorldCoordinates() const
 {
 	UNode* node = getParent();
-	glm::mat4 m = glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * getModelView();
 
+	glm::mat4 m = getModelView();
 	if (node != nullptr)
 	{
 		do
 		{
-			m = m * node->getModelView();
+			m = node->getModelView() * m;
 		} while ((node = node->getParent()) != nullptr);
 	}
+
+	m = glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * m;
+
 
 	return m;
 }
