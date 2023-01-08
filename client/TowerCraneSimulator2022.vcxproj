@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Box.cpp" />
+    <ClCompile Include="src\BoxesManager.cpp" />
     <ClCompile Include="src\ClientUtility.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Tower.cpp" />
@@ -28,6 +30,8 @@
     <ClCompile Include="test\TestRunner.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Box.h" />
+    <ClInclude Include="include\BoxesManager.h" />
     <ClInclude Include="include\ClientUtility.h" />
     <ClInclude Include="include\Tower.h" />
     <ClInclude Include="test\ConcreteTestExample.h" />

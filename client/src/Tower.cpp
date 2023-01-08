@@ -1,15 +1,26 @@
 #include "Tower.h"
 #include "ClientUtility.h"
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <memory>
 
 using namespace client;
 
 struct Tower::pimpl
 {
+	std::shared_ptr<utopia::UNode> m_root;
+
 	std::shared_ptr<utopia::UNode> m_tower;
 	std::shared_ptr<utopia::UNode> m_hook;
 	std::shared_ptr<utopia::UNode> m_Fisicalhook;
+	std::shared_ptr<utopia::UNode> m_cable;
+
+	std::shared_ptr<Box> m_hookedBox;
+
+
+	bool isHooking=false;
+
+	glm::mat4 m_startCableModelView;
 
 	float m_hookLimitForward=0;
 	float m_hookLimitBackward=0;
@@ -31,6 +42,11 @@ Tower::Tower(std::shared_ptr<utopia::UNode> tower) : m_pimpl{ std::make_unique<T
 Tower::Tower() : m_pimpl{ std::make_unique<Tower::pimpl>() } {}
 client::Tower::~Tower() {};
 
+void client::Tower::setRoot(std::shared_ptr<utopia::UNode> root)
+{
+	m_pimpl->m_root = root;
+}
+
 void Tower::setHook(std::shared_ptr<utopia::UNode> hook)
 {
 	m_pimpl->m_hook = hook;
@@ -44,6 +60,48 @@ void client::Tower::setFisicalHook(std::shared_ptr<utopia::UNode> fisicalHook)
 void Tower::setTower(std::shared_ptr<utopia::UNode> tower)
 {
 	m_pimpl->m_tower = tower;
+}
+
+void client::Tower::setCable(std::shared_ptr<utopia::UNode> cable)
+{
+	m_pimpl->m_cable = cable;
+	m_pimpl->m_startCableModelView = cable->getModelView();
+}
+
+bool client::Tower::isHooking()
+{
+	return m_pimpl->isHooking;
+}
+
+void client::Tower::take(std::shared_ptr<Box> box)
+{
+	m_pimpl->m_hookedBox = box;
+	m_pimpl->m_root->detachChildById(box->getHookPointNode()->getId());
+	m_pimpl->m_Fisicalhook->addChild(box->getHookPointNode());
+	box->take();
+	m_pimpl->isHooking = true;
+}
+
+void client::Tower::release()
+{
+	std::cout<<"1:" << glm::to_string(client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_hookedBox->getHookPointNode())) << std::endl;
+	m_pimpl->m_hookedBox->release();
+
+	m_pimpl->m_hookedBox->getHookPointNode()->setModelView(m_pimpl->m_Fisicalhook->getFinalWorldCoordinates());
+
+	std::cout << "2:" << glm::to_string(client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_hookedBox->getHookPointNode())) << std::endl;
+	m_pimpl->m_Fisicalhook->detachChildById(m_pimpl->m_hookedBox->getHookPointNode()->getId());
+	m_pimpl->m_root->addChild(m_pimpl->m_hookedBox->getHookPointNode());
+
+	std::cout << "3:" << glm::to_string(client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_hookedBox->getHookPointNode())) << std::endl;
+	m_pimpl->isHooking = false;
+	m_pimpl->m_hookedBox.reset();
+}
+
+
+std::shared_ptr<utopia::UNode> client::Tower::getFisicalHook()
+{
+	return m_pimpl->m_Fisicalhook;
 }
 
 void Tower::setHookLimitforward(float value)
@@ -75,11 +133,22 @@ void Tower::rotateTower(glm::f32 angle)
 
 void Tower::moveFisicalHookUpDown(float distance)
 {
+	
+
 	float currentYPosition = client::ClientUtility::getInstance().getLocalPosition(m_pimpl->m_Fisicalhook).y;
 	if (currentYPosition + distance < m_pimpl->m_hookLimitDown|| currentYPosition + distance > m_pimpl->m_hookLimitUp)
 	{
 		return;
 	}
+
+	float offsetFromStart = m_pimpl->m_hookLimitUp- (currentYPosition + distance)/100;
+
+	if (m_pimpl->m_cable != nullptr)
+	{
+		m_pimpl->m_cable->setModelView(glm::scale(m_pimpl->m_startCableModelView, glm::vec3(1.f, offsetFromStart, 1.f)));
+	}
+
+	std::cout << "offset from start: " << offsetFromStart << std::endl;
 
 	m_pimpl->m_Fisicalhook->setModelView(glm::translate(m_pimpl->m_Fisicalhook->getModelView(), glm::vec3(0.f, distance, 0.f)));
 

@@ -1,4 +1,5 @@
 #include "ClientUtility.h"
+#include "UCamera.h"
 
 using namespace client;
 
@@ -29,6 +30,57 @@ std::shared_ptr<utopia::UNode> ClientUtility::findGameObjectByName(std::shared_p
 	return nullptr;
 }
 
+std::vector<std::shared_ptr<utopia::UNode>> client::ClientUtility::findGameObjectsByName(std::shared_ptr<utopia::UNode> root, const std::string& name)
+{
+	std::vector< std::shared_ptr<utopia::UNode>> vector;
+	for (auto node : root->getChildren())
+	{
+		if (node->getName() == name)
+			vector.push_back(node);
+		else
+		{
+			auto childByName = ClientUtility::findGameObjectByName(node, name);
+			if (childByName != nullptr)
+			{
+				findGameObjectsByNameIntermediate(vector,node,name);
+			}
+			else
+				continue;
+		}
+	}
+	return vector;
+}
+
+glm::vec3 client::ClientUtility::getLocalPosition(std::shared_ptr<utopia::UNode> node)
+{
+	auto modelView = node->getModelView();
+	return glm::vec3(modelView[3][0], modelView[3][1], modelView[3][2]);
+}
+
+glm::vec3 client::ClientUtility::getWorldPosition(std::shared_ptr<utopia::UNode> node)
+{
+	auto modelView = utopia::UCamera::getMainCamera().lock()->getModelView()* node->getFinalWorldCoordinates();
+	return glm::vec3(modelView[3][0], modelView[3][1], modelView[3][2]);
+}
+
+void ClientUtility::findGameObjectsByNameIntermediate(std::vector<std::shared_ptr<utopia::UNode>> vector, std::shared_ptr<utopia::UNode> root, const std::string& name)
+{
+	for (auto node : root->getChildren())
+	{
+		if (node->getName() == name)
+			vector.push_back(node);
+		else
+		{
+			auto childByName = ClientUtility::findGameObjectByName(node, name);
+			if (childByName != nullptr)
+			{
+				findGameObjectsByNameIntermediate(vector, node, name);
+			}
+			else
+				continue;
+		}
+	}
+}
 
 
 ClientUtility::ClientUtility() {};

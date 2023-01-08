@@ -37,6 +37,7 @@
     <ClCompile Include="src\UOrthographicCamera.cpp" />
     <ClCompile Include="src\UPerspectiveCamera.cpp" />
     <ClCompile Include="src\URenderPipeline.cpp" />
+    <ClCompile Include="src\USpecialKeys.cpp" />
     <ClCompile Include="src\USpotLight.cpp" />
     <ClCompile Include="src\UTexture.cpp" />
     <ClCompile Include="src\UTextureFactory.cpp" />
@@ -45,7 +46,6 @@
     <ClCompile Include="test\main.cpp" />
     <ClCompile Include="test\Test.cpp" />
     <ClCompile Include="test\TestRunner.cpp" />
-    <ClCompile Include="USpecialKeys.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\OVOFactory.h" />
@@ -67,6 +67,7 @@
     <ClInclude Include="include\UOrthographicCamera.h" />
     <ClInclude Include="include\UPerspectiveCamera.h" />
     <ClInclude Include="include\URenderPipeline.h" />
+    <ClInclude Include="include\USpecialKeys.h" />
     <ClInclude Include="include\USpotLight.h" />
     <ClInclude Include="include\UTexture.h" />
     <ClInclude Include="include\UTextureFactory.h" />
@@ -74,7 +75,9 @@
     <ClInclude Include="test\ConcreteTestExample.h" />
     <ClInclude Include="test\Test.h" />
     <ClInclude Include="test\TestRunner.h" />
-    <ClInclude Include="USpecialKeys.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
