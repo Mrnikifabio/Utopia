@@ -276,6 +276,11 @@ URenderPipeline& Utopia::getRenderPipeline()
 	return *m_pimpl->m_renderPipeline.get();
 }
 
+LIB_API void utopia::Utopia::setBackgroundColor(glm::vec4 color)
+{
+	glClearColor(color.r,color.g,color.b,color.a);
+}
+
 std::weak_ptr<UMaterial> Utopia::getMaterialByName(const std::string& name)
 {
 	return m_pimpl->m_materials.at(name);

@@ -30,6 +30,7 @@ std::shared_ptr<UNode> fisicalHookNode;
 int main()
 {
 	Utopia::getInstance().init();
+	Utopia::getInstance().setBackgroundColor(glm::vec4(0.5f,1.f,1.f,1.f));
 	Utopia::getInstance().enableDepth();
 	Utopia::getInstance().enableCullFace();
 	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
@@ -53,6 +54,9 @@ int main()
 
 	tower->setFisicalHookLimitDown(-400.f);
 	tower->setFisicalHookLimitUp(0.f);
+
+	tower->setHookLimitbackward(-350.f);
+	tower->setHookLimitforward(0.f);
 
 
 	UCamera::setMainCamera(camera);
@@ -127,12 +131,22 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		*/
 
 	case '4':
-		tower->rotateTower(glm::radians(-5.f));
+		tower->rotateTower(glm::radians(5.f));
 		break;
 
 	case '6':
-		tower->rotateTower(glm::radians(5.f));
+		tower->rotateTower(glm::radians(-5.f));
 		break;
+
+	case '8':
+		tower->moveHookBackwardForward(5.f);
+		break;
+
+	case '5':
+		tower->moveHookBackwardForward(-5.f);
+		break;
+
+
 
 	case '-':
 		tower->moveFisicalHookUpDown(-3.f);

@@ -77,6 +77,8 @@ namespace utopia {
 
 		LIB_API URenderPipeline& getRenderPipeline();
 
+		LIB_API void setBackgroundColor(glm::vec4 color);
+
 		LIB_API std::weak_ptr<UMaterial> getDefaultMaterial();
 		LIB_API std::weak_ptr<UMaterial> getMaterialByName(const std::string& name);
 		LIB_API void addMaterial(std::string name, std::shared_ptr<UMaterial> material);
