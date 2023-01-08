@@ -6,6 +6,12 @@ namespace utopia_test {
 	{
 	private:
 		void execute() override;
+		void modelViewTest();
+		void childTest();
+		void parentTest();
+		void childrenTest();
+		void finalWorldCoordinatesTest();
+
 	public:
 		UNodeTest(const std::string& name);
 	};

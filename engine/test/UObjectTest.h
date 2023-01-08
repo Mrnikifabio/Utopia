@@ -6,6 +6,8 @@ namespace utopia_test {
 	{
 	private:
 		void execute() override;
+		void IDTest();
+		void nameTest();
 	public:
 		UObjectTest(const std::string& name);
 	};

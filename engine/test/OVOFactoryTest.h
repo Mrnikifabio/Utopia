@@ -6,6 +6,9 @@ namespace utopia_test {
 	{
 	private:
 		void execute() override;
+		void fromFileTest();
+		void badFileTest();
+		void nonExistentFileTest();
 	public:
 		OVOFactoryTest(const std::string& name);
 	};

@@ -16,11 +16,11 @@ namespace utopia_test {
         TestRunner::getInstance().addTest(std::make_unique<UNodeTest>("UNodeTest"));
         TestRunner::getInstance().addTest(std::make_unique<OVOFactoryTest>("OVOFactoryTest"));
 
-        std::cout << "-------------" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
         std::cout << "UTOPIA TESTS" << std::endl;
         TestRunner::getInstance().run();
-        std::cout << "-------------" << std::endl;
-        std::cout << "All tests have been finished!" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "All tests have passed!" << std::endl;
     }
 
 }

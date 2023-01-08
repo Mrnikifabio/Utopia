@@ -8,7 +8,7 @@ using namespace utopia_test;
 void Test::execute()
 {
 	std::cout << "----------------------------------------" << std::endl;
-	std::cout << "Executing test " << getName();
+	std::cout << "Executing test " << getName() << std::endl;
 }
 
 Test::Test(const std::string& name)
