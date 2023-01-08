@@ -1,15 +1,20 @@
 #include "Test.h"
-#include "ConcreteTestExample.h"
 #include "TestRunner.h"
 #include <iostream>
 #include <cassert>
 #include <memory>
 
+#include "UObjectTest.h"
+#include "OVOFactoryTest.h"
+#include "UNodeTest.h"
+
 namespace utopia_test {
 
     void launchTest()
     {
-        TestRunner::getInstance().addTest(std::make_unique<ConcreteTestExample>("test1"));
+        TestRunner::getInstance().addTest(std::make_unique<UObjectTest>("UObjectTest"));
+        TestRunner::getInstance().addTest(std::make_unique<UNodeTest>("UNodeTest"));
+        TestRunner::getInstance().addTest(std::make_unique<OVOFactoryTest>("OVOFactoryTest"));
 
         std::cout << "-------------" << std::endl;
         std::cout << "UTOPIA TESTS" << std::endl;

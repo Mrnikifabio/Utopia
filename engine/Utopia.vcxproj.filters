@@ -90,16 +90,13 @@
     <ClCompile Include="src\Utopia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test\main.cpp">
+    <ClCompile Include="test\RunTest.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="test\Test.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="test\TestRunner.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\ConcreteTestExample.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\U2DRenderPipeline.cpp">
@@ -110,6 +107,15 @@
     </ClCompile>
     <ClCompile Include="src\UText.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test\UNodeTest.cpp">
+      <Filter>Tests\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test\UObjectTest.cpp">
+      <Filter>Tests\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test\OVOFactoryTest.cpp">
+      <Filter>Tests\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,9 +194,6 @@
     <ClInclude Include="test\TestRunner.h">
       <Filter>Tests\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="test\ConcreteTestExample.h">
-      <Filter>Tests\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\U2DRenderPipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -199,6 +202,15 @@
     </ClInclude>
     <ClInclude Include="include\UText.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test\UNodeTest.h">
+      <Filter>Tests\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test\UObjectTest.h">
+      <Filter>Tests\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test\OVOFactoryTest.h">
+      <Filter>Tests\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
