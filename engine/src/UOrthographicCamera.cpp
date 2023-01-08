@@ -1,5 +1,5 @@
 #include "UOrthographicCamera.h"
-#include "utopia.h"
+#include "Utopia.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 using namespace utopia;
