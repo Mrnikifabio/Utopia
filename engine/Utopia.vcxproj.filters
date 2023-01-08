@@ -75,7 +75,7 @@
     <ClCompile Include="src\UPerspectiveCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\URenderPipeline.cpp">
+    <ClCompile Include="src\U3DRenderPipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\USpotLight.cpp">
@@ -101,6 +101,15 @@
     </ClCompile>
     <ClCompile Include="test\ConcreteTestExample.cpp">
       <Filter>Tests\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\U2DRenderPipeline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\U2DObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UText.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,7 +167,7 @@
     <ClInclude Include="include\UPerspectiveCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\URenderPipeline.h">
+    <ClInclude Include="include\U3DRenderPipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\USpotLight.h">
@@ -181,6 +190,15 @@
     </ClInclude>
     <ClInclude Include="test\ConcreteTestExample.h">
       <Filter>Tests\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\U2DRenderPipeline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\U2DObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UText.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include "OVOFactory.h"
 #include "UOmniLight.h"
+#include "UText.h"
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY);
 void closeCallback();
@@ -27,7 +28,6 @@ int main()
 	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
 	Utopia::getInstance().setCloseCallback(closeCallback);
 
-	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
 	camera = std::make_shared<UPerspectiveCamera>("perspCamera");
 	camera->setFar(600.0f);
 	camera->setNear(0.1f);
@@ -35,17 +35,20 @@ int main()
 
 	auto root = OVOFactory::getInstance().fromFile("assets/simple3dScene.ovo");
 
+	auto text = std::make_shared<UText>("objectName", "This is an example of text to show", UText::Font::HELVETICA_18, glm::vec2(1.0f,2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
 	UCamera::setMainCamera(camera);
-	Utopia::getInstance().getRenderPipeline().pass(root, glm::mat4(1));
+	Utopia::getInstance().get3DRenderPipeline().pass(root, glm::mat4(1));
+	Utopia::getInstance().get2DRenderPipeline().pass(text, text->getPosition());
 
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
-		Utopia::getInstance().getRenderPipeline().render();
+		Utopia::getInstance().get3DRenderPipeline().render();
+		Utopia::getInstance().get2DRenderPipeline().render();
 		Utopia::getInstance().enableLighting();
 		Utopia::getInstance().enableShadeModel();
-		Utopia::getInstance().display();
 		Utopia::getInstance().swap();
 	}
 

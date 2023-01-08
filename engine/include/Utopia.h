@@ -1,6 +1,5 @@
 /*****************************************************************//**
  * \file   Utopia.h
- * \brief  Basic implementation of the gr. eng. lib.
  *
  * \author Group10
  * \date   October 2022
@@ -28,8 +27,10 @@
 #define LIB_API  // Dummy declaration
 #endif
 
-#include "URenderPipeline.h"
+#include "U3DRenderPipeline.h"
+#include "U2DRenderPipeline.h"
 #include "UMaterial.h"
+#include "UTexture.h"
 #include <memory>
 #include <unordered_map>
 
@@ -70,12 +71,12 @@ namespace utopia {
 		LIB_API void setSpecialCallback(void (*callback)(int, int, int));
 		LIB_API void setCloseCallback(void(*callback)(void)); //invoked when the window is closed
 
-		LIB_API void display();
 		LIB_API void mainLoop();
 		LIB_API bool isRunning();
 		LIB_API void swap();
 
-		LIB_API URenderPipeline& getRenderPipeline();
+		LIB_API U3DRenderPipeline& get3DRenderPipeline();
+		LIB_API U2DRenderPipeline& get2DRenderPipeline();
 
 		LIB_API std::weak_ptr<UMaterial> getDefaultMaterial();
 		LIB_API std::weak_ptr<UMaterial> getMaterialByName(const std::string& name);

@@ -26,6 +26,8 @@
     <ClCompile Include="src\OVONodeAbstractStrategy.cpp" />
     <ClCompile Include="src\OVONodeConcreteStrategy.cpp" />
     <ClCompile Include="src\OVOStrategy.cpp" />
+    <ClCompile Include="src\U2DObject.cpp" />
+    <ClCompile Include="src\U2DRenderPipeline.cpp" />
     <ClCompile Include="src\UCamera.cpp" />
     <ClCompile Include="src\UDirectionalLight.cpp" />
     <ClCompile Include="src\ULight.cpp" />
@@ -36,8 +38,9 @@
     <ClCompile Include="src\UOmniLight.cpp" />
     <ClCompile Include="src\UOrthographicCamera.cpp" />
     <ClCompile Include="src\UPerspectiveCamera.cpp" />
-    <ClCompile Include="src\URenderPipeline.cpp" />
+    <ClCompile Include="src\U3DRenderPipeline.cpp" />
     <ClCompile Include="src\USpotLight.cpp" />
+    <ClCompile Include="src\UText.cpp" />
     <ClCompile Include="src\UTexture.cpp" />
     <ClCompile Include="src\UTextureFactory.cpp" />
     <ClCompile Include="src\Utopia.cpp" />
@@ -55,6 +58,8 @@
     <ClInclude Include="include\OVONodeConcreteStrategy.h" />
     <ClInclude Include="include\OVOObject.h" />
     <ClInclude Include="include\OVOStrategy.h" />
+    <ClInclude Include="include\U2DObject.h" />
+    <ClInclude Include="include\U2DRenderPipeline.h" />
     <ClInclude Include="include\UCamera.h" />
     <ClInclude Include="include\UDirectionalLight.h" />
     <ClInclude Include="include\ULight.h" />
@@ -65,8 +70,9 @@
     <ClInclude Include="include\UOmniLight.h" />
     <ClInclude Include="include\UOrthographicCamera.h" />
     <ClInclude Include="include\UPerspectiveCamera.h" />
-    <ClInclude Include="include\URenderPipeline.h" />
+    <ClInclude Include="include\U3DRenderPipeline.h" />
     <ClInclude Include="include\USpotLight.h" />
+    <ClInclude Include="include\UText.h" />
     <ClInclude Include="include\UTexture.h" />
     <ClInclude Include="include\UTextureFactory.h" />
     <ClInclude Include="include\Utopia.h" />

@@ -6,7 +6,6 @@
  * \date   October 2022
  *********************************************************************/
 
- //include
 #include <string.h>
 #include <iostream>
 #include "Utopia.h"
@@ -17,38 +16,10 @@
 #include <memory>
 #include "ULight.h"
 
-
-  // GLM:
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
-   // Projection matrices:
-glm::mat4 perspective;
-
-using namespace utopia;
-
-
-struct Utopia::pimpl
-{
-	std::unique_ptr<URenderPipeline> m_renderPipeline;
-	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
-	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
-	std::shared_ptr<UMaterial> m_defaultMaterial;
-	bool m_initFlag;
-
-	pimpl(bool initFlag, std::unique_ptr<URenderPipeline> renderPipeline, std::shared_ptr<UMaterial> defaultMaterial)
-	{
-		m_initFlag = initFlag;
-		m_renderPipeline = move(renderPipeline);
-		m_defaultMaterial = defaultMaterial;
-	}
-
-};
-
-Utopia::Utopia() : m_pimpl{ std::make_unique<Utopia::pimpl>(false, std::make_unique<URenderPipeline>("renderPipeline"), std::make_shared<UMaterial>("default")) }  {};
-Utopia::~Utopia() {}
 
 //////////////
 // DLL MAIN //
@@ -84,21 +55,28 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 }
 #endif
 
+using namespace utopia;
 
 
-////////////////////////////////
-// BODY OF CLASS Utopia //
-////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * This is the main rendering routine automatically invoked by FreeGLUT.
- */
-void Utopia::display()
+struct Utopia::pimpl
 {
+	std::unique_ptr<U3DRenderPipeline> m_3DRenderPipeline;
+	std::unique_ptr<U2DRenderPipeline> m_2DRenderPipeline;
+	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
+	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
+	std::shared_ptr<UMaterial> m_defaultMaterial;
+	bool m_initFlag;
 
-}
+	pimpl() : 
+		m_initFlag{ false },
+		m_2DRenderPipeline { std::make_unique<U2DRenderPipeline>("2DRenderPipeline")},
+		m_3DRenderPipeline{ std::make_unique<U3DRenderPipeline>("3DRenderPipeline") },
+		m_defaultMaterial{ std::make_shared<UMaterial>("default") } {}
+};
+
+Utopia::Utopia() : m_pimpl{ std::make_unique<Utopia::pimpl>() } {};
+Utopia::~Utopia() {}
+
 
 void displayCallback()
 {
@@ -108,18 +86,12 @@ void displayCallback()
 
 void reshapeCallback(int width, int height)
 {
-
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(UCamera::getMainCamera().lock()->getCameraMatrix()));
 	glMatrixMode(GL_MODELVIEW);
 
-	//Utopia::getInstance().clear();
-	Utopia::getInstance().display();
-	//Utopia::getInstance().swap();
-
 	std::cout << "[reshape func invoked] " << width<< " " << height << std::endl;
-
 }
 
 
@@ -271,9 +243,14 @@ void Utopia::swap()
 	glutSwapBuffers();
 }
 
-URenderPipeline& Utopia::getRenderPipeline()
+U3DRenderPipeline& Utopia::get3DRenderPipeline()
 {
-	return *m_pimpl->m_renderPipeline.get();
+	return *m_pimpl->m_3DRenderPipeline;
+}
+
+U2DRenderPipeline& Utopia::get2DRenderPipeline()
+{
+	return *m_pimpl->m_2DRenderPipeline;
 }
 
 std::weak_ptr<UMaterial> Utopia::getMaterialByName(const std::string& name)
@@ -329,10 +306,10 @@ void Utopia::updateAllTexturesParameteri(void(*parametriSetMethod)(void))
 	std::cout << "n textures to upload: " << m_pimpl->m_textures.size() << std::endl;
 
 	for (const auto& kv : m_pimpl->m_textures)
-		{
-			kv.second->updateTextureParameteri(parametriSetMethod);
-			std::cout<<"upload texture: " << kv.first << std::endl;
-		}
+	{
+		kv.second->updateTextureParameteri(parametriSetMethod);
+		std::cout<<"upload texture: " << kv.first << std::endl;
+	}
 }
 
 unsigned int Utopia::texturesMapSize()

@@ -1,7 +1,7 @@
 #pragma once
-#include <memory>
 #include "UObject.h"
-#include "UNode.h"
+#include "U2DObject.h"
+#include <glm/glm.hpp>
 
 #ifdef _WINDOWS 	
 // Export API:
@@ -15,18 +15,21 @@
 #define LIB_API  // Dummy declaration
 #endif
 
-namespace utopia
-{
-	class URenderPipeline : public UObject
-	{
+namespace utopia {
+
+    class U2DRenderPipeline : public UObject
+    {
 		struct pimpl;
-		struct URenderNode;
+		struct U2DRenderNode;
 	private:
 		std::unique_ptr<pimpl> m_pimpl;
 	public:
-		LIB_API URenderPipeline(const std::string& name);
-		LIB_API virtual ~URenderPipeline() noexcept;
-		LIB_API void pass(std::weak_ptr<UNode> node, const glm::mat4& mat);
-		void render() override;
-	};
+		LIB_API U2DRenderPipeline(const std::string& name);
+		LIB_API virtual ~U2DRenderPipeline() noexcept;
+		LIB_API void pass(std::weak_ptr<U2DObject> node, const glm::vec2& pos);
+		LIB_API void render() override;
+    };
+
 }
+
+
