@@ -1,9 +1,10 @@
 #include "UOrthographicCamera.h"
+#include "utopia.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 using namespace utopia;
 
-UOrthographicCamera::UOrthographicCamera(const std::string& name) : UCamera(name), m_right{ 10 }, m_left{ -10 }, m_top{ 10 }, m_bottom{-10} {}
+UOrthographicCamera::UOrthographicCamera(const std::string& name) : m_right{ (float)Utopia::getInstance().getWindowWidth() }, m_left{0.0f}, m_top{ (float)Utopia::getInstance().getWindowHeight() }, m_bottom{0.0f}, UCamera(name) {}
 
 const glm::mat4 UOrthographicCamera::getCameraMatrix() const
 {
