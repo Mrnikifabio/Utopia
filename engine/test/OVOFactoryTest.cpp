@@ -53,7 +53,7 @@ void OVOFactoryTest::nonExistentFileTest()
 void OVOFactoryTest::fromFileTest()
 {
 	using namespace utopia;
-	auto scene = OVOFactory::getInstance().fromFile("bin/Test/assets/simple3dScene.ovo");
+	auto scene = OVOFactory::getInstance().fromFile("assets/simple3dScene.ovo");
 
 	assert(!Utopia::getInstance().getMaterialByName("14 - Default").expired());
 	assert(!Utopia::getInstance().getMaterialByName("08 - Default").expired());
