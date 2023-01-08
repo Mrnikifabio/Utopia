@@ -102,6 +102,9 @@
     <ClCompile Include="test\ConcreteTestExample.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="USpecialKeys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\OVOFactory.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="test\ConcreteTestExample.h">
       <Filter>Tests\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="USpecialKeys.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

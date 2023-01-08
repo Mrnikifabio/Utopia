@@ -45,6 +45,7 @@
     <ClCompile Include="test\main.cpp" />
     <ClCompile Include="test\Test.cpp" />
     <ClCompile Include="test\TestRunner.cpp" />
+    <ClCompile Include="USpecialKeys.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\OVOFactory.h" />
@@ -73,6 +74,7 @@
     <ClInclude Include="test\ConcreteTestExample.h" />
     <ClInclude Include="test\Test.h" />
     <ClInclude Include="test\TestRunner.h" />
+    <ClInclude Include="USpecialKeys.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

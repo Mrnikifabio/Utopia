@@ -73,3 +73,9 @@ std::unique_ptr<UNode> OVOFactory::recursiveFetch(std::ifstream& inFile)
 
     return newNode;
 }
+
+LIB_API OVOFactory& utopia::OVOFactory::getInstance()
+{
+    static OVOFactory m_instance;
+    return m_instance;
+}

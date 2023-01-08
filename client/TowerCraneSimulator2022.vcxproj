@@ -19,13 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ClientUtility.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Tower.cpp" />
     <ClCompile Include="test\ConcreteTestExample.cpp" />
     <ClCompile Include="test\main.cpp" />
     <ClCompile Include="test\Test.cpp" />
     <ClCompile Include="test\TestRunner.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ClientUtility.h" />
+    <ClInclude Include="include\Tower.h" />
     <ClInclude Include="test\ConcreteTestExample.h" />
     <ClInclude Include="test\Test.h" />
     <ClInclude Include="test\TestRunner.h" />
@@ -134,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\dependencies\glm\include;../engine/include;include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\glm\include;../engine/include;include;include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\dependencies\glm\include;../engine/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\glm\include;../engine/;include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
