@@ -1,6 +1,7 @@
 #include "Box.h"
 #include <glm/ext/matrix_transform.hpp>
 #include "ClientUtility.h"
+#include "UCamera.h"
 
 using namespace client;
 
@@ -56,7 +57,7 @@ void client::Box::computeGravity()
 {
 	if (!m_pimpl->m_isGrounded||!m_pimpl->m_isHooked)
 	{
-		m_pimpl->m_hookPoint->setModelView(glm::translate(m_pimpl->m_hookPoint->getModelView(), glm::vec3(0.f,- 0.1f, 0.f)));
+		m_pimpl->m_hookPoint->setModelView(glm::translate(m_pimpl->m_hookPoint->getModelView(), glm::vec3(0.f,- 0.3f, 0.f)));
 	
 		auto boxPosition = client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_groundNode);
 		
@@ -83,6 +84,6 @@ void client::Box::take()
 
 void client::Box::release()
 {
-	//m_pimpl->m_hookPoint->setModelView(m_pimpl->m_hookPoint->getFinalWorldCoordinates());
+	m_pimpl->m_hookPoint->setModelView(utopia::UCamera::getMainCamera().lock()->getModelView()*m_pimpl->m_hookPoint->getFinalWorldCoordinates());
 	m_pimpl->m_isHooked = false;
 }

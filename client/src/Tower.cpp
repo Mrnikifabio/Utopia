@@ -84,16 +84,9 @@ void client::Tower::take(std::shared_ptr<Box> box)
 
 void client::Tower::release()
 {
-	std::cout<<"1:" << glm::to_string(client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_hookedBox->getHookPointNode())) << std::endl;
 	m_pimpl->m_hookedBox->release();
-
-	m_pimpl->m_hookedBox->getHookPointNode()->setModelView(m_pimpl->m_Fisicalhook->getFinalWorldCoordinates());
-
-	std::cout << "2:" << glm::to_string(client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_hookedBox->getHookPointNode())) << std::endl;
 	m_pimpl->m_Fisicalhook->detachChildById(m_pimpl->m_hookedBox->getHookPointNode()->getId());
 	m_pimpl->m_root->addChild(m_pimpl->m_hookedBox->getHookPointNode());
-
-	std::cout << "3:" << glm::to_string(client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_hookedBox->getHookPointNode())) << std::endl;
 	m_pimpl->isHooking = false;
 	m_pimpl->m_hookedBox.reset();
 }
