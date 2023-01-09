@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "UObject.h"
+#include "UMaterial.h"
 #include "UNode.h"
 
 #ifdef _WINDOWS 	
@@ -26,7 +27,7 @@ namespace utopia
 	public:
 		LIB_API U3DRenderPipeline(const std::string& name);
 		LIB_API virtual ~U3DRenderPipeline() noexcept;
-		LIB_API void pass(std::weak_ptr<UNode> node, const glm::mat4& mat);
+		LIB_API void pass(std::weak_ptr<UNode> node, const glm::mat4& mat = glm::mat4(1), std::shared_ptr<UMaterial> material = nullptr);
 		LIB_API void render() override;
 	};
 }

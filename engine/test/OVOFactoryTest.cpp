@@ -55,14 +55,14 @@ void OVOFactoryTest::fromFileTest()
 	using namespace utopia;
 	auto scene = OVOFactory::getInstance().fromFile("simple3dScene.ovo");
 
-	assert(!Utopia::getInstance().getMaterialByName("14 - Default").expired());
-	assert(!Utopia::getInstance().getMaterialByName("08 - Default").expired());
-	assert(!Utopia::getInstance().getMaterialByName("13 - Default").expired());
-	assert(!Utopia::getInstance().getMaterialByName("07 - Default").expired());
-	assert(!Utopia::getInstance().getMaterialByName("02 - Default").expired());
-	assert(!Utopia::getInstance().getMaterialByName("03 - Default").expired());
-	assert(!Utopia::getInstance().getMaterialByName("09 - Default").expired());
-	assert(!Utopia::getInstance().getMaterialByName("Material #0").expired());
+	assert(Utopia::getInstance().getMaterialByName("14 - Default") != nullptr);
+	assert(Utopia::getInstance().getMaterialByName("08 - Default") != nullptr);
+	assert(Utopia::getInstance().getMaterialByName("13 - Default") != nullptr);
+	assert(Utopia::getInstance().getMaterialByName("07 - Default") != nullptr);
+	assert(Utopia::getInstance().getMaterialByName("02 - Default") != nullptr);
+	assert(Utopia::getInstance().getMaterialByName("03 - Default") != nullptr);
+	assert(Utopia::getInstance().getMaterialByName("09 - Default") != nullptr);
+	assert(Utopia::getInstance().getMaterialByName("Material #0") != nullptr);
 	
 	assert(Utopia::getInstance().getTextureByName("assets/circuit.dds") != nullptr);
 	assert(Utopia::getInstance().getTextureByName("assets/bricks.dds") != nullptr);
@@ -80,7 +80,7 @@ void OVOFactoryTest::fromFileTest()
 		{
 			assert(child.lock()->getName() == "Pyramid001");
 			auto mesh = std::dynamic_pointer_cast<UMesh>(child.lock());
-			assert(mesh->getMaterial().lock()->getName() == "09 - Default");
+			assert(mesh->getMaterial()->getName() == "09 - Default");
 			assert(child.lock()->getChild(0).lock()->getName() == "Pyramid002");
 		}
 	}

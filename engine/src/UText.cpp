@@ -10,7 +10,7 @@ struct UText::pimpl {
 	Font m_font;
 
 	pimpl(const std::string& text, const Font& font, const glm::vec3 color) : m_text{ text }, m_color{ color }, m_font{ font } {}
-	pimpl() : m_text{ "" }, m_color{ glm::vec3(0,0,0) }, m_font{ Font::HELVETICA_18 } {};
+	pimpl() : m_text{ "" }, m_color{ glm::vec3(0,0,0) }, m_font{ Font::DEFAULT_1 } {};
 };
 
 UText::UText(const std::string& name, const std::string& text, const Font& font, const glm::vec2& position, const glm::vec3& color) : U2DObject(name, position), m_pimpl{ std::unique_ptr<pimpl>(new pimpl(text, font, color))} {}

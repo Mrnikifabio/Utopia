@@ -14,7 +14,7 @@
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
-					<Add option="-std=c++14" />
+					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add option="-g" />
 				</Compiler>
@@ -32,7 +32,7 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="-std=c++14" />
+					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 				</Compiler>
 				<Linker>
@@ -46,7 +46,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=c++14" />
+			<Add option="-std=c++11" />
 			<Add option="-fPIC" />
 			<Add option="-fexceptions" />
 			<Add directory="../dependencies/freeglut/include" />
@@ -67,6 +67,9 @@
 		<Unit filename="include/OVONodeConcreteStrategy.h" />
 		<Unit filename="include/OVOObject.h" />
 		<Unit filename="include/OVOStrategy.h" />
+		<Unit filename="include/U2DObject.h" />
+		<Unit filename="include/U2DRenderPipeline.h" />
+		<Unit filename="include/U3DRenderPipeline.h" />
 		<Unit filename="include/UCamera.h" />
 		<Unit filename="include/UDirectionalLight.h" />
 		<Unit filename="include/ULight.h" />
@@ -77,8 +80,9 @@
 		<Unit filename="include/UOmniLight.h" />
 		<Unit filename="include/UOrthographicCamera.h" />
 		<Unit filename="include/UPerspectiveCamera.h" />
-		<Unit filename="include/URenderPipeline.h" />
+		<Unit filename="include/USpecialKeys.h" />
 		<Unit filename="include/USpotLight.h" />
+		<Unit filename="include/UText.h" />
 		<Unit filename="include/UTexture.h" />
 		<Unit filename="include/UTextureFactory.h" />
 		<Unit filename="include/Utopia.h" />
@@ -89,6 +93,9 @@
 		<Unit filename="src/OVONodeAbstractStrategy.cpp" />
 		<Unit filename="src/OVONodeConcreteStrategy.cpp" />
 		<Unit filename="src/OVOStrategy.cpp" />
+		<Unit filename="src/U2DObject.cpp" />
+		<Unit filename="src/U2DRenderPipeline.cpp" />
+		<Unit filename="src/U3DRenderPipeline.cpp" />
 		<Unit filename="src/UCamera.cpp" />
 		<Unit filename="src/UDirectionalLight.cpp" />
 		<Unit filename="src/ULight.cpp" />
@@ -99,11 +106,27 @@
 		<Unit filename="src/UOmniLight.cpp" />
 		<Unit filename="src/UOrthographicCamera.cpp" />
 		<Unit filename="src/UPerspectiveCamera.cpp" />
-		<Unit filename="src/URenderPipeline.cpp" />
+		<Unit filename="src/USpecialKeys.cpp" />
 		<Unit filename="src/USpotLight.cpp" />
+		<Unit filename="src/UText.cpp" />
 		<Unit filename="src/UTexture.cpp" />
 		<Unit filename="src/UTextureFactory.cpp" />
 		<Unit filename="src/Utopia.cpp" />
+		<Unit filename="test/OVOFactoryTest.cpp" />
+		<Unit filename="test/OVOFactoryTest.h" />
+		<Unit filename="test/RunUtopiaTest.cpp" />
+		<Unit filename="test/Test.cpp" />
+		<Unit filename="test/Test.h" />
+		<Unit filename="test/TestRunner.cpp" />
+		<Unit filename="test/TestRunner.h" />
+		<Unit filename="test/UCameraTest.cpp" />
+		<Unit filename="test/UCameraTest.h" />
+		<Unit filename="test/ULightTest.cpp" />
+		<Unit filename="test/ULightTest.h" />
+		<Unit filename="test/UNodeTest.cpp" />
+		<Unit filename="test/UNodeTest.h" />
+		<Unit filename="test/UObjectTest.cpp" />
+		<Unit filename="test/UObjectTest.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

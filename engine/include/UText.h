@@ -25,6 +25,8 @@ namespace utopia {
 
 		enum Font : int
 		{
+			DEFAULT_1 = 0x0002,
+			DEFAULT_2 = 0x0003,
 			TIMES_ROMAN_10 = 0x0004,
 			TIMES_ROMAN_24,
 			HELVETICA_10,

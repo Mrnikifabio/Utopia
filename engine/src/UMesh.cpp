@@ -9,14 +9,14 @@ using namespace utopia;
 
 struct UMesh::pimpl {
 	std::vector<std::unique_ptr<LOD>> m_lods;
-	std::weak_ptr<UMaterial> m_material;
+	std::shared_ptr<UMaterial> m_material;
 
 	pimpl()
 	{
-		m_material = Utopia::getInstance().getDefaultMaterial();
+		m_material = UMaterial::getDefaultMaterial();
 	}
 
-	pimpl(std::weak_ptr<UMaterial> material)
+	pimpl(std::shared_ptr<UMaterial> material)
 	{
 		m_material = material;
 	}
@@ -24,32 +24,31 @@ struct UMesh::pimpl {
 };
 
 UMesh::UMesh(const std::string& name) : UNode{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {}
-UMesh::UMesh(const std::string& name, std::weak_ptr<UMaterial> material) : UNode{ name }, m_pimpl { std::unique_ptr<pimpl>(new pimpl(material)) } {}
+UMesh::UMesh(const std::string& name, std::shared_ptr<UMaterial> material) : UNode{ name }, m_pimpl { std::unique_ptr<pimpl>(new pimpl(material)) } {}
 
 void UMesh::pushLOD(std::unique_ptr<LOD>&& lod)
 {
 	m_pimpl->m_lods.push_back(std::move(lod));
 }
 
-std::weak_ptr<UMaterial> UMesh::getMaterial()
+std::shared_ptr<UMaterial> UMesh::getMaterial()
 {
-	if (m_pimpl.get()->m_material.expired())
+	if (m_pimpl->m_material == nullptr)
 	{
-		m_pimpl.get()->m_material = Utopia::getInstance().getDefaultMaterial();
+		m_pimpl->m_material = UMaterial::getDefaultMaterial();
 	}
-	return m_pimpl.get()->m_material;
+	return m_pimpl->m_material;
 }
 
-void UMesh::setMaterial(std::weak_ptr<UMaterial> material)
+void UMesh::setMaterial(std::shared_ptr<UMaterial> material)
 {
-	if(!material.expired())
-		m_pimpl.get()->m_material = material;
+	m_pimpl.get()->m_material = material;
 }
 
 void UMesh::render()
 {
 	UNode::render();
-	getMaterial().lock()->render();
+	getMaterial()->render();
 
 	if (m_pimpl->m_lods.size() > 0)
 	{
@@ -67,11 +66,8 @@ void UMesh::render()
 			glEnd();
 		}
 	}
-	//displayCube(30);
 
-	getMaterial().lock()->disable();
-
-
+	getMaterial()->disable();
 }
 
 UMesh::~UMesh() = default;

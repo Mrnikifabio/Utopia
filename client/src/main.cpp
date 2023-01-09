@@ -95,7 +95,7 @@ int main()
 	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(0,0));
 
 	UCamera::setMainCamera(camera);
-	Utopia::getInstance().get3DRenderPipeline().pass(root, glm::mat4(1));
+	Utopia::getInstance().get3DRenderPipeline().pass(root);
 
 	while (Utopia::getInstance().isRunning())
 	{

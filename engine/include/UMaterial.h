@@ -25,6 +25,7 @@ namespace utopia
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
+        static std::shared_ptr<UMaterial> m_defaultMaterial;
 
     public:
         LIB_API void disable();
@@ -38,6 +39,7 @@ namespace utopia
         LIB_API void setSpecular(const glm::vec4& specular);
         LIB_API void setShininess(int shininess);
         LIB_API void setTexture(std::shared_ptr<UTexture> texture);
+        LIB_API static const std::shared_ptr<UMaterial> getDefaultMaterial();
     };
 }
 

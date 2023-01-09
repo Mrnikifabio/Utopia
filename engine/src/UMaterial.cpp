@@ -8,6 +8,8 @@
 
 using namespace utopia;
 
+std::shared_ptr<UMaterial> UMaterial::m_defaultMaterial = std::make_shared<UMaterial>("default");
+
 struct UMaterial::pimpl
 {
 
@@ -86,6 +88,11 @@ void UMaterial::setShininess(int shininess)
 void UMaterial::setTexture(std::shared_ptr<UTexture> texture)
 {
     m_pimpl->m_texture = texture;
+}
+
+const std::shared_ptr<UMaterial> utopia::UMaterial::getDefaultMaterial()
+{
+    return m_defaultMaterial;
 }
 
 void UMaterial::disable()

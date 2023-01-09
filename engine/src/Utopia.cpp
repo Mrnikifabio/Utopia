@@ -65,13 +65,11 @@ struct Utopia::pimpl
 	std::unique_ptr<U3DRenderPipeline> m_3DRenderPipeline;
 	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
 	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
-	std::shared_ptr<UMaterial> m_defaultMaterial;
 
-	pimpl() : 
+	pimpl() :
 		m_initFlag{ false },
-		m_2DRenderPipeline { std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline"))},
-		m_3DRenderPipeline{ std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline"))},
-		m_defaultMaterial{ std::make_shared<UMaterial>("default") } {}
+		m_2DRenderPipeline{ std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline")) },
+		m_3DRenderPipeline{ std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline")) } {}
 };
 
 Utopia::Utopia() : m_pimpl{ std::unique_ptr<Utopia::pimpl>(new pimpl()) } {};
@@ -112,7 +110,7 @@ bool LIB_API Utopia::init()
 
 	char* myargv[1];
 	int myargc = 1;
-	myargv[0] = new char[6] {'U', 't', 'o', 'p', 'i', 'a'};
+	myargv[0] = {(char*)"Utopia"};
 	glutInit(&myargc, myargv);
 
 	// Set some optional flags:
@@ -258,7 +256,7 @@ LIB_API void utopia::Utopia::setBackgroundColor(glm::vec4 color)
 	glClearColor(color.r,color.g,color.b,color.a);
 }
 
-std::weak_ptr<UMaterial> Utopia::getMaterialByName(const std::string& name)
+std::shared_ptr<UMaterial> Utopia::getMaterialByName(const std::string& name)
 {
 	return m_pimpl->m_materials.at(name);
 }
@@ -267,12 +265,6 @@ void Utopia::addMaterial(std::string name, std::shared_ptr<UMaterial> material)
 {
 	m_pimpl->m_materials.insert(std::pair<std::string, std::shared_ptr<UMaterial>>(name, material));
 }
-
-std::weak_ptr<UMaterial> Utopia::getDefaultMaterial()
-{
-	return m_pimpl->m_defaultMaterial;
-}
-
 
 int Utopia::getWindowWidth()
 {
@@ -284,7 +276,7 @@ int Utopia::getWindowHeight()
 	return glutGet(GLUT_WINDOW_HEIGHT);
 }
 
-void utopia::Utopia::setTimer(int timeoutMs, void(*callback)(int), int value)
+void Utopia::setTimer(int timeoutMs, void(*callback)(int), int value)
 {
 	glutTimerFunc(timeoutMs, callback, value);
 }

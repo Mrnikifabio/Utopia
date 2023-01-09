@@ -49,15 +49,15 @@ namespace utopia
     private:
         std::unique_ptr<pimpl> m_pimpl;
         UMesh(const std::string& name);
-        UMesh(const std::string& name, std::weak_ptr<UMaterial> material);
+        UMesh(const std::string& name, std::shared_ptr<UMaterial> material);
         void pushLOD(std::unique_ptr<LOD>&&);
         friend OVOMeshStrategy;
 
     public:
         void render() override;
         LIB_API virtual ~UMesh() noexcept;
-        LIB_API std::weak_ptr<UMaterial> getMaterial();
-        LIB_API void setMaterial(std::weak_ptr<UMaterial> material);
+        LIB_API std::shared_ptr<UMaterial> getMaterial();
+        LIB_API void setMaterial(std::shared_ptr<UMaterial> material);
     };
 }
 
