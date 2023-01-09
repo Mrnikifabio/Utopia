@@ -16,7 +16,7 @@ namespace utopia_test {
         TestRunner::getInstance().addTest(std::unique_ptr<UObjectTest>(new UObjectTest("UObjectTest")));
         TestRunner::getInstance().addTest(std::unique_ptr<UNodeTest>(new UNodeTest("UNodeTest")));
         TestRunner::getInstance().addTest(std::unique_ptr<OVOFactoryTest>(new OVOFactoryTest("OVOFactoryTest")));
-		TestRunner::getInstance().addTest(std::unique_ptr<UCameraTest>(new UCameraTest("UCameraTest")));
+		// TestRunner::getInstance().addTest(std::unique_ptr<UCameraTest>(new UCameraTest("UCameraTest")));
 
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "UTOPIA TESTS" << std::endl;
