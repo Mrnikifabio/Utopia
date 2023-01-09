@@ -284,6 +284,11 @@ int Utopia::getWindowHeight()
 	return glutGet(GLUT_WINDOW_HEIGHT);
 }
 
+void utopia::Utopia::setTimer(int timeoutMs, void(*callback)(int), int value)
+{
+	glutTimerFunc(timeoutMs, callback, value);
+}
+
 
 std::shared_ptr<UTexture> Utopia::getTextureByName(const std::string& name)
 {

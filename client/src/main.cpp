@@ -13,15 +13,17 @@
 #include "Tower.h"
 #include "BoxesManager.h"
 #include "Box.h"
+#include <UText.h>
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY);
 void specialCallback(int key, int mouseX, int mouseY);
-
+void fpsCounterCallback(int value);
 void closeCallback();
 
 using namespace utopia;
 
-float g = -25;
+int fpsCounter = 0;
+int fpsToPrint = 0;
 std::shared_ptr<UCamera> camera;
 
 std::unique_ptr<client::Tower> tower = std::unique_ptr<client::Tower>(new client::Tower());
@@ -39,6 +41,7 @@ int main()
 	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
 	Utopia::getInstance().setSpecialCallback(specialCallback);
 	Utopia::getInstance().setCloseCallback(closeCallback);
+	Utopia::getInstance().setTimer(1000, fpsCounterCallback, 0);
 
 	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
 	camera = std::make_shared<UPerspectiveCamera>("perspCamera");
@@ -53,6 +56,9 @@ int main()
 	std::shared_ptr<UNode> towerNode;
 	std::shared_ptr<UNode> fisicalHookNode;
 	std::shared_ptr<UNode> cableNode;
+
+	std::shared_ptr<UText> fpsLabel = std::make_shared<UText>("name");
+	fpsLabel->setColor(glm::vec3(255, 255, 255));
 
 	hookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "hook");
 	towerNode = client::ClientUtility::getInstance().findGameObjectByName(root, "tower");
@@ -86,6 +92,7 @@ int main()
 	tower->setHookLimitforward(0.f);
 
 	boxesManager->setBoxes(boxesVector);
+	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(0,0));
 
 	UCamera::setMainCamera(camera);
 	Utopia::getInstance().get3DRenderPipeline().pass(root, glm::mat4(1));
@@ -96,8 +103,11 @@ int main()
 		Utopia::getInstance().clear();
 
 		boxesManager->computeGravity();
+		fpsCounter++;
+		fpsLabel->setText(std::to_string(fpsToPrint));
 
 		Utopia::getInstance().get3DRenderPipeline().render();
+		Utopia::getInstance().get2DRenderPipeline().render();
 		Utopia::getInstance().enableLighting();
 		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().swap();
@@ -196,6 +206,13 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	std::cout << "camera" << std::endl;
 	std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(camera)) << std::endl;
 
+}
+
+void fpsCounterCallback(int value)
+{
+	fpsToPrint = fpsCounter;
+	fpsCounter = 0;
+	Utopia::getInstance().setTimer(1000, fpsCounterCallback, 0);
 }
 
 void specialCallback(int key, int mouseX, int mouseY)

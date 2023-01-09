@@ -98,6 +98,8 @@ namespace utopia {
 		LIB_API int getWindowWidth();
 		LIB_API int getWindowHeight();
 
+		LIB_API void setTimer(int timeoutMs, void(*callback)(int), int value);
+
 	};
 
 }
