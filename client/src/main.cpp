@@ -49,7 +49,7 @@ int main()
 	camera->setNear(0.1f);
 	camera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 400.0f, 990.0f)));
 
-	auto root = OVOFactory::getInstance().fromFile("assets/gru15.ovo");
+	auto root = OVOFactory::getInstance().fromFile("gru15.ovo");
 
 
 	std::shared_ptr<UNode> hookNode;
