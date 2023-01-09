@@ -12,6 +12,13 @@ namespace utopia_test {
         void setAndGetDiffuse();
         void setAndGetSpecular();
         void setAndGetGlobalAmbient();
+		
+		void setAndGetConstantAttenuation();
+		void setAndGetLinearAttenuation();
+		void setAndGetQuadraticAttenuation();
+		
+		void setAndGetCutoff();
+		void setAndGetDirection();
 
 	public:
 		ULightTest(const std::string& name);
