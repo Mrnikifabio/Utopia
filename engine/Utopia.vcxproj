@@ -38,6 +38,7 @@
     <ClCompile Include="src\UOmniLight.cpp" />
     <ClCompile Include="src\UOrthographicCamera.cpp" />
     <ClCompile Include="src\UPerspectiveCamera.cpp" />
+    <ClCompile Include="src\USpecialKeys.cpp" />
     <ClCompile Include="src\U3DRenderPipeline.cpp" />
     <ClCompile Include="src\USpotLight.cpp" />
     <ClCompile Include="src\UText.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="include\UOmniLight.h" />
     <ClInclude Include="include\UOrthographicCamera.h" />
     <ClInclude Include="include\UPerspectiveCamera.h" />
+    <ClInclude Include="include\USpecialKeys.h" />
     <ClInclude Include="include\U3DRenderPipeline.h" />
     <ClInclude Include="include\USpotLight.h" />
     <ClInclude Include="include\UText.h" />
@@ -83,6 +85,9 @@
     <ClInclude Include="test\TestRunner.h" />
     <ClInclude Include="test\UNodeTest.h" />
     <ClInclude Include="test\UObjectTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

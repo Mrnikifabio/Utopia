@@ -47,7 +47,8 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
     buffer->position += (static_cast<unsigned int>(materialName.length()) + 1);
 
     //load material from static material hashMap if exist
-    loadMaterial(*mesh, materialName);
+    if(materialName !="[none]")
+        loadMaterial(*mesh, materialName);
 
 
 

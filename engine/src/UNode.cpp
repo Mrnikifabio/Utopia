@@ -51,15 +51,18 @@ void UNode::setModelView(const glm::mat4& mv)
 glm::mat4 UNode::getFinalWorldCoordinates() const
 {
 	UNode* node = getParent();
-	glm::mat4 m = glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * getModelView();
 
+	glm::mat4 m = getModelView();
 	if (node != nullptr)
 	{
 		do
 		{
-			m = m * node->getModelView();
+			m = node->getModelView() * m;
 		} while ((node = node->getParent()) != nullptr);
 	}
+
+	m = glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * m;
+
 
 	return m;
 }
@@ -121,12 +124,31 @@ auto UNode::detachChild(const unsigned int i) -> std::shared_ptr<UNode>
 	else throw std::out_of_range("Child index is out of range");
 }
 
+auto utopia::UNode::detachChildById(const unsigned int id) -> std::shared_ptr<UNode>
+{
+	for (unsigned int i=0; i < getChildCount(); i++)
+	{
+		if (m_pimpl->m_children[i]->getId() == id)
+		{
+			m_pimpl->m_children[i]->setParent(nullptr);
+			std::shared_ptr<UNode> child = m_pimpl->m_children[i];
+			m_pimpl->m_children.erase(m_pimpl->m_children.begin() + i);
+			return child;
+		}
+	}
+	throw std::out_of_range("Child with id not present");
+}
+
+
 auto UNode::getChild(const unsigned int i) const -> std::weak_ptr<UNode>
 {
 	if(i < getChildCount())
 		return std::weak_ptr<UNode>{m_pimpl->m_children[i]};
 	else throw std::out_of_range("Child index is out of range");
 }
+
+
+
 
 auto UNode::getChildren() const -> const std::vector<std::shared_ptr<UNode>>&
 {

@@ -33,11 +33,8 @@ namespace utopia
 		friend OVONodeAbstractStrategy;
 
 	public:
-		LIB_API static OVOFactory& getInstance()
-		{
-			static OVOFactory m_instance;
-			return m_instance;
-		}
+		LIB_API static OVOFactory& getInstance();
+		
 
 		OVOFactory(OVOFactory const&) = delete;
 		void operator=(OVOFactory const&) = delete;
