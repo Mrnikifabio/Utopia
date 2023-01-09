@@ -8,6 +8,7 @@
 #include "OVOFactoryTest.h"
 #include "UNodeTest.h"
 #include "UCameraTest.h"
+#include "ULightTest.h"
 
 namespace utopia_test {
 
@@ -17,6 +18,7 @@ namespace utopia_test {
         TestRunner::getInstance().addTest(std::unique_ptr<UNodeTest>(new UNodeTest("UNodeTest")));
         TestRunner::getInstance().addTest(std::unique_ptr<OVOFactoryTest>(new OVOFactoryTest("OVOFactoryTest")));
 		// TestRunner::getInstance().addTest(std::unique_ptr<UCameraTest>(new UCameraTest("UCameraTest")));
+		// TestRunner::getInstance().addTest(std::unique_ptr<ULightTest>(new ULightTest("ULightTest")));
 
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "UTOPIA TESTS" << std::endl;

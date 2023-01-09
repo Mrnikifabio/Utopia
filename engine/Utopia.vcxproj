@@ -45,6 +45,7 @@
     <ClCompile Include="src\UTexture.cpp" />
     <ClCompile Include="src\UTextureFactory.cpp" />
     <ClCompile Include="src\Utopia.cpp" />
+    <ClCompile Include="test\ULightTest.cpp" />
     <ClCompile Include="test\OVOFactoryTest.cpp" />
     <ClCompile Include="test\RunUtopiaTest.cpp" />
     <ClCompile Include="test\Test.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="test\Test.h" />
     <ClInclude Include="test\TestRunner.h" />
     <ClInclude Include="test\UCameraTest.h" />
+    <ClInclude Include="test\ULightTest.h" />
     <ClInclude Include="test\UNodeTest.h" />
     <ClInclude Include="test\UObjectTest.h" />
   </ItemGroup>
