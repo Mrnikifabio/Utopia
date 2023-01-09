@@ -108,7 +108,8 @@ out_test: before_debug before_test $(OBJ_TEST)
 	$(LD) $(OBJ_TEST) -o $(OUTDIR_TEST) $(LDFLAGS_DEBUG) $(LIBDIR_DEBUG) $(LIB)
  
 after_test: out_test
-	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH_TEST) ./$(OUTDIR_TEST)
+	Xvfb :99 -screen 0 1920x1080x16 &
+	DISPLAY=:99 LD_LIBRARY_PATH=$(LD_LIBRARY_PATH_TEST) ./$(OUTDIR_TEST)
  
 clean_test:
 	rm -rf $(OUTDIR_TEST)
