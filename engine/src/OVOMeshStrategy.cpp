@@ -133,7 +133,7 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
 
     for (unsigned int l = 0; l < LODs; l++)
     {
-        auto lod = std::make_unique<UMesh::LOD>();
+        auto lod = std::unique_ptr<UMesh::LOD>(new UMesh::LOD());
 
         // Nr. of vertices:
         unsigned int nrVertices, nrFaces;

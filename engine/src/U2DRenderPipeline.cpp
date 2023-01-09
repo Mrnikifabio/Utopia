@@ -19,13 +19,13 @@ struct U2DRenderPipeline::U2DRenderNode {
 };
 
 
-U2DRenderPipeline::U2DRenderPipeline(const std::string& name) : UObject(name), m_pimpl{ std::make_unique<pimpl>() } {}
+U2DRenderPipeline::U2DRenderPipeline(const std::string& name) : UObject(name), m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {}
 
 U2DRenderPipeline::~U2DRenderPipeline() = default;
 
 void U2DRenderPipeline::pass(std::weak_ptr<U2DObject> node, const glm::vec2& pos)
 {
-	auto renderNode = std::make_unique<U2DRenderNode>(node, pos);
+	auto renderNode = std::unique_ptr<U2DRenderNode>(new U2DRenderNode(node, pos));
 	m_pimpl->m_nodes.push_back(std::move(renderNode));
 }
 

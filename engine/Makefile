@@ -12,7 +12,7 @@ LD = g++
 WINDRES = windres
 
 INC = -I../dependencies/freeglut/include -I../dependencies/glm/include -Iinclude
-CFLAGS = -Wall -std=c++14 -fPIC -fexceptions
+CFLAGS = -Wall -std=c++11 -fPIC -fexceptions
 RESINC = 
 LIBDIR = 
 SRCDIR = src

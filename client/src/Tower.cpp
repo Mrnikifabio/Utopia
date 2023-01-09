@@ -38,8 +38,8 @@ struct Tower::pimpl
 	}
 };
 
-Tower::Tower(std::shared_ptr<utopia::UNode> tower) : m_pimpl{ std::make_unique<Tower::pimpl>(tower) } {};
-Tower::Tower() : m_pimpl{ std::make_unique<Tower::pimpl>() } {}
+Tower::Tower(std::shared_ptr<utopia::UNode> tower) : m_pimpl{ std::unique_ptr<Tower::pimpl>(new Tower::pimpl(tower)) } {};
+Tower::Tower() : m_pimpl{ std::unique_ptr<Tower::pimpl>(new Tower::pimpl()) } {}
 client::Tower::~Tower() {};
 
 void client::Tower::setRoot(std::shared_ptr<utopia::UNode> root)

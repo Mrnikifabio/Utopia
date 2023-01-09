@@ -17,7 +17,7 @@ struct OVOFactory::pimpl {
 };
 
 
-OVOFactory::OVOFactory() : m_pimpl{ std::make_unique<pimpl>() }
+OVOFactory::OVOFactory() : m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) }
 {
     loadStrategies();
 }

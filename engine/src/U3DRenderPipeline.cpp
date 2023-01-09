@@ -19,13 +19,13 @@ struct U3DRenderPipeline::U3DRenderNode {
 	}
 };
 
-U3DRenderPipeline::U3DRenderPipeline(const std::string& name) : UObject(name), m_pimpl{ std::make_unique<pimpl>() } {}
+U3DRenderPipeline::U3DRenderPipeline(const std::string& name) : UObject(name), m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {}
 
 U3DRenderPipeline::~U3DRenderPipeline() = default;
 
 void U3DRenderPipeline::pass(std::weak_ptr<UNode> node, const glm::mat4& mat)
 {
-	auto uRenderNode = std::make_unique<U3DRenderNode>(node, mat);
+	auto uRenderNode = std::unique_ptr<U3DRenderNode>(new U3DRenderNode(node, mat));
 	m_pimpl->m_nodes.push_back(std::move(uRenderNode));
 }
 

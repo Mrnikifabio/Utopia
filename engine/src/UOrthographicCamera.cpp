@@ -4,7 +4,7 @@
 
 using namespace utopia;
 
-UOrthographicCamera::UOrthographicCamera(const std::string& name) : m_right{ (float)Utopia::getInstance().getWindowWidth() }, m_left{0.0f}, m_top{ (float)Utopia::getInstance().getWindowHeight() }, m_bottom{0.0f}, UCamera(name) {}
+UOrthographicCamera::UOrthographicCamera(const std::string& name) : UCamera(name), m_right{ (float)Utopia::getInstance().getWindowWidth() }, m_left{0.0f}, m_top{ (float)Utopia::getInstance().getWindowHeight() }, m_bottom{0.0f}{}
 
 const glm::mat4 UOrthographicCamera::getCameraMatrix() const
 {

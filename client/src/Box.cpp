@@ -16,7 +16,7 @@ struct Box::pimpl
 	
 };
 
-client::Box::Box() : m_pimpl{ std::make_unique<pimpl>() } {};
+client::Box::Box() : m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {};
 
 client::Box::~Box()
 {

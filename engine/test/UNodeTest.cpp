@@ -35,7 +35,7 @@ void UNodeTest::modelViewTest()
 {
 	using namespace utopia;
 
-	auto node = std::make_unique<UNode>("");
+	auto node = std::unique_ptr<UNode>(new UNode(""));
 	assert(node->getModelView() == glm::mat4(1));
 
 	node->setModelView(glm::translate(glm::mat4(1), glm::vec3(1,2,3)));
@@ -46,12 +46,12 @@ void UNodeTest::childTest()
 {
 	using namespace utopia;
 
-	auto node = std::make_unique<UNode>("parent");
+	auto node = std::unique_ptr<UNode>(new UNode("parent"));
 	assert(node->getParent() == nullptr);
 
-	node->addChild(std::make_unique<UNode>("child1"));
-	node->addChild(std::make_unique<UNode>("child2"));
-	node->addChild(std::make_unique<UNode>("child3"));
+	node->addChild(std::unique_ptr<UNode>(new UNode("child1")));
+	node->addChild(std::unique_ptr<UNode>(new UNode("child2")));
+	node->addChild(std::unique_ptr<UNode>(new UNode("child3")));
 
 	assert(node->getChildCount() == 3);
 
@@ -63,10 +63,10 @@ void UNodeTest::childTest()
 void UNodeTest::parentTest()
 {
 	using namespace utopia;
-	auto node = std::make_unique<UNode>("parent");
+	auto node = std::unique_ptr<UNode>(new UNode("parent"));
 	assert(node->getParent() == nullptr);
 
-	node->addChild(std::make_unique<UNode>("child1"));
+	node->addChild(std::unique_ptr<UNode>(new UNode("child1")));
 	auto child = node->getChild(0);
 	assert(child.lock()->getParent()->getId() == node->getId());
 
@@ -77,12 +77,12 @@ void UNodeTest::parentTest()
 void UNodeTest::childrenTest()
 {
 	using namespace utopia;
-	auto node = std::make_unique<UNode>("parent");
+	auto node = std::unique_ptr<UNode>(new UNode("parent"));
 	assert(node->getParent() == nullptr);
 
-	node->addChild(std::make_unique<UNode>("child1"));
-	node->addChild(std::make_unique<UNode>("child2"));
-	node->addChild(std::make_unique<UNode>("child3"));
+	node->addChild(std::unique_ptr<UNode>(new UNode("child1")));
+	node->addChild(std::unique_ptr<UNode>(new UNode("child2")));
+	node->addChild(std::unique_ptr<UNode>(new UNode("child3")));
 
 	int i = 1;
 	std::string name = "child";
@@ -99,7 +99,7 @@ void UNodeTest::finalWorldCoordinatesTest()
 	auto translate = glm::translate(glm::mat4(1), glm::vec3(1,2,3));
 	auto rotate = glm::rotate(glm::mat4(1), glm::radians(23.0f), glm::vec3(0, 1, 0));
 
-	auto node = std::make_unique<UNode>("root");
+	auto node = std::unique_ptr<UNode>(new UNode("root"));
 	auto child1 = std::make_shared<UNode>("c1");
 	child1->setModelView(rotate);
 	auto child2 = std::make_shared<UNode>("c2");
@@ -108,7 +108,7 @@ void UNodeTest::finalWorldCoordinatesTest()
 	node->addChild(child1);
 	child1->addChild(child2);
 
-	assert(child2->getFinalWorldCoordinates() == glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * translate * rotate * glm::mat4(1));
-	assert(child1->getFinalWorldCoordinates() == glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * rotate * glm::mat4(1));
-	assert(node->getFinalWorldCoordinates() == glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * glm::mat4(1));
+	assert(child2->getFinalWorldCoordinates() == glm::mat4(1) * rotate * translate * glm::inverse(UCamera::getMainCamera().lock()->getModelView()));
+	assert(child1->getFinalWorldCoordinates() == glm::mat4(1) * rotate * glm::inverse(UCamera::getMainCamera().lock()->getModelView()));
+	assert(node->getFinalWorldCoordinates() == glm::mat4(1) * glm::inverse(UCamera::getMainCamera().lock()->getModelView()));
 }

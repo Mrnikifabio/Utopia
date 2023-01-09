@@ -39,7 +39,7 @@ ULight::ULight(const std::string& name) : UNode{ name }
 	{
 		throw std::runtime_error("No more lights available");
 	}
-	m_pimpl = std::make_unique<pimpl>(m_freeLightIDs.top());
+	m_pimpl = std::unique_ptr<pimpl>(new pimpl(m_freeLightIDs.top()));
 	m_freeLightIDs.pop();
 }
 

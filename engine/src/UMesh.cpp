@@ -23,8 +23,8 @@ struct UMesh::pimpl {
 
 };
 
-UMesh::UMesh(const std::string& name) : UNode{ name }, m_pimpl{ std::make_unique<pimpl>() } {}
-UMesh::UMesh(const std::string& name, std::weak_ptr<UMaterial> material) : UNode{ name }, m_pimpl { std::make_unique<pimpl>(material) } {}
+UMesh::UMesh(const std::string& name) : UNode{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {}
+UMesh::UMesh(const std::string& name, std::weak_ptr<UMaterial> material) : UNode{ name }, m_pimpl { std::unique_ptr<pimpl>(new pimpl(material)) } {}
 
 void UMesh::pushLOD(std::unique_ptr<LOD>&& lod)
 {

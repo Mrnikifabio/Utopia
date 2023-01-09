@@ -12,9 +12,9 @@ namespace utopia_test {
 
     void launchTest()
     {
-        TestRunner::getInstance().addTest(std::make_unique<UObjectTest>("UObjectTest"));
-        TestRunner::getInstance().addTest(std::make_unique<UNodeTest>("UNodeTest"));
-        TestRunner::getInstance().addTest(std::make_unique<OVOFactoryTest>("OVOFactoryTest"));
+        TestRunner::getInstance().addTest(std::unique_ptr<UObjectTest>(new UObjectTest("UObjectTest")));
+        TestRunner::getInstance().addTest(std::unique_ptr<UNodeTest>(new UNodeTest("UNodeTest")));
+        TestRunner::getInstance().addTest(std::unique_ptr<OVOFactoryTest>(new OVOFactoryTest("OVOFactoryTest")));
 
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "UTOPIA TESTS" << std::endl;

@@ -90,9 +90,6 @@
     <ClCompile Include="src\Utopia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test\RunTest.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="test\Test.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
@@ -119,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="src\USpecialKeys.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test\RunUtopiaTest.cpp">
+      <Filter>Tests\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,8 +218,5 @@
     <ClInclude Include="include\USpecialKeys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

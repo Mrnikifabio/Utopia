@@ -16,7 +16,7 @@ struct UObject::pimpl {
 	}
 };
 
-UObject::UObject(const std::string& name) : m_pimpl{ std::make_unique<pimpl>(name, UObject::m_id_counter++) } {}
+UObject::UObject(const std::string& name) : m_pimpl{ std::unique_ptr<pimpl>(new pimpl(name, UObject::m_id_counter++)) } {}
 
 UObject::~UObject() noexcept = default;
 

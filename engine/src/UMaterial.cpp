@@ -42,11 +42,11 @@ struct UMaterial::pimpl
 };
 
 UMaterial::UMaterial(const std::string& name)
-    :UObject{ name }, m_pimpl{ std::make_unique<pimpl>() } {}
+    :UObject{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {}
 
 
 UMaterial::UMaterial(const std::string& name, const glm::vec4& emission, const glm::vec4& ambient, const glm::vec4& diffuse, const glm::vec4& specular, int shininess)
-    :UObject{ name }, m_pimpl{ std::make_unique<pimpl>(emission, ambient, diffuse, specular, shininess) } {}
+    :UObject{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(emission, ambient, diffuse, specular, shininess)) } {}
 
 
 

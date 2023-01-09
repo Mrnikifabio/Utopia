@@ -35,7 +35,7 @@ struct UTexture::pimpl
 
 
 UTexture::UTexture(const std::string& name, unsigned int texId)
-    :UObject{ name }, m_pimpl{ std::make_unique<pimpl>(texId) } {}
+    :UObject{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(texId)) } {}
 
 void utopia::UTexture::enableNearestFilter()
 {

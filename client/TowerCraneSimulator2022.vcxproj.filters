@@ -30,9 +30,6 @@
     <ClCompile Include="test\ConcreteTestExample.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test\main.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="test\Test.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
@@ -50,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="src\BoxesManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test\RunTowerCraneTest.cpp">
+      <Filter>Tests\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

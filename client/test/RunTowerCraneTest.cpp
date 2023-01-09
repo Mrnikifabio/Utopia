@@ -9,13 +9,13 @@ namespace utopia_test {
 
     void launchTest()
     {
-        TestRunner::getInstance().addTest(std::make_unique<ConcreteTestExample>("test1"));
+        TestRunner::getInstance().addTest(std::unique_ptr<ConcreteTestExample>(new ConcreteTestExample("test1")));
 
-        std::cout << "-------------" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
         std::cout << "TOWERCRANESIMULATOR2022 TESTS" << std::endl;
         TestRunner::getInstance().run();
-        std::cout << "-------------" << std::endl;
-        std::cout << "All tests have been finished!" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "All tests have passed!" << std::endl;
     }
 
 }

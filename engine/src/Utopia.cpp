@@ -60,21 +60,21 @@ using namespace utopia;
 
 struct Utopia::pimpl
 {
-	std::unique_ptr<U3DRenderPipeline> m_3DRenderPipeline;
+	bool m_initFlag;
 	std::unique_ptr<U2DRenderPipeline> m_2DRenderPipeline;
+	std::unique_ptr<U3DRenderPipeline> m_3DRenderPipeline;
 	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
 	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
 	std::shared_ptr<UMaterial> m_defaultMaterial;
-	bool m_initFlag;
 
 	pimpl() : 
 		m_initFlag{ false },
-		m_2DRenderPipeline { std::make_unique<U2DRenderPipeline>("2DRenderPipeline")},
-		m_3DRenderPipeline{ std::make_unique<U3DRenderPipeline>("3DRenderPipeline") },
+		m_2DRenderPipeline { std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline"))},
+		m_3DRenderPipeline{ std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline"))},
 		m_defaultMaterial{ std::make_shared<UMaterial>("default") } {}
 };
 
-Utopia::Utopia() : m_pimpl{ std::make_unique<Utopia::pimpl>() } {};
+Utopia::Utopia() : m_pimpl{ std::unique_ptr<Utopia::pimpl>(new pimpl()) } {};
 Utopia::~Utopia() {}
 
 

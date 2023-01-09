@@ -10,7 +10,7 @@ struct BoxesManager::pimpl
 };
 
 
-client::BoxesManager::BoxesManager() : m_pimpl{ std::make_unique<pimpl>() } {};
+client::BoxesManager::BoxesManager() : m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {};
 
 client::BoxesManager::~BoxesManager()
 {

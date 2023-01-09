@@ -18,7 +18,7 @@ struct UNode::pimpl {
 	}
 };
 
-UNode::UNode(const std::string& name) : UObject{ name }, m_pimpl{ std::make_unique<pimpl>() }{}
+UNode::UNode(const std::string& name) : UObject{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) }{}
 
 UNode::~UNode() noexcept = default;
 

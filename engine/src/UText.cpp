@@ -13,8 +13,8 @@ struct UText::pimpl {
 	pimpl() : m_text{ "" }, m_color{ glm::vec3(0,0,0) }, m_font{ Font::HELVETICA_18 } {};
 };
 
-UText::UText(const std::string& name, const std::string& text, const Font& font, const glm::vec2& position, const glm::vec3& color) : U2DObject(name, position), m_pimpl{ std::make_unique<pimpl>(text, font, color)} {}
-UText::UText(const std::string& name) : U2DObject(name), m_pimpl{ std::make_unique<pimpl>() } {}
+UText::UText(const std::string& name, const std::string& text, const Font& font, const glm::vec2& position, const glm::vec3& color) : U2DObject(name, position), m_pimpl{ std::unique_ptr<pimpl>(new pimpl(text, font, color))} {}
+UText::UText(const std::string& name) : U2DObject(name), m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {}
 UText::~UText() = default;
 
 void UText::render()

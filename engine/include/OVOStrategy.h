@@ -13,7 +13,7 @@ namespace utopia
 
 			Buffer(const int bufferSize)
 			{
-				data = std::make_unique<char[]>(bufferSize);
+				data = std::unique_ptr<char[]>(new char[bufferSize]);
 				position = 0;
 			}
 		};

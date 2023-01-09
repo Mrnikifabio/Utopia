@@ -24,8 +24,8 @@ using namespace utopia;
 float g = -25;
 std::shared_ptr<UCamera> camera;
 
-std::unique_ptr<client::Tower> tower = std::make_unique<client::Tower>();
-std::unique_ptr <client::BoxesManager> boxesManager = std::make_unique<client::BoxesManager>();
+std::unique_ptr<client::Tower> tower = std::unique_ptr<client::Tower>(new client::Tower());
+std::unique_ptr <client::BoxesManager> boxesManager = std::unique_ptr<client::BoxesManager>(new  client::BoxesManager());
 
 
 
@@ -40,6 +40,7 @@ int main()
 	Utopia::getInstance().setSpecialCallback(specialCallback);
 	Utopia::getInstance().setCloseCallback(closeCallback);
 
+	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
 	camera = std::make_shared<UPerspectiveCamera>("perspCamera");
 	camera->setFar(2000.0f);
 	camera->setNear(0.1f);
@@ -93,8 +94,10 @@ int main()
 	{
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
+
+		boxesManager->computeGravity();
+
 		Utopia::getInstance().get3DRenderPipeline().render();
-		Utopia::getInstance().get2DRenderPipeline().render();
 		Utopia::getInstance().enableLighting();
 		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().swap();

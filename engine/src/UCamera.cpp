@@ -13,7 +13,7 @@ struct UCamera::pimpl {
 };
 
 UCamera::UCamera(const std::string& name)
-	: UNode{ name }, m_pimpl{ std::make_unique<pimpl>(100.0f, 1.0f) } {}
+	: UNode{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(100.0f, 1.0f)) } {}
 
 void UCamera::setMainCamera(std::weak_ptr<UCamera> camera)
 {
