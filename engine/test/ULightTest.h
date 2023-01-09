@@ -8,10 +8,10 @@ namespace utopia_test {
 		void execute() override;
         void initAndGetIDsTest();
 
-        void setAndGetAmbient(const glm::vec4& ambient);
-        void setAndGetDiffuse(const glm::vec4& diffuse);
-        void setAndGetSpecular(const glm::vec4& specular);
-        void setAndGetGlobalAmbient(const glm::vec4& gAmbient);
+        void setAndGetAmbient();
+        void setAndGetDiffuse();
+        void setAndGetSpecular();
+        void setAndGetGlobalAmbient();
 
 	public:
 		ULightTest(const std::string& name);

@@ -14,16 +14,16 @@ void ULightTest::execute()
 	initAndGetIDsTest();
 	std::cout << "init IDs passed" << std::endl;
 
-	setAndGetAmbient(glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
+	setAndGetAmbient();
 	std::cout << "set and get ambient passed" << std::endl;
 
-	setAndGetDiffuse(glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
+	setAndGetDiffuse();
 	std::cout << "set and get diffuse passed" << std::endl;
 
-	setAndGetSpecular(glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
+	setAndGetSpecular();
 	std::cout << "set and get specular passed" << std::endl;
 
-	setAndGetGlobalAmbient(glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
+	setAndGetGlobalAmbient();
 	std::cout << "set and get global ambient passed" << std::endl;
 
 }
@@ -37,38 +37,38 @@ void ULightTest::initAndGetIDsTest()
 	assert(light.getLightID() == 0);
 }
 
-void ULightTest::setAndGetAmbient(const glm::vec4& ambient)
+void ULightTest::setAndGetAmbient()
 {
 	using namespace utopia;
 
 	auto light = ULight("light");
-	light.setAmbient(ambient);
-	assert(light.getAmbient() == ambient);
+	light.setAmbient(glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
+	assert(light.getAmbient() == glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
 }
 
-void ULightTest::setAndGetDiffuse(const glm::vec4& diffuse)
+void ULightTest::setAndGetDiffuse()
 {
 	using namespace utopia;
 
 	auto light = ULight("light");
-	light.setDiffuse(diffuse);
-	assert(light.getDiffuse() == diffuse);
+	light.setDiffuse(glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
+	assert(light.getDiffuse() == glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
 }
 
-void ULightTest::setAndGetSpecular(const glm::vec4& specular)
+void ULightTest::setAndGetSpecular()
 {
 	using namespace utopia;
 
 	auto light = ULight("light");
-	light.setSpecular(specular);
-	assert(light.getSpecular() == specular);
+	light.setSpecular(glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
+	assert(light.getSpecular() == glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
 }
 
-void ULightTest::setAndGetGlobalAmbient(const glm::vec4& gAmbient)
+void ULightTest::setAndGetGlobalAmbient()
 {
 	using namespace utopia;
 
 	auto light = ULight("light");
-	light.setGlobalAmbient(gAmbient);
-	assert(light.getGlobalAmbient() == gAmbient);
+	light.setGlobalAmbient(glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
+	assert(light.getGlobalAmbient() == glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
 }
