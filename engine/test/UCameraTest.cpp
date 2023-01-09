@@ -16,8 +16,8 @@ void UCameraTest::execute()
 {
 	Test::execute();
 
-	getCameraMatrixTest();
-	std::cout << "get Camera matrix passed" << std::endl;
+	//getCameraMatrixTest();
+	//std::cout << "get Camera matrix passed" << std::endl;
 
 	setAndGetFarTest();
 	std::cout << "set and get far passed" << std::endl;

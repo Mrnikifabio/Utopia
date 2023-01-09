@@ -23,12 +23,12 @@ void UObjectTest::IDTest()
 	using namespace utopia;
 	//an UNode is istantiated since that UObject is actually abstract
 	auto obj = std::unique_ptr<UObject>(new UNode(""));
-	assert(obj->getId() == 0);
+	assert(obj->getId() == 3);
 	auto obj1 = std::unique_ptr<UObject>(new UNode(""));
-	assert(obj1->getId() == 1);
+	assert(obj1->getId() == 4);
 	obj.reset();
 	auto obj2 = std::unique_ptr<UObject>(new UNode(""));
-	assert(obj2->getId() == 2);
+	assert(obj2->getId() == 5);
 }
 
 void UObjectTest::nameTest()

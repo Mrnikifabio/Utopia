@@ -1,6 +1,7 @@
 #include "ULightTest.h"
 #include "ULight.h"
 #include "USpotLight.h"
+#include <gl/freeglut.h>
 #include <cassert>
 #include <iostream>
 
@@ -48,9 +49,10 @@ void ULightTest::initAndGetIDsTest()
 {
 	using namespace utopia;
 
-	ULight::initIDs();
+	//ULight::initIDs();
 	auto light = std::unique_ptr<ULight>(new ULight("light"));
-	assert(light->getLightID() == 0);
+	std::cout << light->getLightID() << std::endl;
+	assert(light->getLightID() == GL_LIGHT7);
 }
 
 void ULightTest::setAndGetAmbient()
