@@ -12,8 +12,15 @@
 
 using namespace utopia;
 
+// standalone function object
+struct OVOObjectTypeHash {
+    std::size_t operator()(OVOObject::Type e) const {
+        return static_cast<std::size_t>(e);
+    }
+};
+
 struct OVOFactory::pimpl {
-    std::unordered_map<OVOObject::Type, std::reference_wrapper<OVOStrategy>> ovoStrategies;
+    std::unordered_map<OVOObject::Type, std::reference_wrapper<OVOStrategy>, OVOObjectTypeHash> ovoStrategies;
 };
 
 
