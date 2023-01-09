@@ -49,6 +49,7 @@
     <ClCompile Include="test\RunUtopiaTest.cpp" />
     <ClCompile Include="test\Test.cpp" />
     <ClCompile Include="test\TestRunner.cpp" />
+    <ClCompile Include="test\UCameraTest.cpp" />
     <ClCompile Include="test\UNodeTest.cpp" />
     <ClCompile Include="test\UObjectTest.cpp" />
   </ItemGroup>
@@ -83,6 +84,7 @@
     <ClInclude Include="test\OVOFactoryTest.h" />
     <ClInclude Include="test\Test.h" />
     <ClInclude Include="test\TestRunner.h" />
+    <ClInclude Include="test\UCameraTest.h" />
     <ClInclude Include="test\UNodeTest.h" />
     <ClInclude Include="test\UObjectTest.h" />
   </ItemGroup>

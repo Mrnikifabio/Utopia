@@ -120,6 +120,9 @@
     <ClCompile Include="test\RunUtopiaTest.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="test\UCameraTest.cpp">
+      <Filter>Tests\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\OVOFactory.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="include\USpecialKeys.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test\UCameraTest.h">
+      <Filter>Tests\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
