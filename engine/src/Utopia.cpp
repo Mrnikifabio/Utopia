@@ -226,6 +226,11 @@ void Utopia::setCloseCallback(void(*callback)(void))
 	glutCloseFunc(callback);
 }
 
+void utopia::Utopia::setPassiveMotionCallback(void(*callback)(int, int))
+{
+	glutPassiveMotionFunc(callback);
+}
+
 void Utopia::mainLoop()
 {
 	glutMainLoopEvent();

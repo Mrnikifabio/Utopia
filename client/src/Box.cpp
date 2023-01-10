@@ -84,6 +84,6 @@ void client::Box::take()
 
 void client::Box::release()
 {
-	m_pimpl->m_hookPoint->setModelView(utopia::UCamera::getMainCamera().lock()->getModelView()*m_pimpl->m_hookPoint->getFinalWorldCoordinates());
+	m_pimpl->m_hookPoint->setModelView(m_pimpl->m_hookPoint->getFinalWorldCoordinates());
 	m_pimpl->m_isHooked = false;
 }

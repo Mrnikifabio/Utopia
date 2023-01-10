@@ -17,6 +17,7 @@
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY);
 void specialCallback(int key, int mouseX, int mouseY);
+void passiveMotionCallback(int x, int y);
 void fpsCounterCallback(int value);
 void closeCallback();
 
@@ -24,11 +25,18 @@ using namespace utopia;
 
 int fpsCounter = 0;
 int fpsToPrint = 0;
-std::shared_ptr<UCamera> camera;
+
+std::shared_ptr<UCamera> freeCamera;
+std::shared_ptr<UCamera> fixedCamera;
+std::shared_ptr<UCamera> towerCamera;
+std::shared_ptr<UCamera> orthoCamera;
+
+
 
 std::unique_ptr<client::Tower> tower = std::unique_ptr<client::Tower>(new client::Tower());
 std::unique_ptr <client::BoxesManager> boxesManager = std::unique_ptr<client::BoxesManager>(new  client::BoxesManager());
 
+float sensibility=0.5f;
 
 
 
@@ -38,32 +46,69 @@ int main()
 	Utopia::getInstance().setBackgroundColor(glm::vec4(0.5f,1.f,1.f,1.f));
 	Utopia::getInstance().enableDepth();
 	Utopia::getInstance().enableCullFace();
+	Utopia::getInstance().enableShadeModel();
 	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
 	Utopia::getInstance().setSpecialCallback(specialCallback);
 	Utopia::getInstance().setCloseCallback(closeCallback);
+	Utopia::getInstance().setPassiveMotionCallback(passiveMotionCallback);
 	Utopia::getInstance().setTimer(1000, fpsCounterCallback, 0);
 
+
+
 	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
-	camera = std::make_shared<UPerspectiveCamera>("perspCamera");
-	camera->setFar(2000.0f);
-	camera->setNear(0.1f);
-	camera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 400.0f, 990.0f)));
+	freeCamera = std::make_shared<UPerspectiveCamera>("freeCamera");
+	freeCamera->setFar(3000.0f);
+	freeCamera->setNear(0.1f);
+	freeCamera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 400.0f, 990.0f)));
 
-	auto root = OVOFactory::getInstance().fromFile("gru15.ovo");
+	orthoCamera = std::make_shared<UOrthographicCamera>("orthoCamera");
+	orthoCamera->setFar(3000.0f);
+	orthoCamera->setNear(0.1f);
+	orthoCamera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 400.0f, 990.0f)));
 
+	towerCamera = std::make_shared<UPerspectiveCamera>("towerCamera");
+	towerCamera->setFar(3000.0f);
+	towerCamera->setNear(0.1f);
+	towerCamera->setModelView(glm::rotate(glm::mat4(1.f), glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f)));
+	towerCamera->setModelView(glm::rotate(towerCamera->getModelView(), glm::radians(-45.f), glm::vec3(1.f, 0.f, 0.f)));
+	towerCamera->setModelView(glm::translate(towerCamera->getModelView(), glm::vec3(-100.f, 100.f, 400.f)));
+
+	fixedCamera = std::make_shared<UPerspectiveCamera>("fixedCamera");
+	fixedCamera->setFar(3000.0f);
+	fixedCamera->setNear(0.1f);
+	fixedCamera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(-900.0f, 400.0f, 990.0f)));
+	fixedCamera->setModelView(glm::rotate(fixedCamera->getModelView(), glm::radians(-45.f), glm::vec3(0.f, 1.f, 0.f)));
+
+
+
+	auto root = OVOFactory::getInstance().fromFile("gru18.ovo");
+
+	std::unique_ptr<U3DRenderPipeline> shadowRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("shadow"));
+	std::shared_ptr<UMaterial> shadowMaterial = std::make_shared<UMaterial>("shadow", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 128);
+	std::shared_ptr<UNode> shadowRoot = std::make_shared<UNode>("shadowRoot");
+
+	shadowRenderPipeline->pass(shadowRoot, glm::translate(glm::scale(glm::mat4(1.f), glm::vec3(1.f, 0.f, 1.f)), glm::vec3(0.f, 0.001f, 0.f)), shadowMaterial);
 
 	std::shared_ptr<UNode> hookNode;
 	std::shared_ptr<UNode> towerNode;
 	std::shared_ptr<UNode> fisicalHookNode;
 	std::shared_ptr<UNode> cableNode;
+	std::shared_ptr<UNode> towerCameraNode;
 
 	std::shared_ptr<UText> fpsLabel = std::make_shared<UText>("name");
 	fpsLabel->setColor(glm::vec3(255, 255, 255));
 
 	hookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "hook");
 	towerNode = client::ClientUtility::getInstance().findGameObjectByName(root, "tower");
+
+	shadowRoot->addChild(towerNode);
+
 	fisicalHookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "fisicalHook");
 	cableNode = client::ClientUtility::getInstance().findGameObjectByName(root,"cable");
+
+	towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTower");
+	towerCameraNode->addChild(towerCamera);
+
 
 	auto hookPoints = client::ClientUtility::getInstance().findGameObjectsByName(root, "hookPoint");
 	std::cout << "hook points size: " << hookPoints.size() << std::endl;
@@ -72,6 +117,7 @@ int main()
 
 	for (auto hookPoint : hookPoints)
 	{
+		shadowRoot->addChild(hookPoint);
 		auto box = std::make_shared<client::Box>();
 		box->setHookPointNode(hookPoint);
 		box->setTopNode(client::ClientUtility::getInstance().findGameObjectByName(hookPoint, "top"));
@@ -94,18 +140,19 @@ int main()
 	boxesManager->setBoxes(boxesVector);
 	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(0,0));
 
-	UCamera::setMainCamera(camera);
+	UCamera::setMainCamera(freeCamera);
 	Utopia::getInstance().get3DRenderPipeline().pass(root);
 
+	
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
-
+		
 		boxesManager->computeGravity();
 		fpsCounter++;
 		fpsLabel->setText(std::to_string(fpsToPrint));
-
+		//shadowRenderPipeline->render();
 		Utopia::getInstance().get3DRenderPipeline().render();
 		Utopia::getInstance().get2DRenderPipeline().render();
 		Utopia::getInstance().enableLighting();
@@ -117,12 +164,62 @@ int main()
 	std::cout << "Terminate" << std::endl;
 }
 
+void passiveMotionCallback(int x, int y)
+{
+
+	if (UCamera::getMainCamera().lock()->getName() != "freeCamera")
+		return;
+
+	static int previousPositionX = x;
+	static int previousPositionY = y;
+
+	static float angleX=0;
+	static float angleY=0;
+
+	float xRotationToDo = previousPositionX - x;
+	float yRotationToDo = previousPositionY - y;
+
+	angleX+= xRotationToDo* sensibility;
+	angleY+= yRotationToDo* sensibility;
+
+	if (angleY > 80.f)
+	{
+		angleY = 80.f;
+	}
+
+	if (angleY < -80.f)
+	{
+		angleY = -80.f;
+	}
+
+
+	previousPositionX = x;
+	previousPositionY = y;
+
+	glm::vec3 cameraLocalPosition= client::ClientUtility::getInstance().getLocalPosition(freeCamera);
+	glm::mat4 newCameraMatrix = glm::translate(glm::mat4(1.f), cameraLocalPosition);
+
+	glm::mat4 cameraMatrix = freeCamera->getModelView();
+	
+	glm::mat4 matRotationX = glm::rotate(newCameraMatrix, glm::radians(angleX), glm::vec3(0.f, 1.f, 0.f));
+	glm::mat4 matRotationY = glm::rotate(matRotationX, glm::radians(angleY), glm::vec3(1.f, 0.f, 0.f));
+
+	freeCamera->setModelView(matRotationY);
+
+	std::cout << "angleX: " << angleX << std::endl;
+	std::cout << "angleY: " << angleY << std::endl;
+}
+
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
-	glm::vec3 cameraNewPos = camera->getModelView() * glm::vec4(0,0,0,1);
+	
+
+	glm::vec3 cameraNewPos = glm::vec4(0, 0, 0, 1);
+	
 
 	auto box = boxesManager->possibleBoxToHook(tower->getFisicalHook(), 150);
+
 
 	switch (key)
     {
@@ -154,23 +251,21 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		Utopia::getInstance().enableWireFrameMode();
 		break;
 
-		/*
+	
+
 	case '1':
-		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableNearestFilter);
+		UCamera::setMainCamera(freeCamera);
 		break;
 	case '2':
-		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableNearestBipmapNearestFilter);
+		UCamera::setMainCamera(towerCamera);
 		break;
 	case '3':
-		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearFilter);
+		UCamera::setMainCamera(orthoCamera);
 		break;
 	case '4':
-		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearBipmapNearestFilter);
+		UCamera::setMainCamera(fixedCamera);
 		break;
-	case '5':
-		Utopia::getInstance().updateAllTexturesParameteri(UTexture::enableLinearBipmapLinearFilter);
-		break;
-		*/
+	
 
 	case 'e':
 		if (box != nullptr && !tower->isHooking())
@@ -201,10 +296,12 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 	}
 
-	camera->setModelView(glm::translate(glm::mat4(1), cameraNewPos));
-
-	std::cout << "camera" << std::endl;
-	std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(camera)) << std::endl;
+	if (UCamera::getMainCamera().lock()->getName() == "freeCamera");
+	{
+		freeCamera->setModelView(glm::translate(freeCamera->getModelView(), cameraNewPos));
+		std::cout << "camera" << std::endl;
+		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(freeCamera)) << std::endl;
+	}
 
 }
 

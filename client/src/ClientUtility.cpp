@@ -59,7 +59,7 @@ glm::vec3 client::ClientUtility::getLocalPosition(std::shared_ptr<utopia::UNode>
 
 glm::vec3 client::ClientUtility::getWorldPosition(std::shared_ptr<utopia::UNode> node)
 {
-	auto modelView = utopia::UCamera::getMainCamera().lock()->getModelView()* node->getFinalWorldCoordinates();
+	auto modelView = node->getFinalWorldCoordinates();
 	return glm::vec3(modelView[3][0], modelView[3][1], modelView[3][2]);
 }
 

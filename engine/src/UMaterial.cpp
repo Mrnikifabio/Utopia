@@ -25,7 +25,7 @@ struct UMaterial::pimpl
     {
         this->m_emission = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         this->m_ambient = glm::vec4(0.2f,0.2f,0.2f,1.0f);
-        this->m_diffuse = glm::vec4(0.0f,0.8f,0.8f,1.0f);
+        this->m_diffuse = glm::vec4(0.8f,0.8f,0.8f,1.0f);
         this->m_specular = glm::vec4(0.5f,0.5f,0.5f,1.0f);
         m_shininess = 128;
         m_texture = nullptr;

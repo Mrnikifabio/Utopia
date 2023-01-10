@@ -61,8 +61,6 @@ glm::mat4 UNode::getFinalWorldCoordinates() const
 		} while ((node = node->getParent()) != nullptr);
 	}
 
-	m = glm::inverse(UCamera::getMainCamera().lock()->getModelView()) * m;
-
 
 	return m;
 }
@@ -73,6 +71,8 @@ void UNode::render()
 		return;
 
 	auto m = getFinalWorldCoordinates();
+
+	m = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * m;
 
 	for (auto& child : m_pimpl->m_children)
 		child->render();

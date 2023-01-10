@@ -70,6 +70,7 @@ namespace utopia {
 		LIB_API void setReshapeCallback(void (*callback)(int, int));
 		LIB_API void setSpecialCallback(void (*callback)(int, int, int));
 		LIB_API void setCloseCallback(void(*callback)(void)); //invoked when the window is closed
+		LIB_API void setPassiveMotionCallback(void (*callback)(int , int )); //invoked when the window is closed
 
 		LIB_API void mainLoop();
 		LIB_API bool isRunning();

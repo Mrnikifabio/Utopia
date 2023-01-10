@@ -46,7 +46,7 @@ void U3DRenderPipeline::pass(std::weak_ptr<UNode> node, const glm::mat4& mat, st
 	else if (dynamic_cast<UMesh*>(node.lock().get()))
 	{
 		auto renderNode = std::unique_ptr<U3DRenderNode>(new U3DRenderNode(node, mat, material));
-		m_pimpl->m_lights.push_back(std::move(renderNode));
+		m_pimpl->m_nodes.push_back(std::move(renderNode));
 	}
 	else
 	{
