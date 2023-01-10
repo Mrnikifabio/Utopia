@@ -26,6 +26,7 @@ namespace utopia {
 	public:
 		LIB_API U2DRenderPipeline(const std::string& name);
 		LIB_API virtual ~U2DRenderPipeline() noexcept;
+		LIB_API void clear();
 		LIB_API void pass(std::weak_ptr<U2DObject> node, const glm::vec2& pos);
 		LIB_API void render() override;
     };

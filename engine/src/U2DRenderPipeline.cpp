@@ -23,6 +23,11 @@ U2DRenderPipeline::U2DRenderPipeline(const std::string& name) : UObject(name), m
 
 U2DRenderPipeline::~U2DRenderPipeline() = default;
 
+void U2DRenderPipeline::clear()
+{
+	m_pimpl->m_nodes.clear();
+}
+
 void U2DRenderPipeline::pass(std::weak_ptr<U2DObject> node, const glm::vec2& pos)
 {
 	auto renderNode = std::unique_ptr<U2DRenderNode>(new U2DRenderNode(node, pos));
@@ -47,8 +52,10 @@ void U2DRenderPipeline::render()
 
 	for (auto& node : m_pimpl->m_nodes)
 	{
+		auto tempPos = node->m_node.lock()->getPosition();
 		node->m_node.lock()->setPosition(node->m_pos);
 		node->m_node.lock()->render();
+		node->m_node.lock()->setPosition(tempPos);
 	}
 
 	glPopMatrix();

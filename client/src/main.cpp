@@ -130,7 +130,7 @@ int main()
 	tower->setHookLimitforward(0.f);
 
 	boxesManager->setBoxes(boxesVector);
-	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(0, 0));
+	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(150, 150));
 
 
 	UCamera::setMainCamera(fixedCamera);
