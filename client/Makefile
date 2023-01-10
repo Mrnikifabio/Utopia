@@ -108,7 +108,8 @@ out_test: before_debug before_test $(OBJ_TEST)
 	$(LD) $(OBJ_TEST) -o $(OUTDIR_TEST) $(LDFLAGS_DEBUG) $(LIBDIR_DEBUG) $(LIB)
  
 after_test: out_test
-	Xvfb :99 +extension GLX -screen 0 640x480x24
+	killall Xvfb
+	Xvfb :99 +extension GLX -screen 0 640x480x24 &
 	DISPLAY=:99 LD_LIBRARY_PATH=$(LD_LIBRARY_PATH_TEST) ./$(OUTDIR_TEST)
  
 clean_test:
