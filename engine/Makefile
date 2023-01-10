@@ -105,7 +105,7 @@ out_test: before_test $(OBJ_TEST)
 	$(LD) $(OBJ_TEST) -o $(OUTDIR_TEST) $(LDFLAGS_DEBUG) $(LIBDIR_DEBUG) $(OUTDIR_DEBUG) $(LIB)
  
 after_test: out_test
-	./$(OUTDIR_TEST)
+	./$(OUTDIR_TEST) HEADLESS
  
 clean_test:
 	rm -rf $(OUTDIR_TEST)

@@ -6,11 +6,11 @@ TestRunner::TestRunner() {}
 
 TestRunner::~TestRunner() = default;
 
-void TestRunner::run()
+void TestRunner::run(const std::string& arg)
 {
 	for (auto& test : m_test)
 	{
-		test->execute();
+		test->execute(arg);
 		test.reset();
 	}
 	m_test.clear();

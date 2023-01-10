@@ -10,9 +10,9 @@ using namespace utopia_test;
 
 UNodeTest::UNodeTest(const std::string& name) : Test(name) {}
 
-void UNodeTest::execute()
+void UNodeTest::execute(const std::string& arg)
 {
-	Test::execute();
+	Test::execute(arg);
 
 	modelViewTest();
 	std::cout << "modelViewTest passed" << std::endl;

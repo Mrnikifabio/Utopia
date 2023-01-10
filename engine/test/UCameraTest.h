@@ -5,7 +5,7 @@ namespace utopia_test {
 	class UCameraTest : public Test
 	{
 	private:
-		void execute() override;
+		void execute(const std::string& arg) override;
 		void getCameraMatrixTest();	
 
 		void setAndGetFarTest();

@@ -5,7 +5,7 @@ namespace utopia_test {
 	class UNodeTest : public Test
 	{
 	private:
-		void execute() override;
+		void execute(const std::string& arg) override;
 		void modelViewTest();
 		void childTest();
 		void parentTest();

@@ -7,28 +7,44 @@
 
 using namespace utopia_test;
 
-void UObjectTest::execute()
+void UObjectTest::execute(const std::string& arg)
 {
-	Test::execute();
+	Test::execute(arg);
 
-	IDTest();
+	IDTest(arg);
 	std::cout << "testID passed" << std::endl;
 
 	nameTest();
 	std::cout << "testName passed" << std::endl;
 }
 
-void UObjectTest::IDTest()
+void UObjectTest::IDTest(const std::string& arg)
 {
 	using namespace utopia;
-	//an UNode is istantiated since that UObject is actually abstract
-	auto obj = std::unique_ptr<UObject>(new UNode(""));
-	assert(obj->getId() == 3);
-	auto obj1 = std::unique_ptr<UObject>(new UNode(""));
-	assert(obj1->getId() == 4);
-	obj.reset();
-	auto obj2 = std::unique_ptr<UObject>(new UNode(""));
-	assert(obj2->getId() == 5);
+
+	if (arg != "HEADLESS")
+	{
+		//an UNode is istantiated since that UObject is actually abstract
+		auto obj = std::unique_ptr<UObject>(new UNode(""));
+		assert(obj->getId() == 3);
+		auto obj1 = std::unique_ptr<UObject>(new UNode(""));
+		assert(obj1->getId() == 4);
+		obj.reset();
+		auto obj2 = std::unique_ptr<UObject>(new UNode(""));
+		assert(obj2->getId() == 5);
+	}
+	else
+	{
+		//an UNode is istantiated since that UObject is actually abstract
+		auto obj = std::unique_ptr<UObject>(new UNode(""));
+		assert(obj->getId() == 1);
+		auto obj1 = std::unique_ptr<UObject>(new UNode(""));
+		assert(obj1->getId() == 2);
+		obj.reset();
+		auto obj2 = std::unique_ptr<UObject>(new UNode(""));
+		assert(obj2->getId() == 3);
+	}
+
 }
 
 void UObjectTest::nameTest()

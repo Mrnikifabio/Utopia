@@ -13,9 +13,10 @@
 
 namespace utopia_test {
 
-    void launchTest()
+    void launchTest(const std::string& arg)
     {
-        utopia::Utopia::getInstance().init();
+        if(arg != "HEADLESS")
+            utopia::Utopia::getInstance().init();
 
         TestRunner::getInstance().addTest(std::unique_ptr<UObjectTest>(new UObjectTest("UObjectTest")));
         TestRunner::getInstance().addTest(std::unique_ptr<UNodeTest>(new UNodeTest("UNodeTest")));
@@ -25,16 +26,21 @@ namespace utopia_test {
 
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "UTOPIA TESTS" << std::endl;
-        TestRunner::getInstance().run();
+        TestRunner::getInstance().run(arg);
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "All tests have passed!" << std::endl;
 
-        utopia::Utopia::getInstance().free();
+        if (arg != "HEADLESS")
+            utopia::Utopia::getInstance().free();
     }
 
 }
-int main()
+int main(int argc, char*argv[])
 {
-    utopia_test::launchTest();
+    if (argc > 1)
+        utopia_test::launchTest(argv[1]);
+    else
+        utopia_test::launchTest("");
+
     return 0;
 }

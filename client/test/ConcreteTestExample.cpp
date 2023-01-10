@@ -4,9 +4,9 @@
 
 using namespace utopia_test;
 
-void utopia_test::ConcreteTestExample::execute()
+void utopia_test::ConcreteTestExample::execute(const std::string& arg)
 {
-	Test::execute();
+	Test::execute(arg);
 	std::cout << "Example test"<<std::endl;
 	assert(true);
 }

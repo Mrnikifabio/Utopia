@@ -5,7 +5,7 @@ namespace utopia_test {
 	class OVOFactoryTest : public Test
 	{
 	private:
-		void execute() override;
+		void execute(const std::string& arg) override;
 		void fromFileTest();
 		void badFileTest();
 		void nonExistentFileTest();

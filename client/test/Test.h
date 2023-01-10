@@ -18,6 +18,6 @@ namespace utopia_test {
 		Test& operator= (Test&&) = delete;
 
 		const std::string& getName() const;
-		virtual void execute() = 0;
+		virtual void execute(const std::string& arg) = 0;
 	};
 }

@@ -9,39 +9,44 @@ using namespace utopia_test;
 
 ULightTest::ULightTest(const std::string& name) : Test(name) {}
 
-void ULightTest::execute()
+void ULightTest::execute(const std::string& arg)
 {
-	Test::execute();
+	Test::execute(arg);
 
-	initAndGetIDsTest();
-	std::cout << "init IDs passed" << std::endl;
+	if (arg != "HEADLESS")
+	{
 
-	setAndGetAmbient();
-	std::cout << "set and get ambient passed" << std::endl;
+		initAndGetIDsTest();
+		std::cout << "init IDs passed" << std::endl;
 
-	setAndGetDiffuse();
-	std::cout << "set and get diffuse passed" << std::endl;
+		setAndGetAmbient();
+		std::cout << "set and get ambient passed" << std::endl;
 
-	setAndGetSpecular();
-	std::cout << "set and get specular passed" << std::endl;
+		setAndGetDiffuse();
+		std::cout << "set and get diffuse passed" << std::endl;
 
-	setAndGetGlobalAmbient();
-	std::cout << "set and get global ambient passed" << std::endl;
+		setAndGetSpecular();
+		std::cout << "set and get specular passed" << std::endl;
 
-	setAndGetConstantAttenuation();
-	std::cout << "set and get constant attenuation passed" << std::endl;
+		setAndGetGlobalAmbient();
+		std::cout << "set and get global ambient passed" << std::endl;
 
-	setAndGetLinearAttenuation();
-	std::cout << "set and get linear attenuation passed" << std::endl;
+		setAndGetConstantAttenuation();
+		std::cout << "set and get constant attenuation passed" << std::endl;
 
-	setAndGetQuadraticAttenuation();
-	std::cout << "set and get quadratic attenuation passed" << std::endl;
+		setAndGetLinearAttenuation();
+		std::cout << "set and get linear attenuation passed" << std::endl;
 
-	setAndGetCutoff();
-	std::cout << "set and get cutoff passed" << std::endl;
+		setAndGetQuadraticAttenuation();
+		std::cout << "set and get quadratic attenuation passed" << std::endl;
 
-	setAndGetDirection();
-	std::cout << "set and get direction passed" << std::endl;
+		setAndGetCutoff();
+		std::cout << "set and get cutoff passed" << std::endl;
+
+		setAndGetDirection();
+		std::cout << "set and get direction passed" << std::endl;
+
+	}
 
 }
 

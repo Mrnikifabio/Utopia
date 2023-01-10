@@ -7,9 +7,9 @@
 
 using namespace utopia_test;
 
-void OVOFactoryTest::execute()
+void OVOFactoryTest::execute(const std::string& arg)
 {
-	Test::execute();
+	Test::execute(arg);
 
 	fromFileTest();
 	std::cout << "fromFileTest passed" << std::endl;

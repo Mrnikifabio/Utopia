@@ -12,12 +12,15 @@ using namespace utopia_test;
 
 UCameraTest::UCameraTest(const std::string& name) : Test(name) {}
 
-void UCameraTest::execute()
+void UCameraTest::execute(const std::string& arg)
 {
-	Test::execute();
+	Test::execute(arg);
 
-	//getCameraMatrixTest();
-	//std::cout << "get Camera matrix passed" << std::endl;
+	if(arg != "HEADLESS")
+	{
+		getCameraMatrixTest();
+		std::cout << "get Camera matrix passed" << std::endl;
+	}
 
 	setAndGetFarTest();
 	std::cout << "set and get far passed" << std::endl;

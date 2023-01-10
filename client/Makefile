@@ -108,7 +108,7 @@ out_test: before_debug before_test $(OBJ_TEST)
 	$(LD) $(OBJ_TEST) -o $(OUTDIR_TEST) $(LDFLAGS_DEBUG) $(LIBDIR_DEBUG) $(LIB)
  
 after_test: out_test
-	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH_TEST) ./$(OUTDIR_TEST)
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH_TEST) ./$(OUTDIR_TEST) HEADLESS
  
 clean_test:
 	rm -rf $(OUTDIR_TEST)

@@ -13,7 +13,7 @@ namespace utopia_test {
 		virtual ~TestRunner() noexcept;
 
 	public:
-		void run();
+		void run(const std::string& arg);
 		void addTest(std::unique_ptr<Test>&& test);
 
 		static TestRunner& getInstance();

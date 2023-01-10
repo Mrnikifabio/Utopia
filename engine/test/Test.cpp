@@ -5,7 +5,7 @@
 
 using namespace utopia_test; 
 
-void Test::execute()
+void Test::execute(const std::string& arg)
 {
 	std::cout << "----------------------------------------" << std::endl;
 	std::cout << "Executing test " << getName() << std::endl;
