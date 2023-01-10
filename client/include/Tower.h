@@ -25,7 +25,7 @@ namespace client
 		void setTower(std::shared_ptr<utopia::UNode> tower);
 		void setCable(std::shared_ptr<utopia::UNode> cable);
 
-		bool isHooking();
+		bool isHooking() const;
 		void take(std::shared_ptr<Box> box);
 		void release();
 		

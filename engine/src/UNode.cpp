@@ -70,12 +70,13 @@ void UNode::render()
 	if (!Utopia::getInstance().isRunning())
 		return;
 
-	auto m = getFinalWorldCoordinates();
+	//auto m = getFinalWorldCoordinates();
+	auto m = getModelView();
 
 	m = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * m;
 
-	for (auto& child : m_pimpl->m_children)
-		child->render();
+	/*for (auto& child : m_pimpl->m_children)
+		child->render();*/
 
 	glLoadMatrixf(glm::value_ptr(m));
 
@@ -93,6 +94,9 @@ auto UNode::addChild(std::shared_ptr<UNode> child) -> std::weak_ptr<UNode>
 
 	if(m_pimpl->m_parent != nullptr && child->getId() == m_pimpl->m_parent->getId())
 		throw std::runtime_error("A parent can't add itself to its list of children");
+
+	if (child->getParent() != nullptr)
+		throw std::runtime_error(child->getName() + "can't be added because is son of " + child->getParent()->getName());
 
 	child->setParent(this);
 	m_pimpl->m_children.push_back(child);

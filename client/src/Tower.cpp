@@ -68,7 +68,7 @@ void client::Tower::setCable(std::shared_ptr<utopia::UNode> cable)
 	m_pimpl->m_startCableModelView = cable->getModelView();
 }
 
-bool client::Tower::isHooking()
+bool client::Tower::isHooking() const
 {
 	return m_pimpl->isHooking;
 }

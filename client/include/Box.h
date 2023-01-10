@@ -20,13 +20,13 @@ namespace client
 		void setGroundNode(std::shared_ptr<utopia::UNode> groundNode);
 		void setTopNode(std::shared_ptr<utopia::UNode> topNode);
 
-		std::shared_ptr<utopia::UNode> getHookPointNode();
-		std::shared_ptr<utopia::UNode> getGroundNode();
-		std::shared_ptr<utopia::UNode> getTopNode();
+		std::shared_ptr<utopia::UNode> getHookPointNode() const;
+		std::shared_ptr<utopia::UNode> getGroundNode() const;
+		std::shared_ptr<utopia::UNode> getTopNode() const;
 
 		void computeGravity();
 
-		bool isHooked();
+		bool isHooked() const;
 		void take();
 		void release();
 	};

@@ -17,10 +17,10 @@ client::BoxesManager::~BoxesManager()
 
 };
 
-std::shared_ptr<Box> client::BoxesManager::possibleBoxToHook(std::shared_ptr<utopia::UNode> hook, float distance)
+std::shared_ptr<Box> client::BoxesManager::possibleBoxToHook(std::shared_ptr<utopia::UNode> hook, float distance) const
 {
 	glm::vec3 hookPosition = ClientUtility::getInstance().getWorldPosition(hook);
-	for (auto box : m_pimpl->m_boxes)
+	for (auto& box : m_pimpl->m_boxes)
 	{
 		float distanceBetweenObject = glm::distance(hookPosition, ClientUtility::getInstance().getWorldPosition(box->getHookPointNode()));
 		if (distanceBetweenObject <= distance)
@@ -36,7 +36,7 @@ void client::BoxesManager::setBoxes(std::vector<std::shared_ptr<Box>> boxes)
 
 void client::BoxesManager::computeGravity()
 {
-	for (auto box : m_pimpl->m_boxes)
+	for (auto& box : m_pimpl->m_boxes)
 	{
 		box->computeGravity();
 	}

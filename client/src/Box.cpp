@@ -38,17 +38,17 @@ void client::Box::setTopNode(std::shared_ptr<utopia::UNode> topNode)
 	m_pimpl->m_topNode = topNode;
 }
 
-std::shared_ptr<utopia::UNode> client::Box::getHookPointNode()
+std::shared_ptr<utopia::UNode> client::Box::getHookPointNode() const
 {
 	return m_pimpl->m_hookPoint;
 }
 
-std::shared_ptr<utopia::UNode> client::Box::getGroundNode()
+std::shared_ptr<utopia::UNode> client::Box::getGroundNode() const
 {
 	return m_pimpl->m_groundNode;
 }
 
-std::shared_ptr<utopia::UNode> client::Box::getTopNode()
+std::shared_ptr<utopia::UNode> client::Box::getTopNode() const
 {
 	return m_pimpl->m_topNode;
 }
@@ -69,7 +69,7 @@ void client::Box::computeGravity()
 	}
 }
 
-bool client::Box::isHooked()
+bool client::Box::isHooked() const
 {
 	return m_pimpl->m_isHooked;
 }

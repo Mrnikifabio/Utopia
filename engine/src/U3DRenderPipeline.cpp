@@ -40,36 +40,59 @@ void U3DRenderPipeline::pass(std::weak_ptr<UNode> node, const glm::mat4& mat, st
 {
 	if (dynamic_cast<ULight*>(node.lock().get()))
 	{
-		auto renderNode = std::unique_ptr<U3DRenderNode>(new U3DRenderNode(node, mat));
+		auto renderNode = std::unique_ptr<U3DRenderNode>(new U3DRenderNode(node, mat * node.lock()->getFinalWorldCoordinates()));
 		m_pimpl->m_lights.push_back(std::move(renderNode));
 	}
 	else if (dynamic_cast<UMesh*>(node.lock().get()))
 	{
-		auto renderNode = std::unique_ptr<U3DRenderNode>(new U3DRenderNode(node, mat, material));
+		auto renderNode = std::unique_ptr<U3DRenderNode>(new U3DRenderNode(node, mat * node.lock()->getFinalWorldCoordinates(), material));
 		m_pimpl->m_nodes.push_back(std::move(renderNode));
 	}
 	else
 	{
-		auto renderNode = std::unique_ptr<U3DRenderNode>(new U3DRenderNode(node, mat));
+		auto renderNode = std::unique_ptr<U3DRenderNode>(new U3DRenderNode(node, mat * node.lock()->getFinalWorldCoordinates()));
 		m_pimpl->m_nodes.push_back(std::move(renderNode));
 	}
+
+	for (auto& child : node.lock()->getChildren())
+		pass(child, mat, material);
+}
+
+void U3DRenderPipeline::clear()
+{
+	m_pimpl->m_nodes.clear();
+	m_pimpl->m_lights.clear();
 }
 
 void U3DRenderPipeline::render()
 {
 	for (auto& node : m_pimpl->m_nodes)
 	{
+		auto oldMat = node->node.lock()->getModelView(); //the matrix is COPIED no auto&
 		node->node.lock()->setModelView(node->mat);
-		node->node.lock()->render();
-	}
-	for (auto& node : m_pimpl->m_lights)
-	{
-		node->node.lock()->setModelView(node->mat);
+
+		std::shared_ptr<UMaterial> oldMaterial = nullptr;
 		if (dynamic_cast<UMesh*>(node->node.lock().get()))
 		{
+			oldMaterial = ((UMesh*)node->node.lock().get())->getMaterial();
 			if (node->material != nullptr)
 				((UMesh*)node->node.lock().get())->setMaterial(node->material);
 		}
+
 		node->node.lock()->render();
+		
+		node->node.lock()->setModelView(oldMat);
+		if (dynamic_cast<UMesh*>(node->node.lock().get()))
+				((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
+	}
+
+	for (auto& node : m_pimpl->m_lights)
+	{
+		auto oldMat = node->node.lock()->getModelView(); //the matrix is COPIED no auto&
+		node->node.lock()->setModelView(node->mat);
+
+		node->node.lock()->render();
+
+		node->node.lock()->setModelView(oldMat);
 	}
 }
