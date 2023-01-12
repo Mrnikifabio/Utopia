@@ -90,8 +90,8 @@ int main()
 	std::shared_ptr<UNode> cableNode;
 	std::shared_ptr<UNode> towerCameraNode;
 
-	std::shared_ptr<UText> fpsLabel = std::make_shared<UText>("name");
-	fpsLabel->setColor(glm::vec3(255, 255, 255));
+	
+
 
 	hookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "hook");
 	towerNode = client::ClientUtility::getInstance().findGameObjectByName(root, "tower");
@@ -130,7 +130,33 @@ int main()
 	tower->setHookLimitforward(0.f);
 
 	boxesManager->setBoxes(boxesVector);
-	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(150, 150));
+
+	std::shared_ptr<UText> fpsLabel = std::make_shared<UText>("fpsLabel");
+	fpsLabel->setColor(glm::vec3(255, 0, 0));
+
+	std::shared_ptr<UText> UpDownLabel = std::make_shared<UText>("UpDownLabel");
+	UpDownLabel->setColor(glm::vec3(255, 255, 255));
+
+	std::shared_ptr<UText> backFrontLabel = std::make_shared<UText>("BackFront");
+	backFrontLabel->setColor(glm::vec3(255, 255, 255));
+
+	std::shared_ptr<UText> camerasLabel = std::make_shared<UText>("Camera [1,2,3,4]");
+	camerasLabel->setColor(glm::vec3(255, 255, 255));
+
+	std::shared_ptr<UText> rotateTower = std::make_shared<UText>("Tower");
+	rotateTower->setColor(glm::vec3(255, 255, 255));
+
+
+	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(10, 10));
+	Utopia::getInstance().get2DRenderPipeline().pass(UpDownLabel, glm::vec2(10, 30));
+	Utopia::getInstance().get2DRenderPipeline().pass(backFrontLabel, glm::vec2(10, 50));
+	Utopia::getInstance().get2DRenderPipeline().pass(rotateTower, glm::vec2(10, 70));
+	Utopia::getInstance().get2DRenderPipeline().pass(camerasLabel, glm::vec2(10, 90));
+
+	UpDownLabel->setText("[+/-] UpDown Hook");
+	backFrontLabel->setText("[ARROW UP/DOWN] FrontBack Hook");
+	rotateTower->setText("[ARROW LEFT/RIGHT] Rotate Tower");
+	camerasLabel->setText("[1,2,3,4] Change Camera View");
 
 
 	UCamera::setMainCamera(fixedCamera);
@@ -293,10 +319,10 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 
 	case '-':
-		tower->moveFisicalHookUpDown(-3.f);
+		tower->moveFisicalHookUpDown(-6.f);
 		break;
 	case '+':
-		tower->moveFisicalHookUpDown(+3.f);
+		tower->moveFisicalHookUpDown(+6.f);
 		break;
 	}
 

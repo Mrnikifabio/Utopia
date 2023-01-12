@@ -62,6 +62,7 @@ void utopia::UMaterial::render()
     
     if(m_pimpl->m_texture!=nullptr)
         m_pimpl->m_texture->render();
+
 }
 
 void UMaterial::setEmission(const glm::vec4& emission)
