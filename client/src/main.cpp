@@ -79,7 +79,7 @@ int main()
 
 
 
-	auto root = OVOFactory::getInstance().fromFile("gru26.ovo");
+	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
 
 	std::unique_ptr<U3DRenderPipeline> shadowRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("shadow"));
 	std::shared_ptr<UMaterial> shadowMaterial = std::make_shared<UMaterial>("shadow", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 128);
@@ -125,8 +125,8 @@ int main()
 	tower->setRoot(root);
 
 	tower->setFisicalHookLimitDown(-480.f);
-	tower->setFisicalHookLimitUp(0.f);
-	tower->setHookLimitbackward(-350.f);
+	tower->setFisicalHookLimitUp(-40.f);
+	tower->setHookLimitbackward(-335.f);
 	tower->setHookLimitforward(0.f);
 
 	boxesManager->setBoxes(boxesVector);
