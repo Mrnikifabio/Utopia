@@ -55,6 +55,10 @@ int main()
 	Utopia::getInstance().setPassiveMotionCallback(passiveMotionCallback);
 	Utopia::getInstance().setTimer(1000, fpsCounterCallback, 0);
 
+	auto _2DRenderPipeline = std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline"));
+	auto _3DRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline"));
+	auto shadowRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("shadowRenderPipeline"));
+
 	maxAnisotropyLevel = UTexture::getMaxAnisotropicLevel();
 
 	freeCamera = std::make_shared<UPerspectiveCamera>("freeCamera");
@@ -84,7 +88,6 @@ int main()
 
 	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
 
-	std::unique_ptr<U3DRenderPipeline> shadowRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("shadow"));
 	std::shared_ptr<UMaterial> shadowMaterial = std::make_shared<UMaterial>("shadow", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 128);
 	
 	//Node associated to the tower
@@ -163,15 +166,15 @@ int main()
 	cameraMovement->setColor(glm::vec3(255, 255, 255));
 
 
-	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(10, 10));
-	Utopia::getInstance().get2DRenderPipeline().pass(UpDownLabel, glm::vec2(10, 30));
-	Utopia::getInstance().get2DRenderPipeline().pass(backFrontLabel, glm::vec2(10, 50));
-	Utopia::getInstance().get2DRenderPipeline().pass(rotateTower, glm::vec2(10, 70));
-	Utopia::getInstance().get2DRenderPipeline().pass(camerasLabel, glm::vec2(10, 90));
-	Utopia::getInstance().get2DRenderPipeline().pass(cameraMovement, glm::vec2(10, 110));
-	Utopia::getInstance().get2DRenderPipeline().pass(anisotLevelLabel, glm::vec2(10, 130));
-	Utopia::getInstance().get2DRenderPipeline().pass(textureFilterModeLabel, glm::vec2(10, 150));
-	Utopia::getInstance().get2DRenderPipeline().pass(solidWireFrame, glm::vec2(10, 170));
+	_2DRenderPipeline->pass(fpsLabel, glm::vec2(10, 10));
+	_2DRenderPipeline->pass(UpDownLabel, glm::vec2(10, 30));
+	_2DRenderPipeline->pass(backFrontLabel, glm::vec2(10, 50));
+	_2DRenderPipeline->pass(rotateTower, glm::vec2(10, 70));
+	_2DRenderPipeline->pass(camerasLabel, glm::vec2(10, 90));
+	_2DRenderPipeline->pass(cameraMovement, glm::vec2(10, 110));
+	_2DRenderPipeline->pass(anisotLevelLabel, glm::vec2(10, 130));
+	_2DRenderPipeline->pass(textureFilterModeLabel, glm::vec2(10, 150));
+	_2DRenderPipeline->pass(solidWireFrame, glm::vec2(10, 170));
 
 	UpDownLabel->setText("[+/-] UpDown Hook");
 	backFrontLabel->setText("[ARROW UP/DOWN] FrontBack Hook");
@@ -207,12 +210,12 @@ int main()
 		}
 		shadowRenderPipeline->render();
 
-		Utopia::getInstance().get3DRenderPipeline().clear();
-		Utopia::getInstance().get3DRenderPipeline().pass(root);
-		Utopia::getInstance().get3DRenderPipeline().render();
+		_3DRenderPipeline->clear();
+		_3DRenderPipeline->pass(root);
+		_3DRenderPipeline->render();
 
 
-		Utopia::getInstance().get2DRenderPipeline().render();
+		_2DRenderPipeline->render();
 		Utopia::getInstance().enableLighting();
 		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().swap();

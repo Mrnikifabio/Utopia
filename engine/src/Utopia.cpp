@@ -67,9 +67,7 @@ struct Utopia::pimpl
 	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
 
 	pimpl() :
-		m_initFlag{ false },
-		m_2DRenderPipeline{ std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline")) },
-		m_3DRenderPipeline{ std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline")) } {}
+		m_initFlag{ false } {}
 };
 
 Utopia::Utopia() : m_pimpl{ std::unique_ptr<Utopia::pimpl>(new pimpl()) } {};
@@ -279,16 +277,6 @@ bool Utopia::isRunning()
 void Utopia::swap()
 {
 	glutSwapBuffers();
-}
-
-U3DRenderPipeline& Utopia::get3DRenderPipeline()
-{
-	return *m_pimpl->m_3DRenderPipeline;
-}
-
-U2DRenderPipeline& Utopia::get2DRenderPipeline()
-{
-	return *m_pimpl->m_2DRenderPipeline;
 }
 
 LIB_API void utopia::Utopia::setBackgroundColor(glm::vec4 color)
