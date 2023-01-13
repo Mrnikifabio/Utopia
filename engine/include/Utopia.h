@@ -84,9 +84,6 @@ namespace utopia {
 		LIB_API bool isRunning();
 		LIB_API void swap();
 
-		LIB_API U3DRenderPipeline& get3DRenderPipeline();
-		LIB_API U2DRenderPipeline& get2DRenderPipeline();
-
 		LIB_API void setBackgroundColor(glm::vec4 color);
 
 		LIB_API std::shared_ptr<UMaterial> getMaterialByName(const std::string& name);

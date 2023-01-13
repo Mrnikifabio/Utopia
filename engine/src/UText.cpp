@@ -1,5 +1,5 @@
 #include "UText.h"
-#include <gl/freeglut.h>	
+#include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace utopia;
@@ -21,7 +21,32 @@ void UText::render()
 {
 	glColor3fv(glm::value_ptr(m_pimpl->m_color));
 	glRasterPos2fv(glm::value_ptr(getPosition()));
-	glutBitmapString((void*)getFont(), (unsigned char*)m_pimpl->m_text.c_str());
+
+	switch(getFont())
+	{
+        case DEFAULT_2:
+            glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char*)m_pimpl->m_text.c_str());
+            break;
+        case TIMES_ROMAN_10:
+            glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_10, (unsigned char*)m_pimpl->m_text.c_str());
+            break;
+        case TIMES_ROMAN_24:
+            glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)m_pimpl->m_text.c_str());
+            break;
+        case HELVETICA_10:
+            glutBitmapString(GLUT_BITMAP_HELVETICA_10, (unsigned char*)m_pimpl->m_text.c_str());
+            break;
+        case HELVETICA_12:
+            glutBitmapString(GLUT_BITMAP_HELVETICA_12, (unsigned char*)m_pimpl->m_text.c_str());
+            break;
+        case HELVETICA_18:
+            glutBitmapString(GLUT_BITMAP_HELVETICA_18, (unsigned char*)m_pimpl->m_text.c_str());
+            break;
+        default:
+            glutBitmapString(GLUT_BITMAP_9_BY_15, (unsigned char*)m_pimpl->m_text.c_str());
+            break;
+	}
+
 }
 
 void UText::setText(const std::string& text)
