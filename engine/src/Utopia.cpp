@@ -67,9 +67,7 @@ struct Utopia::pimpl
 	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
 
 	pimpl() :
-		m_initFlag{ false },
-		m_2DRenderPipeline{ std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline")) },
-		m_3DRenderPipeline{ std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline")) } {}
+		m_initFlag{ false } {}
 };
 
 Utopia::Utopia() : m_pimpl{ std::unique_ptr<Utopia::pimpl>(new pimpl()) } {};
@@ -123,7 +121,7 @@ bool LIB_API Utopia::init()
 	setDisplayCallback(displayCallback);
 	setReshapeCallback(reshapeCallback);
 
-	UTexture::enableTexturesRepeat();
+	UTexture::enableTexturesClampToEdge();
 	UTexture::enableLinearFilter();
 
 	//glEnable(GL_TEXTURE_2D);
@@ -200,6 +198,41 @@ void Utopia::enableSolidMode()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+void utopia::Utopia::enableNearestFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableNearestFilter);
+}
+
+void utopia::Utopia::enableNearestBipmapNearestFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableNearestBipmapNearestFilter);
+}
+
+void utopia::Utopia::enableLinearFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableLinearFilter);
+}
+
+void utopia::Utopia::enableLinearBipmapNearestFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableLinearBipmapNearestFilter);
+}
+
+void utopia::Utopia::enableLinearBipmapLinearFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableLinearBipmapLinearFilter);
+}
+
+void utopia::Utopia::enableTexturesRepeat()
+{
+	updateAllTexturesParameteri(UTexture::enableTexturesRepeat);
+}
+
+void utopia::Utopia::enableTexturesClampToEdge()
+{
+	updateAllTexturesParameteri(UTexture::enableTexturesClampToEdge);
+}
+
 
 void Utopia::setKeyboardCallback(void(*callback)(unsigned char, int, int))
 {
@@ -244,16 +277,6 @@ bool Utopia::isRunning()
 void Utopia::swap()
 {
 	glutSwapBuffers();
-}
-
-U3DRenderPipeline& Utopia::get3DRenderPipeline()
-{
-	return *m_pimpl->m_3DRenderPipeline;
-}
-
-U2DRenderPipeline& Utopia::get2DRenderPipeline()
-{
-	return *m_pimpl->m_2DRenderPipeline;
 }
 
 LIB_API void utopia::Utopia::setBackgroundColor(glm::vec4 color)
@@ -319,6 +342,17 @@ void Utopia::updateAllTexturesParameteri(void(*parametriSetMethod)(void))
 	}
 }
 
+void utopia::Utopia::updateAnisotropyLevelAllTextures(int value)
+{
+	std::cout << "n textures to upload the anisotropy level: " << m_pimpl->m_textures.size() << std::endl;
+
+	for (const auto& kv : m_pimpl->m_textures)
+	{
+		kv.second->updateAnisotropyLevelTextureParameteri(value);
+		std::cout << "upload texture: " << kv.first << std::endl;
+	}
+}
+
 unsigned int Utopia::texturesMapSize()
 {
 	return (unsigned int)m_pimpl->m_textures.size();
@@ -334,5 +368,7 @@ Utopia& Utopia::getInstance()
 	// Instantiated on first use.
 	return m_instance;
 }
+
+
 
 

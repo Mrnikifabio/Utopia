@@ -232,7 +232,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

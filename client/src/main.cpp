@@ -25,6 +25,7 @@ void closeCallback();
 
 int fpsCounter = 0;
 int fpsToPrint = 0;
+int maxAnisotropyLevel;
 
 std::shared_ptr<UCamera> freeCamera;
 std::shared_ptr<UCamera> fixedCamera;
@@ -37,6 +38,9 @@ std::unique_ptr<client::Tower> tower = std::unique_ptr<client::Tower>(new client
 std::unique_ptr <client::BoxesManager> boxesManager = std::unique_ptr<client::BoxesManager>(new  client::BoxesManager());
 
 float sensibility = 0.5f;
+
+std::shared_ptr<UText> anisotLevelLabel = std::make_shared<UText>("anisotLevelLabel");
+std::shared_ptr<UText> textureFilterModeLabel = std::make_shared<UText>("textureFilterMode");
 
 int main()
 {
@@ -51,9 +55,12 @@ int main()
 	Utopia::getInstance().setPassiveMotionCallback(passiveMotionCallback);
 	Utopia::getInstance().setTimer(1000, fpsCounterCallback, 0);
 
+	auto _2DRenderPipeline = std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline"));
+	auto _3DRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline"));
+	auto shadowRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("shadowRenderPipeline"));
 
+	maxAnisotropyLevel = UTexture::getMaxAnisotropicLevel();
 
-	//camera = std::make_shared<UOrthographicCamera>("orthoCamera");
 	freeCamera = std::make_shared<UPerspectiveCamera>("freeCamera");
 	freeCamera->setFar(3000.0f);
 	freeCamera->setNear(0.1f);
@@ -79,10 +86,11 @@ int main()
 
 
 
-	auto root = OVOFactory::getInstance().fromFile("gru18.ovo");
+	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
 
-	std::unique_ptr<U3DRenderPipeline> shadowRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("shadow"));
 	std::shared_ptr<UMaterial> shadowMaterial = std::make_shared<UMaterial>("shadow", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 128);
+
+	//Node associated to the tower
 
 	std::shared_ptr<UNode> hookNode;
 	std::shared_ptr<UNode> towerNode;
@@ -90,23 +98,19 @@ int main()
 	std::shared_ptr<UNode> cableNode;
 	std::shared_ptr<UNode> towerCameraNode;
 
-	std::shared_ptr<UText> fpsLabel = std::make_shared<UText>("name");
-	fpsLabel->setColor(glm::vec3(255, 255, 255));
 
 	hookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "hook");
 	towerNode = client::ClientUtility::getInstance().findGameObjectByName(root, "tower");
-
-
 	fisicalHookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "fisicalHook");
 	cableNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cable");
-
 	towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTower");
 	towerCameraNode->addChild(towerCamera);
 
 
+	//Node associated to all the boxes
+
 	auto hookPoints = client::ClientUtility::getInstance().findGameObjectsByName(root, "hookPoint");
 	std::cout << "hook points size: " << hookPoints.size() << std::endl;
-
 	std::vector<std::shared_ptr<client::Box>> boxesVector;
 
 	for (auto& hookPoint : hookPoints)
@@ -118,6 +122,8 @@ int main()
 		boxesVector.push_back(box);
 	}
 
+	//set node tower
+
 	tower->setTower(towerNode);
 	tower->setHook(hookNode);
 	tower->setFisicalHook(fisicalHookNode);
@@ -125,15 +131,66 @@ int main()
 	tower->setRoot(root);
 
 	tower->setFisicalHookLimitDown(-480.f);
-	tower->setFisicalHookLimitUp(0.f);
-	tower->setHookLimitbackward(-350.f);
+	tower->setFisicalHookLimitUp(-40.f);
+	tower->setHookLimitbackward(-335.f);
 	tower->setHookLimitforward(0.f);
 
+	//passes boxes to the boxes manager
 	boxesManager->setBoxes(boxesVector);
-	Utopia::getInstance().get2DRenderPipeline().pass(fpsLabel, glm::vec2(150, 150));
+
+
+	//2D text creation
+
+	std::shared_ptr<UText> fpsLabel = std::make_shared<UText>("fpsLabel");
+	fpsLabel->setColor(glm::vec3(255, 0, 0));
+
+	std::shared_ptr<UText> UpDownLabel = std::make_shared<UText>("UpDownLabel");
+	UpDownLabel->setColor(glm::vec3(255, 255, 255));
+
+	std::shared_ptr<UText> backFrontLabel = std::make_shared<UText>("BackFront");
+	backFrontLabel->setColor(glm::vec3(255, 255, 255));
+
+	std::shared_ptr<UText> camerasLabel = std::make_shared<UText>("Camera [1,2,3,4]");
+	camerasLabel->setColor(glm::vec3(255, 255, 255));
+
+	std::shared_ptr<UText> rotateTower = std::make_shared<UText>("Tower");
+	rotateTower->setColor(glm::vec3(255, 255, 255));
+
+	anisotLevelLabel->setColor(glm::vec3(255, 0, 0));
+	textureFilterModeLabel->setColor(glm::vec3(255, 0, 0));
+
+	std::shared_ptr<UText> solidWireFrame = std::make_shared<UText>("solidWireFrame");
+	solidWireFrame->setColor(glm::vec3(255, 0, 0));
+
+	std::shared_ptr<UText> cameraMovement = std::make_shared<UText>("cameraMovement");
+	cameraMovement->setColor(glm::vec3(255, 255, 255));
+
+
+	_2DRenderPipeline->pass(fpsLabel, glm::vec2(10, 10));
+	_2DRenderPipeline->pass(UpDownLabel, glm::vec2(10, 30));
+	_2DRenderPipeline->pass(backFrontLabel, glm::vec2(10, 50));
+	_2DRenderPipeline->pass(rotateTower, glm::vec2(10, 70));
+	_2DRenderPipeline->pass(camerasLabel, glm::vec2(10, 90));
+	_2DRenderPipeline->pass(cameraMovement, glm::vec2(10, 110));
+	_2DRenderPipeline->pass(anisotLevelLabel, glm::vec2(10, 130));
+	_2DRenderPipeline->pass(textureFilterModeLabel, glm::vec2(10, 150));
+	_2DRenderPipeline->pass(solidWireFrame, glm::vec2(10, 170));
+
+	UpDownLabel->setText("[+/-] UpDown Hook");
+	backFrontLabel->setText("[ARROW UP/DOWN] FrontBack Hook");
+	rotateTower->setText("[ARROW LEFT/RIGHT] Rotate Tower");
+	camerasLabel->setText("[1,2,3,4] Change Camera View");
+	solidWireFrame->setText("[z/x] Solid/Wireframe mode");
+	cameraMovement->setText("[WASD R/F] R/F=UP/DOWN");
 
 
 	UCamera::setMainCamera(fixedCamera);
+
+	Utopia::getInstance().enableTexturesRepeat();
+	Utopia::getInstance().enableLinearBipmapLinearFilter();
+	Utopia::getInstance().updateAnisotropyLevelAllTextures(UTexture::getMaxAnisotropicLevel());
+	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(UTexture::getMaxAnisotropicLevel()));
+	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
 
 
 	while (Utopia::getInstance().isRunning())
@@ -153,12 +210,12 @@ int main()
 		}
 		shadowRenderPipeline->render();
 
-		Utopia::getInstance().get3DRenderPipeline().clear();
-		Utopia::getInstance().get3DRenderPipeline().pass(root);
-		Utopia::getInstance().get3DRenderPipeline().render();
+		_3DRenderPipeline->clear();
+		_3DRenderPipeline->pass(root);
+		_3DRenderPipeline->render();
 
 
-		Utopia::getInstance().get2DRenderPipeline().render();
+		_2DRenderPipeline->render();
 		Utopia::getInstance().enableLighting();
 		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().swap();
@@ -217,7 +274,8 @@ void passiveMotionCallback(int x, int y)
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
-
+	static int currentAniLevel = 0;
+	static int currentTexturesVisualization = 0;
 
 	glm::vec3 cameraNewPos = glm::vec4(0, 0, 0, 1);
 
@@ -254,6 +312,43 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case 'x':
 		Utopia::getInstance().enableWireFrameMode();
 		break;
+
+	case 'c':
+		Utopia::getInstance().updateAnisotropyLevelAllTextures(++currentAniLevel);
+		anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(currentAniLevel));
+		if (currentAniLevel >= UTexture::getMaxAnisotropicLevel())
+			currentAniLevel = 0;
+		break;
+
+	case 'v':
+
+		switch (currentTexturesVisualization++)
+		{
+		case 0:
+			Utopia::getInstance().enableNearestFilter();
+			textureFilterModeLabel->setText("[v] textureFilterMode: Nearest");
+			break;
+		case 1:
+			Utopia::getInstance().enableNearestBipmapNearestFilter();
+			textureFilterModeLabel->setText("[v] textureFilterMode: NearestBipmapNearest");
+			break;
+		case 2:
+			Utopia::getInstance().enableLinearFilter();
+			textureFilterModeLabel->setText("[v] textureFilterMode: Linear");
+			break;
+		case 3:
+			Utopia::getInstance().enableLinearBipmapNearestFilter();
+			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapNearest");
+			break;
+		case 4:
+			Utopia::getInstance().enableLinearBipmapLinearFilter();
+			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
+
+			break;
+		}
+		if (currentTexturesVisualization > 4)
+			currentTexturesVisualization = 0;
+
 
 
 
@@ -293,10 +388,10 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 
 	case '-':
-		tower->moveFisicalHookUpDown(-3.f);
+		tower->moveFisicalHookUpDown(-6.f);
 		break;
 	case '+':
-		tower->moveFisicalHookUpDown(+3.f);
+		tower->moveFisicalHookUpDown(+6.f);
 		break;
 	}
 

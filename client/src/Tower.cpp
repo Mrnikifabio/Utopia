@@ -134,7 +134,8 @@ void Tower::moveFisicalHookUpDown(float distance)
 		return;
 	}
 
-	float offsetFromStart = m_pimpl->m_hookLimitUp- (currentYPosition + distance)/100;
+
+	float offsetFromStart = - (currentYPosition - (distance * (distance>0?1.f:-1.f) / 2)) / 100;
 
 	if (m_pimpl->m_cable != nullptr)
 	{
