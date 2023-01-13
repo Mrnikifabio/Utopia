@@ -89,15 +89,15 @@ int main()
 	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
 
 	std::shared_ptr<UMaterial> shadowMaterial = std::make_shared<UMaterial>("shadow", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 128);
-	
+
 	//Node associated to the tower
-	
+
 	std::shared_ptr<UNode> hookNode;
 	std::shared_ptr<UNode> towerNode;
 	std::shared_ptr<UNode> fisicalHookNode;
 	std::shared_ptr<UNode> cableNode;
 	std::shared_ptr<UNode> towerCameraNode;
-	
+
 
 	hookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "hook");
 	towerNode = client::ClientUtility::getInstance().findGameObjectByName(root, "tower");
@@ -156,11 +156,11 @@ int main()
 	std::shared_ptr<UText> rotateTower = std::make_shared<UText>("Tower");
 	rotateTower->setColor(glm::vec3(255, 255, 255));
 
-	anisotLevelLabel->setColor(glm::vec3(0, 128, 255));
-	textureFilterModeLabel->setColor(glm::vec3(0, 128, 255));
+	anisotLevelLabel->setColor(glm::vec3(255, 0, 0));
+	textureFilterModeLabel->setColor(glm::vec3(255, 0, 0));
 
 	std::shared_ptr<UText> solidWireFrame = std::make_shared<UText>("solidWireFrame");
-	solidWireFrame->setColor(glm::vec3(0, 128, 255));
+	solidWireFrame->setColor(glm::vec3(255, 0, 0));
 
 	std::shared_ptr<UText> cameraMovement = std::make_shared<UText>("cameraMovement");
 	cameraMovement->setColor(glm::vec3(255, 255, 255));
@@ -321,7 +321,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 
 	case 'v':
-		
+
 		switch (currentTexturesVisualization++)
 		{
 		case 0:

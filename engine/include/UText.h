@@ -2,20 +2,20 @@
 
 #include "U2DObject.h"
 
-#ifdef _WINDOWS 	
+#ifdef _WINDOWS
 // Export API:
 // Specifies i/o linkage (VC++ spec):
 #ifdef UTOPIA_EXPORTS
 #define LIB_API __declspec(dllexport)
 #else
 #define LIB_API __declspec(dllimport)
-#endif      	
+#endif
 #else // Under Linux
 #define LIB_API  // Dummy declaration
 #endif
 
 namespace utopia {
-	
+
 	class UText : public U2DObject
 	{
 		struct pimpl;
@@ -25,13 +25,13 @@ namespace utopia {
 
 		enum Font : int
 		{
-			DEFAULT_1 = 0x0002,
-			DEFAULT_2 = 0x0003,
-			TIMES_ROMAN_10 = 0x0004,
+			DEFAULT_1 = 0,
+			DEFAULT_2,
+			TIMES_ROMAN_10,
 			TIMES_ROMAN_24,
 			HELVETICA_10,
 			HELVETICA_12,
-			HELVETICA_18,
+			HELVETICA_18
 		};
 
 		LIB_API UText(const std::string& name, const std::string& text, const Font& font, const glm::vec2& position, const glm::vec3& color);
