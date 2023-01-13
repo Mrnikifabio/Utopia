@@ -20,9 +20,9 @@ namespace utopia
 {
 	class U3DRenderPipeline : public UObject
 	{
+	private:
 		struct pimpl;
 		struct U3DRenderNode;
-	private:
 		std::unique_ptr<pimpl> m_pimpl;
 	public:
 		LIB_API U3DRenderPipeline(const std::string& name);

@@ -18,8 +18,8 @@ namespace utopia
 {
     class UCamera : public UNode
     {
-        struct pimpl;
     private:
+        struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
         static std::weak_ptr<UCamera> m_mainCamera;
 

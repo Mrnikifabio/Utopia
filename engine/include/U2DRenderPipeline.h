@@ -19,9 +19,9 @@ namespace utopia {
 
     class U2DRenderPipeline : public UObject
     {
+	private:
 		struct pimpl;
 		struct U2DRenderNode;
-	private:
 		std::unique_ptr<pimpl> m_pimpl;
 	public:
 		LIB_API U2DRenderPipeline(const std::string& name);

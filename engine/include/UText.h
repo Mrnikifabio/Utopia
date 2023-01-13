@@ -18,8 +18,8 @@ namespace utopia {
 	
 	class UText : public U2DObject
 	{
-		struct pimpl;
 	private:
+		struct pimpl;
 		std::unique_ptr<pimpl> m_pimpl;
 	public:
 

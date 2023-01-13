@@ -20,8 +20,8 @@ namespace utopia
 	class OVONodeAbstractStrategy;
 	class OVOFactory
 	{
-		struct pimpl;
 	private:
+		struct pimpl;
 		std::unique_ptr<pimpl> m_pimpl;
 		
 		LIB_API OVOFactory();

@@ -5,14 +5,12 @@ namespace utopia
 {
 	class OVOLightStrategy :
 		public OVONodeAbstractStrategy
-	{
-
+	{	
+	private:
 		/**
 		 * Light subtypes.
 		 */
 		enum class Subtype : int;
-		
-	private:
 		OVOLightStrategy();
 		~OVOLightStrategy();
 

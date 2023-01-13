@@ -20,6 +20,7 @@ namespace utopia
 
     class UMesh : public UNode
     {
+    private:
         struct Vertex {
             glm::vec3 coord;
             glm::vec3 normal;
@@ -46,7 +47,6 @@ namespace utopia
         };
 
         struct pimpl;
-    private:
         std::unique_ptr<pimpl> m_pimpl;
         UMesh(const std::string& name);
         UMesh(const std::string& name, std::shared_ptr<UMaterial> material);

@@ -7,12 +7,11 @@ namespace utopia
 	class OVOMeshStrategy :
 		public OVONodeAbstractStrategy
 	{
+	private:
 		/**
 		 * Mesh subtypes.
 		 */
 		enum class Subtype : int;
-
-	private:
 		OVOMeshStrategy() {};
 		~OVOMeshStrategy() {};
 
