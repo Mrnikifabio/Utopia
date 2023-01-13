@@ -9,7 +9,6 @@ using namespace client;
 struct Tower::pimpl
 {
 	std::shared_ptr<utopia::UNode> m_root;
-
 	std::shared_ptr<utopia::UNode> m_tower;
 	std::shared_ptr<utopia::UNode> m_hook;
 	std::shared_ptr<utopia::UNode> m_Fisicalhook;
@@ -66,6 +65,31 @@ void client::Tower::setCable(std::shared_ptr<utopia::UNode> cable)
 {
 	m_pimpl->m_cable = cable;
 	m_pimpl->m_startCableModelView = cable->getModelView();
+}
+
+std::shared_ptr<utopia::UNode> client::Tower::getRoot() const
+{
+	return m_pimpl->m_root;
+}
+
+std::shared_ptr<utopia::UNode> client::Tower::getHook() const
+{
+	return m_pimpl->m_hook;
+}
+
+std::shared_ptr<utopia::UNode> client::Tower::getFisicalHook() const
+{
+	return m_pimpl->m_Fisicalhook;
+}
+
+std::shared_ptr<utopia::UNode> client::Tower::getTower() const
+{
+	return m_pimpl->m_tower;
+}
+
+std::shared_ptr<utopia::UNode> client::Tower::getCable() const
+{
+	return m_pimpl->m_cable;
 }
 
 bool client::Tower::isHooking() const

@@ -2,6 +2,9 @@
 #include "ConcreteTestExample.h"
 #include "TestRunner.h"
 #include "Utopia.h"
+#include "BoxTest.h"
+#include "BoxesManagerTest.h"
+#include "TowerTest.h"
 #include <string>
 #include <iostream>
 #include <cassert>
@@ -15,7 +18,11 @@ namespace utopia_test {
             utopia::Utopia::getInstance().init();
 
         TestRunner::getInstance().addTest(std::unique_ptr<ConcreteTestExample>(new ConcreteTestExample("test1")));
-
+		TestRunner::getInstance().addTest(std::unique_ptr<BoxTest>(new BoxTest("BoxTest")));
+		TestRunner::getInstance().addTest(std::unique_ptr<BoxesManagerTest>(new BoxesManagerTest("BoxesManagerTest")));
+		TestRunner::getInstance().addTest(std::unique_ptr<TowerTest>(new TowerTest("TowerTest")));
+        
+        
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "TOWERCRANESIMULATOR2022 TESTS" << std::endl;
         TestRunner::getInstance().run(arg);

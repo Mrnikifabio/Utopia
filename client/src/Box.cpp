@@ -7,12 +7,12 @@ using namespace client;
 
 struct Box::pimpl
 {
-	std::shared_ptr<utopia::UNode> m_hookPoint;
-	std::shared_ptr<utopia::UNode> m_groundNode;
-	std::shared_ptr<utopia::UNode> m_topNode;
+	std::shared_ptr<utopia::UNode> m_hookPoint=nullptr;
+	std::shared_ptr<utopia::UNode> m_groundNode = nullptr;
+	std::shared_ptr<utopia::UNode> m_topNode = nullptr;
 
-	bool m_isHooked;
-	bool m_isGrounded;
+	bool m_isHooked=false;
+	bool m_isGrounded=false;
 	
 };
 

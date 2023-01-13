@@ -51,6 +51,15 @@
     <ClCompile Include="test\RunTowerCraneTest.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="test\BoxTest.cpp">
+      <Filter>Tests\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test\BoxesManagerTest.cpp">
+      <Filter>Tests\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test\TowerTest.cpp">
+      <Filter>Tests\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="test\ConcreteTestExample.h">
@@ -73,6 +82,15 @@
     </ClInclude>
     <ClInclude Include="include\BoxesManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test\BoxTest.h">
+      <Filter>Tests\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test\BoxesManagerTest.h">
+      <Filter>Tests\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test\TowerTest.h">
+      <Filter>Tests\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -18,7 +18,8 @@ namespace client
 		~BoxesManager();
 
 		std::shared_ptr<Box> possibleBoxToHook(std::shared_ptr<utopia::UNode> hook, float distance) const;
-		void setBoxes(std::vector <std::shared_ptr<Box>> boxes);
+		void setBoxes(std::vector <std::shared_ptr<Box>>& boxes);
+		std::vector <std::shared_ptr<Box>> getBoxes() const;
 		
 		void computeGravity();
 	};
