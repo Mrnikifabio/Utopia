@@ -25,26 +25,26 @@ namespace utopia
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
-        static int getMaxAnisotropicLevel();
         UTexture(const std::string& name, unsigned int texId);
         friend UTextureFactory;
+        static void setAnisotropyLevel(int level);
 
     public:
         LIB_API virtual ~UTexture() noexcept;
 
         void render() override;
 
+        LIB_API static int getMaxAnisotropicLevel();
         LIB_API static void enableNearestFilter();
         LIB_API static void enableNearestBipmapNearestFilter();
         LIB_API static void enableLinearFilter();
         LIB_API static void enableLinearBipmapNearestFilter();
         LIB_API static void enableLinearBipmapLinearFilter();
-
-
         LIB_API static void enableTexturesRepeat();
         LIB_API static void enableTexturesClampToEdge();
-        LIB_API static void setAnisotropyLevel(int level);
         LIB_API void updateTextureParameteri(void (*parametriSetMethod)(void));
+        LIB_API void updateAnisotropyLevelTextureParameteri(int value);
+
     };
 }
 

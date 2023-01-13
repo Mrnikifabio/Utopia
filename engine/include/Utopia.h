@@ -42,7 +42,7 @@ namespace utopia {
 	private:
 		struct pimpl;
 		std::unique_ptr<pimpl> m_pimpl;
-
+		void updateAllTexturesParameteri(void(*parametriSetMethod)(void));
 		// Const/dest (as private to prevent instanciation):
 		Utopia();
 		~Utopia();
@@ -64,6 +64,14 @@ namespace utopia {
 		LIB_API void enableShadeModel();
 		LIB_API void enableWireFrameMode();
 		LIB_API void enableSolidMode();
+
+		LIB_API void enableNearestFilter();
+		LIB_API void enableNearestBipmapNearestFilter();
+		LIB_API void enableLinearFilter();
+		LIB_API void enableLinearBipmapNearestFilter();
+		LIB_API void enableLinearBipmapLinearFilter();
+		LIB_API void enableTexturesRepeat();
+		LIB_API void enableTexturesClampToEdge();
 
 		LIB_API void setKeyboardCallback(void (*callback)(unsigned char, int, int));
 		LIB_API void setDisplayCallback(void (*callback)(void));
@@ -90,7 +98,8 @@ namespace utopia {
 		LIB_API void addTexture(const std::string&, std::shared_ptr<UTexture> texture);
 		LIB_API bool containTexture(const std::string& name);
 
-		LIB_API void updateAllTexturesParameteri(void(*parametriSetMethod)(void));
+		LIB_API void updateAnisotropyLevelAllTextures(int value);
+
 		
 		LIB_API unsigned int texturesMapSize();
 		LIB_API unsigned int materialsMapSize();

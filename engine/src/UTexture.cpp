@@ -67,6 +67,7 @@ void utopia::UTexture::enableLinearBipmapLinearFilter()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 }
 
+
 int utopia::UTexture::getMaxAnisotropicLevel()
 {
     int anisotropicLevel;
@@ -114,6 +115,14 @@ void utopia::UTexture::updateTextureParameteri(void(*parametriSetMethod)(void))
     glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
     glEnable(GL_TEXTURE_2D);
     parametriSetMethod();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void utopia::UTexture::updateAnisotropyLevelTextureParameteri(int value)
+{
+    glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
+    glEnable(GL_TEXTURE_2D);
+    setAnisotropyLevel(value);
     glDisable(GL_TEXTURE_2D);
 }
 

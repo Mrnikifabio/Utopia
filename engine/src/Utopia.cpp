@@ -123,7 +123,7 @@ bool LIB_API Utopia::init()
 	setDisplayCallback(displayCallback);
 	setReshapeCallback(reshapeCallback);
 
-	UTexture::enableTexturesRepeat();
+	UTexture::enableTexturesClampToEdge();
 	UTexture::enableLinearFilter();
 
 	//glEnable(GL_TEXTURE_2D);
@@ -198,6 +198,41 @@ void Utopia::enableWireFrameMode()
 void Utopia::enableSolidMode()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void utopia::Utopia::enableNearestFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableNearestFilter);
+}
+
+void utopia::Utopia::enableNearestBipmapNearestFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableNearestBipmapNearestFilter);
+}
+
+void utopia::Utopia::enableLinearFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableLinearFilter);
+}
+
+void utopia::Utopia::enableLinearBipmapNearestFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableLinearBipmapNearestFilter);
+}
+
+void utopia::Utopia::enableLinearBipmapLinearFilter()
+{
+	updateAllTexturesParameteri(UTexture::enableLinearBipmapLinearFilter);
+}
+
+void utopia::Utopia::enableTexturesRepeat()
+{
+	updateAllTexturesParameteri(UTexture::enableTexturesRepeat);
+}
+
+void utopia::Utopia::enableTexturesClampToEdge()
+{
+	updateAllTexturesParameteri(UTexture::enableTexturesClampToEdge);
 }
 
 
@@ -319,6 +354,17 @@ void Utopia::updateAllTexturesParameteri(void(*parametriSetMethod)(void))
 	}
 }
 
+void utopia::Utopia::updateAnisotropyLevelAllTextures(int value)
+{
+	std::cout << "n textures to upload the anisotropy level: " << m_pimpl->m_textures.size() << std::endl;
+
+	for (const auto& kv : m_pimpl->m_textures)
+	{
+		kv.second->updateAnisotropyLevelTextureParameteri(value);
+		std::cout << "upload texture: " << kv.first << std::endl;
+	}
+}
+
 unsigned int Utopia::texturesMapSize()
 {
 	return (unsigned int)m_pimpl->m_textures.size();
@@ -334,5 +380,7 @@ Utopia& Utopia::getInstance()
 	// Instantiated on first use.
 	return m_instance;
 }
+
+
 
 
