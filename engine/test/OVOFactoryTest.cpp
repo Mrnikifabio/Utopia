@@ -27,6 +27,7 @@ void OVOFactoryTest::badFileTest()
 	try
 	{
 		auto test = OVOFactory::getInstance().fromFile("circuit.dds");
+		assert(false);
 	}
 	catch (std::runtime_error&)
 	{
@@ -42,6 +43,7 @@ void OVOFactoryTest::nonExistentFileTest()
 	try
 	{
 		auto test = OVOFactory::getInstance().fromFile("nonexistent");
+		assert(false);
 	}
 	catch (std::runtime_error&)
 	{

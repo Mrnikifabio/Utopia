@@ -46,18 +46,92 @@ void UNodeTest::childTest()
 {
 	using namespace utopia;
 
-	auto node = std::unique_ptr<UNode>(new UNode("parent"));
+	auto node = std::shared_ptr<UNode>(new UNode("parent"));
 	assert(node->getParent() == nullptr);
 
-	node->addChild(std::unique_ptr<UNode>(new UNode("child1")));
+	auto child1 = std::shared_ptr<UNode>(new UNode("child1"));
+
+	node->addChild(child1);
 	node->addChild(std::unique_ptr<UNode>(new UNode("child2")));
 	node->addChild(std::unique_ptr<UNode>(new UNode("child3")));
+
+
+	auto otherNode = std::shared_ptr<UNode>(new UNode("otherParent"));
+	auto otherParentChildren = std::shared_ptr<UNode>(new UNode("otherParentChildren"));
+	otherNode->addChild(otherParentChildren);
+
+	try
+	{
+		node->addChild(node);
+		assert(false);
+	}
+	catch (std::runtime_error&)
+	{
+		//the exception has been catched, therefore it has been thrown and the test is considered passed
+		assert(true);
+	}
+
+
+	try
+	{
+		node->addChild(child1);
+		assert(false);
+	}
+	catch (std::runtime_error&)
+	{
+		//the exception has been catched, therefore it has been thrown and the test is considered passed
+		assert(true);
+	}
+
+	try
+	{
+		node->addChild(otherParentChildren);
+		assert(false);
+	}
+	catch (std::runtime_error&)
+	{
+		//the exception has been catched, therefore it has been thrown and the test is considered passed
+		assert(true);
+	}
 
 	assert(node->getChildCount() == 3);
 
 	auto c1 = node->detachChild(1);
 	assert(node->getChildCount() == 2);
 	assert(c1->getName() == "child2");
+
+	try
+	{
+		node->detachChild(999);
+		assert(false);
+	}
+	catch (std::out_of_range&)
+	{
+		//the exception has been catched, therefore it has been thrown and the test is considered passed
+		assert(true);
+	}
+
+	try
+	{
+		node->detachChildById(999);
+		assert(false);
+	}
+	catch (std::out_of_range&)
+	{
+		//the exception has been catched, therefore it has been thrown and the test is considered passed
+		assert(true);
+	}
+
+	try
+	{
+		node->getChild(999);
+		assert(false);
+	}
+	catch (std::out_of_range&)
+	{
+		//the exception has been catched, therefore it has been thrown and the test is considered passed
+		assert(true);
+	}
 }
 
 void UNodeTest::parentTest()

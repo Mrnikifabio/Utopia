@@ -89,6 +89,9 @@ auto UNode::getModelView() const -> const glm::mat4&
 
 auto UNode::addChild(std::shared_ptr<UNode> child) -> std::weak_ptr<UNode>
 {
+	if(child->getId() == this->getId())
+		throw std::runtime_error("Trying to node as a child of itself");
+
 	if (isChildPresent(child->getId()))
 		throw std::runtime_error("Trying to add a node that is already a child");
 
