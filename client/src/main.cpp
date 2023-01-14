@@ -258,8 +258,6 @@ void passiveMotionCallback(int x, int y)
 	glm::vec3 cameraLocalPosition = client::ClientUtility::getInstance().getLocalPosition(freeCamera);
 	glm::mat4 newCameraMatrix = glm::translate(glm::mat4(1.f), cameraLocalPosition);
 
-	glm::mat4 cameraMatrix = freeCamera->getModelView();
-
 	glm::mat4 matRotationX = glm::rotate(newCameraMatrix, glm::radians(angleX), glm::vec3(0.f, 1.f, 0.f));
 	glm::mat4 matRotationY = glm::rotate(matRotationX, glm::radians(angleY), glm::vec3(1.f, 0.f, 0.f));
 
