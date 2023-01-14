@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="utopia_test::OVOFactoryTest" Collapsed="true">
+    <Position X="9.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAABAAAAAAAACgAAAAAAQAA=</HashCode>
+      <FileName>test\OVOFactoryTest.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia_test::Test" Collapsed="true">
+    <Position X="14" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAQAAAAAEAAAAAAAAAAAAAAAkCAAAAAA=</HashCode>
+      <FileName>test\Test.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia_test::TestRunner" Collapsed="true">
+    <Position X="11.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACgAAAAAACAAAAAAAAUAAAAAAAAQAAAAgAAAAAAA=</HashCode>
+      <FileName>test\TestRunner.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia_test::UCameraTest" Collapsed="true">
+    <Position X="14" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAACIAAAEQAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>test\UCameraTest.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia_test::ULightTest" Collapsed="true">
+    <Position X="16.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAQAAAAAABEAACAAAAABABABAAYACAQAAA=</HashCode>
+      <FileName>test\ULightTest.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia_test::UNodeTest" Collapsed="true">
+    <Position X="18.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAEEAAAAEgEAAAAAAACAAAAAAA=</HashCode>
+      <FileName>test\UNodeTest.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia_test::UObjectTest" Collapsed="true">
+    <Position X="11.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>test\UObjectTest.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::Utopia" Collapsed="true">
+    <Position X="11.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>keAhAhAAAAAKEABAGAgAIRAgAIAACBZACQwkAgAMAAA=</HashCode>
+      <FileName>include\Utopia.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::OVONodeAbstractStrategy" Collapsed="true">
+    <Position X="11.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAiAAAAAA=</HashCode>
+      <FileName>include\OVONodeAbstractStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::OVOFactory" Collapsed="true">
+    <Position X="13" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAQAAAAAQIAAAAAAAAAAAAAAQAIAAgBAAAAAA=</HashCode>
+      <FileName>include\OVOFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::OVOLightStrategy" Collapsed="true">
+    <Position X="14" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQAAAAgAAAQAAI=</HashCode>
+      <FileName>include\OVOLightStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::OVOMaterialStrategy" Collapsed="true">
+    <Position X="16.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAEAAAACAAAAAAAAAQAAAAgAAIAAAA=</HashCode>
+      <FileName>include\OVOMaterialStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::OVOMeshStrategy" Collapsed="true">
+    <Position X="9.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgEAAAAAAAIAAAAQAAAAgAABAQAA=</HashCode>
+      <FileName>include\OVOMeshStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::OVONodeConcreteStrategy" Collapsed="true">
+    <Position X="11.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAABAEAAAAAAAAAAAAAAQAAAAgAAAAAAA=</HashCode>
+      <FileName>include\OVONodeConcreteStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::OVOStrategy" Collapsed="true">
+    <Position X="14" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAEAEAAAAAAAAAAAAAAIAAAAgAAAAAAA=</HashCode>
+      <FileName>include\OVOStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::U2DObject" Collapsed="true">
+    <Position X="10" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAACAAAAAAAAEAAAACAAAAAAAgAAAAAAAQAAA=</HashCode>
+      <FileName>include\U2DObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::U2DRenderPipeline" Collapsed="true">
+    <Position X="14.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUAAAAAAAAAAAAAEAAAgAAAAAAAAAAAAAAAAAAAQAQA=</HashCode>
+      <FileName>include\U2DRenderPipeline.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::U3DRenderPipeline" Collapsed="true">
+    <Position X="16.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUAAAAAAAAAAAAAEAAggAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>include\U3DRenderPipeline.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UCamera" Collapsed="true">
+    <Position X="9" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQAAAAAAkAAACAAAAAACAAAAAAAACAAACACBEAAAAAA=</HashCode>
+      <FileName>include\UCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UDirectionalLight" Collapsed="true">
+    <Position X="12.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAA=</HashCode>
+      <FileName>include\UDirectionalLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::ULight" Collapsed="true">
+    <Position X="14.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQgAARAAAABIAAAAAAAQAgAAAAAAAAQEAIAAAAAQCgA=</HashCode>
+      <FileName>include\ULight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UMaterial" Collapsed="true">
+    <Position X="12.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAAAAIAAAAAAIgGAAAAAAAAQQkAAAAAAAQIAA=</HashCode>
+      <FileName>include\UMaterial.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UMesh">
+    <Position X="19" Y="7.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="utopia::UMesh::Vertex">
+        <TypeIdentifier>
+          <NewMemberFileName>include\UMesh.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="utopia::UMesh::Face">
+        <TypeIdentifier>
+          <NewMemberFileName>include\UMesh.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="utopia::UMesh::LOD">
+        <TypeIdentifier>
+          <NewMemberFileName>include\UMesh.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="utopia::UMesh::pimpl" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>include\UMesh.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QSAAAAAAAAAAAAAAAAAACAAAAAQAAAAAAAAAAAAQACA=</HashCode>
+      <FileName>include\UMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UNode" Collapsed="true">
+    <Position X="13.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BSAAgAAAAAAAAAAAABAAAAAaAABAAAgFAEAAIABQAAA=</HashCode>
+      <FileName>include\UNode.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UObject" Collapsed="true">
+    <Position X="13.5" Y="2.75" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="utopia::UObject::pimpl" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>include\UObject.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AwAAAAEAAAABAAAAAAAAAAAAAAAAAABAAAAkAgAQAAA=</HashCode>
+      <FileName>include\UObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UOmniLight" Collapsed="true">
+    <Position X="14.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAIAAAAAAAggAAAAgAAAAAAAAAAAAAAAAAAAgQgIA=</HashCode>
+      <FileName>include\UOmniLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UOrthographicCamera" Collapsed="true">
+    <Position X="7.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAIAAiAAIAAAAABAAAIEACIQAAAAAAAAAAAAAhAI=</HashCode>
+      <FileName>include\UOrthographicCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UPerspectiveCamera" Collapsed="true">
+    <Position X="10" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACAAAgAAAAAAAAAAAAAAQAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>include\UPerspectiveCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::USpotLight" Collapsed="true">
+    <Position X="16.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAIAgAAAAAgAAAgAgACAAAAAAAAIAAgAAIAAgQgIA=</HashCode>
+      <FileName>include\USpotLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UText" Collapsed="true">
+    <Position X="10" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAgAACACAAAAAgAAIAAAAgAAYAAQ=</HashCode>
+      <FileName>include\UText.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UTextureFactory" Collapsed="true">
+    <Position X="14.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAACAAAAAAQAAAAgBAAAAAA=</HashCode>
+      <FileName>include\UTextureFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="utopia::UTexture" Collapsed="true">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JQACEEAAAAAAAAAAAAAAAAAAAAEAQAAAEAQAAAgQCCA=</HashCode>
+      <FileName>include\UTexture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OVOObject" Collapsed="true">
+    <Position X="9.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\OVOObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

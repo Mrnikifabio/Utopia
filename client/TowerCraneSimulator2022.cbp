@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="TowerCraneSimulator2022" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/client" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="../engine/" />
+				</Compiler>
+				<Linker>
+					<Add directory="bin/Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/TowerCraneSimulator2022" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="../engine/" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="bin/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++11" />
+			<Add option="-fexceptions" />
+			<Add directory="../engine/include" />
+			<Add directory="../dependencies/glm/include" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add option="-Wl,-rpath=." />
+			<Add library="libengine" />
+		</Linker>
+		<Unit filename="include/Box.h" />
+		<Unit filename="include/BoxesManager.h" />
+		<Unit filename="include/ClientUtility.h" />
+		<Unit filename="include/Tower.h" />
+		<Unit filename="src/Box.cpp" />
+		<Unit filename="src/BoxesManager.cpp" />
+		<Unit filename="src/ClientUtility.cpp" />
+		<Unit filename="src/Tower.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

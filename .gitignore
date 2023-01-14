@@ -18,11 +18,17 @@ mono_crash.*
 
 # Build results
 [Dd]ebug/
+!dependencies/**
 [Dd]ebugPublic/
+!dependencies/**
 [Rr]elease/
+!dependencies/**
 [Rr]eleases/
+!dependencies/**
 x64/
+!dependencies/**
 x86/
+!dependecies/**
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
@@ -389,12 +395,14 @@ FodyWeavers.xsd
 *.la
 *.a
 *.lib
+!dependencies/**
 
 # Executables
 *.exe
 *.out
 *.app
 
-# specific to CodeBlocks IDE
-*.layout
+#codeblocks
 *.depend
+*.layout
+*.workspace

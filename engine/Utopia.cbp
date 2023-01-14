@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Utopia" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/engine" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-fPIC" />
+					<Add option="-g" />
+				</Compiler>
+				<ExtraCommands>
+					<Add after="cp bin/Debug/libengine.so ../client/bin/Debug/" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/engine" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add option="-fPIC" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp bin/Release/libengine.so ../client/bin/Release/" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++11" />
+			<Add option="-fPIC" />
+			<Add option="-fexceptions" />
+			<Add directory="../dependencies/freeglut/include" />
+			<Add directory="../dependencies/glm/include" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add library="GL" />
+			<Add library="glut" />
+			<Add library="freeimage" />
+			<Add library="GLU" />
+		</Linker>
+		<Unit filename="include/OVOFactory.h" />
+		<Unit filename="include/OVOLightStrategy.h" />
+		<Unit filename="include/OVOMaterialStrategy.h" />
+		<Unit filename="include/OVOMeshStrategy.h" />
+		<Unit filename="include/OVONodeAbstractStrategy.h" />
+		<Unit filename="include/OVONodeConcreteStrategy.h" />
+		<Unit filename="include/OVOObject.h" />
+		<Unit filename="include/OVOStrategy.h" />
+		<Unit filename="include/U2DObject.h" />
+		<Unit filename="include/U2DRenderPipeline.h" />
+		<Unit filename="include/U3DRenderPipeline.h" />
+		<Unit filename="include/UCamera.h" />
+		<Unit filename="include/UDirectionalLight.h" />
+		<Unit filename="include/ULight.h" />
+		<Unit filename="include/UMaterial.h" />
+		<Unit filename="include/UMesh.h" />
+		<Unit filename="include/UNode.h" />
+		<Unit filename="include/UObject.h" />
+		<Unit filename="include/UOmniLight.h" />
+		<Unit filename="include/UOrthographicCamera.h" />
+		<Unit filename="include/UPerspectiveCamera.h" />
+		<Unit filename="include/USpecialKeys.h" />
+		<Unit filename="include/USpotLight.h" />
+		<Unit filename="include/UText.h" />
+		<Unit filename="include/UTexture.h" />
+		<Unit filename="include/UTextureFactory.h" />
+		<Unit filename="include/Utopia.h" />
+		<Unit filename="src/OVOFactory.cpp" />
+		<Unit filename="src/OVOLightStrategy.cpp" />
+		<Unit filename="src/OVOMaterialStrategy.cpp" />
+		<Unit filename="src/OVOMeshStrategy.cpp" />
+		<Unit filename="src/OVONodeAbstractStrategy.cpp" />
+		<Unit filename="src/OVONodeConcreteStrategy.cpp" />
+		<Unit filename="src/OVOStrategy.cpp" />
+		<Unit filename="src/U2DObject.cpp" />
+		<Unit filename="src/U2DRenderPipeline.cpp" />
+		<Unit filename="src/U3DRenderPipeline.cpp" />
+		<Unit filename="src/UCamera.cpp" />
+		<Unit filename="src/UDirectionalLight.cpp" />
+		<Unit filename="src/ULight.cpp" />
+		<Unit filename="src/UMaterial.cpp" />
+		<Unit filename="src/UMesh.cpp" />
+		<Unit filename="src/UNode.cpp" />
+		<Unit filename="src/UObject.cpp" />
+		<Unit filename="src/UOmniLight.cpp" />
+		<Unit filename="src/UOrthographicCamera.cpp" />
+		<Unit filename="src/UPerspectiveCamera.cpp" />
+		<Unit filename="src/USpecialKeys.cpp" />
+		<Unit filename="src/USpotLight.cpp" />
+		<Unit filename="src/UText.cpp" />
+		<Unit filename="src/UTexture.cpp" />
+		<Unit filename="src/UTextureFactory.cpp" />
+		<Unit filename="src/Utopia.cpp" />
+		<Unit filename="test/OVOFactoryTest.cpp" />
+		<Unit filename="test/OVOFactoryTest.h" />
+		<Unit filename="test/RunUtopiaTest.cpp" />
+		<Unit filename="test/Test.cpp" />
+		<Unit filename="test/Test.h" />
+		<Unit filename="test/TestRunner.cpp" />
+		<Unit filename="test/TestRunner.h" />
+		<Unit filename="test/UCameraTest.cpp" />
+		<Unit filename="test/UCameraTest.h" />
+		<Unit filename="test/ULightTest.cpp" />
+		<Unit filename="test/ULightTest.h" />
+		<Unit filename="test/UNodeTest.cpp" />
+		<Unit filename="test/UNodeTest.h" />
+		<Unit filename="test/UObjectTest.cpp" />
+		<Unit filename="test/UObjectTest.h" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
