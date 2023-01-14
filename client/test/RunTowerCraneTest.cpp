@@ -1,5 +1,4 @@
 #include "Test.h"
-#include "ConcreteTestExample.h"
 #include "TestRunner.h"
 #include "Utopia.h"
 #include "BoxTest.h"
@@ -18,7 +17,6 @@ namespace utopia_test {
         if (arg != "HEADLESS")
             utopia::Utopia::getInstance().init();
 
-        TestRunner::getInstance().addTest(std::unique_ptr<ConcreteTestExample>(new ConcreteTestExample("test1")));
 		TestRunner::getInstance().addTest(std::unique_ptr<BoxTest>(new BoxTest("BoxTest")));
 		TestRunner::getInstance().addTest(std::unique_ptr<BoxesManagerTest>(new BoxesManagerTest("BoxesManagerTest")));
 		TestRunner::getInstance().addTest(std::unique_ptr<TowerTest>(new TowerTest("TowerTest")));

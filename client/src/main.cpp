@@ -219,7 +219,6 @@ int main()
 		Utopia::getInstance().enableLighting();
 		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().swap();
-		//hookNode->setModelView(glm::rotate(hookNode->getModelView(), glm::radians(5.f), glm::vec3(0.f,1.f,0.f)));
 	}
 
 	std::cout << "Terminate" << std::endl;
@@ -237,8 +236,8 @@ void passiveMotionCallback(int x, int y)
 	static float angleX = 0;
 	static float angleY = 0;
 
-	float xRotationToDo = previousPositionX - x;
-	float yRotationToDo = previousPositionY - y;
+	float xRotationToDo = (float)(previousPositionX - x);
+	float yRotationToDo = (float)(previousPositionY - y);
 
 	angleX += xRotationToDo * sensibility;
 	angleY += yRotationToDo * sensibility;
@@ -395,7 +394,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 	}
 
-	if (UCamera::getMainCamera().lock()->getName() == "freeCamera");
+	if (UCamera::getMainCamera().lock()->getName() == "freeCamera")
 	{
 		freeCamera->setModelView(glm::translate(freeCamera->getModelView(), cameraNewPos));
 		std::cout << "camera" << std::endl;

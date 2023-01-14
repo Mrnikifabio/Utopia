@@ -27,9 +27,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test\ConcreteTestExample.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="test\Test.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
@@ -65,9 +62,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="test\ConcreteTestExample.h">
-      <Filter>Tests\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="test\Test.h">
       <Filter>Tests\Header Files</Filter>
     </ClInclude>
