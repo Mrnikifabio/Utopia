@@ -33,7 +33,6 @@ std::shared_ptr<UCamera> towerCamera;
 std::shared_ptr<UCamera> orthoCamera;
 
 
-
 std::unique_ptr<client::Tower> tower = std::unique_ptr<client::Tower>(new client::Tower());
 std::unique_ptr <client::BoxesManager> boxesManager = std::unique_ptr<client::BoxesManager>(new  client::BoxesManager());
 
