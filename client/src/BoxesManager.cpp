@@ -1,5 +1,7 @@
 #include "ClientUtility.h"
 #include "BoxesManager.h"
+#include "BoxesManager.h"
+#include "BoxesManager.h"
 
 
 using namespace client;
@@ -29,10 +31,16 @@ std::shared_ptr<Box> client::BoxesManager::possibleBoxToHook(std::shared_ptr<uto
 	return nullptr;
 }
 
-void client::BoxesManager::setBoxes(std::vector<std::shared_ptr<Box>> boxes)
+void client::BoxesManager::setBoxes(std::vector<std::shared_ptr<Box>>& boxes)
 {
 	m_pimpl->m_boxes = boxes;
 }
+
+std::vector<std::shared_ptr<Box>> client::BoxesManager::getBoxes() const
+{
+	return m_pimpl->m_boxes;
+}
+
 
 void client::BoxesManager::computeGravity()
 {
