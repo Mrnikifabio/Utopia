@@ -383,8 +383,10 @@ FodyWeavers.xsd
 
 # Compiled Dynamic libraries
 *.so
+!demo/**
 *.dylib
 *.dll
+!demo/**
 
 # Fortran module files
 *.mod
@@ -399,6 +401,7 @@ FodyWeavers.xsd
 
 # Executables
 *.exe
+!demo/**
 *.out
 *.app
 
