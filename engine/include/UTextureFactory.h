@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 #include <memory>
-#include "UTexture.h"
 #include "Utopia.h"
+#include "UTexture.h"
+
 
 namespace utopia
 {
@@ -21,6 +22,7 @@ namespace utopia
 		void operator=(UTextureFactory const&) = delete;
 
 		std::shared_ptr<UTexture> fromFile(const std::string& name);
+
 	};
 
 }

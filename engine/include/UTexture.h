@@ -4,6 +4,7 @@
 #include <iostream>
 #include "glm/glm.hpp"
 
+
 #ifdef _WINDOWS 	
 // Export API:
 // Specifies i/o linkage (VC++ spec):
@@ -25,6 +26,7 @@ namespace utopia
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
+        static std::shared_ptr<UTexture> m_defaultTexture;
         UTexture(const std::string& name, unsigned int texId);
         friend UTextureFactory;
         static void setAnisotropyLevel(int level);
@@ -42,9 +44,14 @@ namespace utopia
         LIB_API static void enableLinearBipmapLinearFilter();
         LIB_API static void enableTexturesRepeat();
         LIB_API static void enableTexturesClampToEdge();
+        LIB_API static std::shared_ptr<UTexture> loadTexture(const std::string& name, unsigned int target, int component, int width, int height, unsigned int format, unsigned int type, const void* data);
+        
         LIB_API void updateTextureParameteri(void (*parametriSetMethod)(void));
         LIB_API void updateAnisotropyLevelTextureParameteri(int value);
 
+        //LIB_API static const std::shared_ptr<UTexture> getDefaultTexture();
+
+     
     };
 }
 

@@ -1,8 +1,8 @@
-#include "UTexture.h"
 #include "UObject.h"
-#include "Utopia.h"
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
+#include "UTexture.h"
+#include "Utopia.h"
 
 /////////////
 // #DEFINE //
@@ -19,6 +19,9 @@
 #endif
 
 using namespace utopia;
+
+//std::shared_ptr<UTexture> UTexture::m_defaultTexture = std::make_shared<UTexture>("default");
+
 
 struct UTexture::pimpl
 {
@@ -126,6 +129,20 @@ void utopia::UTexture::updateAnisotropyLevelTextureParameteri(int value)
     glDisable(GL_TEXTURE_2D);
 }
 
+std::shared_ptr<UTexture> UTexture::loadTexture(const std::string& name, GLenum target, GLint component, GLint width, GLint height, GLenum format, GLenum type, const void* data)
+{
+    unsigned int texId;
+
+    glGenTextures(1, &texId);
+    glBindTexture(target, texId);
+
+    gluBuild2DMipmaps(target, component, width, height, format, type, data);
+
+    auto texture = std::shared_ptr<UTexture>(new UTexture(name, texId));
+    Utopia::getInstance().addTexture(name, texture);
+    return texture;
+
+}
 
 
 
