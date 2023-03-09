@@ -10,6 +10,7 @@
 #include <iostream>
 #include "Utopia.h"
 #include "UCamera.h"
+#include <GL/glew.h>
 #include <gl/freeglut.h>
 #include <unordered_map>
 #include "UTexture.h"
@@ -116,6 +117,24 @@ bool LIB_API Utopia::init()
 
 	// Create the window with a specific title:
 	glutCreateWindow("Utopia Window");
+
+	// Init Glew (*after* the context creation):
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+	{
+		// Error loading GLEW
+		std::cout << "ERROR: failed to loading GLEW" << std::endl;
+		return false;
+	}
+
+
+	// OpenGL 2.1 is required:
+	if (!glewIsSupported("GL_VERSION_2_1"))
+	{
+		std::cout << "OpenGL 2.1 not supported" << std::endl;
+		return false;
+	}
 
 	// The OpenGL context is now initialized...
 	setDisplayCallback(displayCallback);
