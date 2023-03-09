@@ -20,8 +20,7 @@
 
 using namespace utopia;
 
-//std::shared_ptr<UTexture> UTexture::m_defaultTexture = std::make_shared<UTexture>("default");
-
+std::shared_ptr<UTexture> UTexture::m_defaultTexture;
 
 struct UTexture::pimpl
 {
@@ -35,10 +34,9 @@ struct UTexture::pimpl
 
 };
 
-
-
 UTexture::UTexture(const std::string& name, unsigned int texId)
     :UObject{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(texId)) } {}
+
 
 void utopia::UTexture::enableNearestFilter()
 {
@@ -87,7 +85,6 @@ int utopia::UTexture::getMaxAnisotropicLevel()
 void UTexture::render()
 {
     glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
-    glEnable(GL_TEXTURE_2D);
 }
 
 void UTexture::enableTexturesRepeat()
@@ -113,20 +110,29 @@ void UTexture::setAnisotropyLevel(int level)
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, (GLfloat)level);
 }
 
+std::shared_ptr<UTexture> utopia::UTexture::createWhiteTexture()
+{ 
+    GLubyte texData[] = { 255, 255, 255, 255 };
+    return loadTexture("default",GL_TEXTURE_2D, GL_RGBA, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+}
+
 void utopia::UTexture::updateTextureParameteri(void(*parametriSetMethod)(void))
 {
     glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
-    glEnable(GL_TEXTURE_2D);
     parametriSetMethod();
-    glDisable(GL_TEXTURE_2D);
 }
 
 void utopia::UTexture::updateAnisotropyLevelTextureParameteri(int value)
 {
     glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
-    glEnable(GL_TEXTURE_2D);
     setAnisotropyLevel(value);
-    glDisable(GL_TEXTURE_2D);
+}
+
+const std::shared_ptr<UTexture> utopia::UTexture::getDefaultTexture()
+{
+    if (m_defaultTexture == nullptr)
+        m_defaultTexture = createWhiteTexture();
+    return m_defaultTexture;
 }
 
 std::shared_ptr<UTexture> UTexture::loadTexture(const std::string& name, GLenum target, GLint component, GLint width, GLint height, GLenum format, GLenum type, const void* data)
@@ -134,6 +140,7 @@ std::shared_ptr<UTexture> UTexture::loadTexture(const std::string& name, GLenum 
     unsigned int texId;
 
     glGenTextures(1, &texId);
+    std::cout << "texId: " << texId << std::endl;
     glBindTexture(target, texId);
 
     gluBuild2DMipmaps(target, component, width, height, format, type, data);

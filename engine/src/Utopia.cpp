@@ -124,7 +124,7 @@ bool LIB_API Utopia::init()
 	UTexture::enableTexturesClampToEdge();
 	UTexture::enableLinearFilter();
 
-	//glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
 
 	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);

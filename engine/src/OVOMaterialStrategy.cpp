@@ -30,7 +30,7 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 {
 	std::string name = std::string(buffer.data.get());
 	material.setName(name);
-	std::cout << "Loading " << name << std::endl;
+	std::cout << "Loading material " << name << std::endl;
 	buffer.position += (static_cast<unsigned int>(name.length()) + 1);
 
 	//emission
@@ -73,7 +73,7 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 	buffer.position += static_cast<unsigned int>(albedoMap.length() + 1);
 	if (albedoMap != "[none]")
 	{
-		std::cout<<"loading texture "<< albedoMap<<std::endl;
+		std::cout << "loading texture " << albedoMap << std::endl;
 
 		if (Utopia::getInstance().containTexture(albedoMap))
 		{
@@ -81,9 +81,10 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 			material.setTexture(Utopia::getInstance().getTextureByName(albedoMap));
 		}
 		else
-			material.setTexture(UTextureFactory::getInstance().fromFile("assets/"+albedoMap));
+			material.setTexture(UTextureFactory::getInstance().fromFile("assets/" + albedoMap));
 	}
-	
+	else
+		material.setTexture(UTexture::getDefaultTexture());
 
 	// Optional target node, [none] if not used:
 	std::string normalMap = std::string(buffer.data.get() + buffer.position);

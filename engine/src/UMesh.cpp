@@ -67,7 +67,6 @@ void UMesh::render()
 		}
 	}
 
-	getMaterial()->disable();
 }
 
 UMesh::~UMesh() = default;

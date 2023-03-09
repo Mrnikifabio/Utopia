@@ -8,7 +8,7 @@
 
 using namespace utopia;
 
-std::shared_ptr<UMaterial> UMaterial::m_defaultMaterial = std::make_shared<UMaterial>("default");
+std::shared_ptr<UMaterial> UMaterial::m_defaultMaterial;
 
 struct UMaterial::pimpl
 {
@@ -28,7 +28,7 @@ struct UMaterial::pimpl
         this->m_diffuse = glm::vec4(0.8f,0.8f,0.8f,1.0f);
         this->m_specular = glm::vec4(0.5f,0.5f,0.5f,1.0f);
         m_shininess = 128;
-        m_texture = nullptr;
+        m_texture = UTexture::getDefaultTexture();
     }
 
     pimpl(glm::vec4 emission, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, int shininess)
@@ -38,7 +38,7 @@ struct UMaterial::pimpl
         this->m_diffuse = diffuse;
         this->m_specular = specular;
         m_shininess = shininess;
-        m_texture = nullptr;
+        m_texture = UTexture::getDefaultTexture();
     }
 
 };
@@ -54,14 +54,14 @@ UMaterial::UMaterial(const std::string& name, const glm::vec4& emission, const g
 
 void utopia::UMaterial::render()
 {
+
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, glm::value_ptr(m_pimpl->m_emission));
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_pimpl->m_ambient));
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_pimpl->m_diffuse));
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_pimpl->m_specular));
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, (GLfloat)m_pimpl->m_shininess);
-    
-    if(m_pimpl->m_texture!=nullptr)
-        m_pimpl->m_texture->render();
+
+    m_pimpl->m_texture->render();
 
 }
 
@@ -93,6 +93,8 @@ void UMaterial::setTexture(std::shared_ptr<UTexture> texture)
 
 const std::shared_ptr<UMaterial> utopia::UMaterial::getDefaultMaterial()
 {
+    if(m_defaultMaterial==nullptr)
+        m_defaultMaterial = std::make_shared<UMaterial>("default");
     return m_defaultMaterial;
 }
 
