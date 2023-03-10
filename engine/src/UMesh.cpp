@@ -78,41 +78,30 @@ void UMesh::render()
 			{
 				for (auto& vertex : face.vertices)
 				{
-					vertices[v] = vertex->coord.x;
-					v++;
-					vertices[v] = vertex->coord.y;
-					v++;
-					vertices[v] = vertex->coord.z;
-					v++;
+					vertices[v++] = vertex->coord.x;
+					vertices[v++] = vertex->coord.y;
+					vertices[v++] = vertex->coord.z;
 
-					normals[n] = vertex->normal.x;
-					n++;
-					normals[n] = vertex->normal.y;
-					n++;
-					normals[n] = vertex->normal.z;
-					n++;
+					normals[n++] = vertex->normal.x;
+					normals[n++] = vertex->normal.y;
+					normals[n++] = vertex->normal.z;
 
-					textureCoords[t] = vertex->uv.x;
-					t++;
-					textureCoords[t] = vertex->uv.y;
-					t++;
+					textureCoords[t++] = vertex->uv.x;
+					textureCoords[t++] = vertex->uv.y;
 				}
 			}
-			glGenBuffers(1, &v);
-			glBindBuffer(GL_ARRAY_BUFFER, v);
-			m_pimpl->m_vertexVbo = v;
+			glGenBuffers(1, &m_pimpl->m_vertexVbo);
+			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
 			glBufferData(GL_ARRAY_BUFFER, nOfPoints * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
 			delete[] vertices;
 
-			glGenBuffers(1, &n);
-			glBindBuffer(GL_ARRAY_BUFFER, n);
-			m_pimpl->m_normalVbo = n;
+			glGenBuffers(1, &m_pimpl->m_normalVbo);
+			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_normalVbo);
 			glBufferData(GL_ARRAY_BUFFER, nOfPoints * 3 * sizeof(float), normals, GL_STATIC_DRAW);
 			delete[] normals;
 
-			glGenBuffers(1, &t);
-			glBindBuffer(GL_ARRAY_BUFFER, t);
-			m_pimpl->m_textureCoordVbo = t;
+			glGenBuffers(1, &m_pimpl->m_textureCoordVbo);
+			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
 			glBufferData(GL_ARRAY_BUFFER, nOfPoints * 2 * sizeof(float), textureCoords, GL_STATIC_DRAW);
 			delete[] textureCoords;
 
