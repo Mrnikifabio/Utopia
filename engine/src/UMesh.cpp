@@ -14,6 +14,7 @@ struct UMesh::pimpl {
 	unsigned int m_vertexVbo;
 	unsigned int m_normalVbo;
 	unsigned int m_textureCoordVbo;
+	unsigned int m_faceVbo;
 	bool m_vbo_loaded = false;
 
 	pimpl()
@@ -62,18 +63,22 @@ void UMesh::render()
 		glNormalPointer(GL_FLOAT, 0, nullptr);
 		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
 		glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
-		glDrawArrays(GL_TRIANGLES, 0, nOfPoints);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
+		glDrawElements(GL_TRIANGLES, nOfPoints, GL_UNSIGNED_INT, nullptr);
 	}
 	else {
+		//construct the first time all the vbo
 		if (m_pimpl->m_lods.size() > 0)
 		{
 			auto& lod = m_pimpl->m_lods[0];
 			unsigned int v = 0;
 			unsigned int n = 0;
 			unsigned int t = 0;
+			unsigned int f = 0;
 			float* vertices = new float[nOfPoints * 3];
 			float* normals = new float[nOfPoints * 3];
 			float* textureCoords = new float[nOfPoints * 2];
+			unsigned int* faces = new unsigned int[nOfPoints];
 			for (auto& face : lod->faces)
 			{
 				for (auto& vertex : face.vertices)
@@ -88,6 +93,8 @@ void UMesh::render()
 
 					textureCoords[t++] = vertex->uv.x;
 					textureCoords[t++] = vertex->uv.y;
+
+					faces[f] = f++;
 				}
 			}
 			glGenBuffers(1, &m_pimpl->m_vertexVbo);
@@ -104,6 +111,10 @@ void UMesh::render()
 			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
 			glBufferData(GL_ARRAY_BUFFER, nOfPoints * 2 * sizeof(float), textureCoords, GL_STATIC_DRAW);
 			delete[] textureCoords;
+
+			glGenBuffers(1, &m_pimpl->m_faceVbo);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, nOfPoints * sizeof(unsigned int), faces, GL_STATIC_DRAW);
 
 			m_pimpl->m_vbo_loaded = true;
 		}
