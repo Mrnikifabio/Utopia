@@ -61,17 +61,7 @@ void UMesh::render()
 		auto& lod = m_pimpl->m_lods[0];
 		unsigned int nOfPoints = lod->nOfvertices;
 		unsigned int nOfFaces = (unsigned int)lod->faces.size();
-		if (m_pimpl->m_vbo_loaded) {
-			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
-			glVertexPointer(3, GL_FLOAT, 0, nullptr);
-			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_normalVbo);
-			glNormalPointer(GL_FLOAT, 0, nullptr);
-			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
-			glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
-			glDrawElements(GL_TRIANGLES, nOfFaces * 3, GL_UNSIGNED_INT, nullptr);
-		}
-		else {
+		if (!m_pimpl->m_vbo_loaded) {
 			std::vector<glm::vec3> vertices;
 			std::vector<glm::vec3> normals;
 			std::vector<glm::vec2> textureCoords;
@@ -104,6 +94,19 @@ void UMesh::render()
 
 			m_pimpl->m_vbo_loaded = true;
 		}
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
+		glVertexPointer(3, GL_FLOAT, 0, nullptr);
+		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_normalVbo);
+		glNormalPointer(GL_FLOAT, 0, nullptr);
+		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
+		glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
+		glDrawElements(GL_TRIANGLES, nOfFaces * 3, GL_UNSIGNED_INT, nullptr);
+
+		//reset current buffers
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 }
 
