@@ -110,6 +110,7 @@ void UMesh::render()
 	}
 }
 
+// render with vao 
 /*void UMesh::render()
 {
 	UNode::render();
@@ -155,11 +156,15 @@ void UMesh::render()
 			glDisableVertexAttribArray(1);
 			glDisableVertexAttribArray(2);
 			//glDisableVertexAttribArray(3);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 			m_pimpl->m_vbo_loaded = true;
 		}
 		glBindVertexArray(m_pimpl->m_vao);
 		glDrawElements(GL_TRIANGLES, nOfFaces * 3, GL_UNSIGNED_INT, 0);
+
+		glBindVertexArray(0);
 	}
 }*/
 
