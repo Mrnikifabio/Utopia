@@ -38,11 +38,12 @@ namespace utopia
         };
 
         struct Face {
-            std::shared_ptr<Vertex> vertices[3];
+            unsigned int verticesId[3];
         };
 
         struct LOD {
-            unsigned int vertices;
+            unsigned int nOfvertices;
+            std::vector<Vertex> vertices;
             std::vector<Face> faces;
         };
 

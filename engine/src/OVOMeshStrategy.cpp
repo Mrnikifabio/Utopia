@@ -3,6 +3,7 @@
 #include "UMesh.h"
 #include "Utopia.h"
 #include "glm/gtc/packing.hpp"
+#include <GL/glew.h>
 
 
 using namespace utopia;
@@ -140,7 +141,7 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
         memcpy(&nrVertices, buffer.data.get() + buffer.position, sizeof(unsigned int));
         buffer.position += sizeof(unsigned int);
 
-        lod->vertices = nrVertices;
+        lod->nOfvertices = nrVertices;
 
         // ...and faces:
         memcpy(&nrFaces, buffer.data.get() + buffer.position, sizeof(unsigned int));
@@ -148,6 +149,7 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
 
         // Interleaved and compressed vertex/normal/UV/tangent data:
         std::vector<UMesh::Vertex> vertex;
+
         for (unsigned int c = 0; c < nrVertices; c++)
         {
             // Vertex coords:
@@ -167,8 +169,6 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
             glm::vec2 uv = glm::unpackHalf2x16(textureData);
             buffer.position += sizeof(unsigned int);
 
-
-
             // Tangent vector:
             unsigned int tangentData;
             memcpy(&tangentData, buffer.data.get() + buffer.position, sizeof(unsigned int));
@@ -178,25 +178,15 @@ void OVOMeshStrategy::loadLODs(UMesh& mesh, Buffer& buffer)
             vertex.push_back(UMesh::Vertex(coord, normal, uv, tangent));
         }
 
+        lod->vertices = vertex;
 
         // Faces:
-
-
-
         for (unsigned int c = 0, i=0; c < nrFaces; c++,i++)
         {
             // Face indexes:
-            unsigned int face[3];
-            memcpy(face, buffer.data.get() + buffer.position, sizeof(unsigned int) * 3);
-            buffer.position += sizeof(unsigned int) * 3;
             UMesh::Face f;
-
-
-
-
-            f.vertices[0] = std::make_shared<UMesh::Vertex>(vertex[face[0]]);
-            f.vertices[1] = std::make_shared<UMesh::Vertex>(vertex[face[1]]);
-            f.vertices[2] = std::make_shared<UMesh::Vertex>(vertex[face[2]]);
+            memcpy(f.verticesId, buffer.data.get() + buffer.position, sizeof(unsigned int) * 3);
+            buffer.position += sizeof(unsigned int) * 3;
             lod->faces.push_back(f);
         }
 

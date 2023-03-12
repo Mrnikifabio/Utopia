@@ -15,6 +15,7 @@ struct UMesh::pimpl {
 	unsigned int m_normalVbo;
 	unsigned int m_textureCoordVbo;
 	unsigned int m_faceVbo;
+	unsigned int m_vao;
 	bool m_vbo_loaded = false;
 
 	pimpl()
@@ -55,71 +56,108 @@ void UMesh::render()
 {
 	UNode::render();
 	getMaterial()->render();
-	int nOfPoints = (int)m_pimpl->m_lods[0]->faces.size() * 3;
-	if (m_pimpl->m_vbo_loaded) {
-		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
-		glVertexPointer(3, GL_FLOAT, 0, nullptr);
-		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_normalVbo);
-		glNormalPointer(GL_FLOAT, 0, nullptr);
-		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
-		glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
-		glDrawElements(GL_TRIANGLES, nOfPoints, GL_UNSIGNED_INT, nullptr);
-	}
-	else {
-		//construct the first time all the vbo
-		if (m_pimpl->m_lods.size() > 0)
-		{
-			auto& lod = m_pimpl->m_lods[0];
-			unsigned int v = 0;
-			unsigned int n = 0;
-			unsigned int t = 0;
-			unsigned int f = 0;
-			float* vertices = new float[nOfPoints * 3];
-			float* normals = new float[nOfPoints * 3];
-			float* textureCoords = new float[nOfPoints * 2];
-			unsigned int* faces = new unsigned int[nOfPoints];
-			for (auto& face : lod->faces)
+	if (m_pimpl->m_lods.size() > 0)
+	{
+		auto& lod = m_pimpl->m_lods[0];
+		unsigned int nOfPoints = lod->nOfvertices;
+		unsigned int nOfFaces = (unsigned int)lod->faces.size();
+		if (m_pimpl->m_vbo_loaded) {
+			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
+			glVertexPointer(3, GL_FLOAT, 0, nullptr);
+			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_normalVbo);
+			glNormalPointer(GL_FLOAT, 0, nullptr);
+			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
+			glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
+			glDrawElements(GL_TRIANGLES, nOfFaces * 3, GL_UNSIGNED_INT, nullptr);
+		}
+		else {
+			std::vector<glm::vec3> vertices;
+			std::vector<glm::vec3> normals;
+			std::vector<glm::vec2> textureCoords;
+
+			for (auto& vertex : lod->vertices)
 			{
-				for (auto& vertex : face.vertices)
-				{
-					vertices[v++] = vertex->coord.x;
-					vertices[v++] = vertex->coord.y;
-					vertices[v++] = vertex->coord.z;
-
-					normals[n++] = vertex->normal.x;
-					normals[n++] = vertex->normal.y;
-					normals[n++] = vertex->normal.z;
-
-					textureCoords[t++] = vertex->uv.x;
-					textureCoords[t++] = vertex->uv.y;
-
-					faces[f] = f++;
-				}
+				vertices.push_back(vertex.coord);
+				normals.push_back(vertex.normal);
+				textureCoords.push_back(vertex.uv);
 			}
+
 			glGenBuffers(1, &m_pimpl->m_vertexVbo);
 			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
-			glBufferData(GL_ARRAY_BUFFER, nOfPoints * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
-			delete[] vertices;
+			glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+			std::vector<glm::vec3>().swap(vertices); //free the vector 
 
 			glGenBuffers(1, &m_pimpl->m_normalVbo);
 			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_normalVbo);
-			glBufferData(GL_ARRAY_BUFFER, nOfPoints * 3 * sizeof(float), normals, GL_STATIC_DRAW);
-			delete[] normals;
+			glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+			std::vector<glm::vec3>().swap(normals); //free the vector 
 
 			glGenBuffers(1, &m_pimpl->m_textureCoordVbo);
 			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
-			glBufferData(GL_ARRAY_BUFFER, nOfPoints * 2 * sizeof(float), textureCoords, GL_STATIC_DRAW);
-			delete[] textureCoords;
+			glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(glm::vec2), &textureCoords[0], GL_STATIC_DRAW);
+			std::vector<glm::vec2>().swap(textureCoords); //free the vector 
 
 			glGenBuffers(1, &m_pimpl->m_faceVbo);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, nOfPoints * sizeof(unsigned int), faces, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, nOfFaces * sizeof(UMesh::Face), &lod->faces[0], GL_STATIC_DRAW);
 
 			m_pimpl->m_vbo_loaded = true;
 		}
 	}
-
 }
+
+/*void UMesh::render()
+{
+	UNode::render();
+	getMaterial()->render();
+	if (m_pimpl->m_lods.size() > 0)
+	{
+		auto& lod = m_pimpl->m_lods[0];
+		unsigned int nOfPoints = lod->nOfvertices;
+		unsigned int nOfFaces = (unsigned int) lod->faces.size();
+		if (!m_pimpl->m_vbo_loaded) {
+
+			glGenVertexArrays(1, &m_pimpl->m_vao);
+			glBindVertexArray(m_pimpl->m_vao);
+
+			glGenBuffers(1, &m_pimpl->m_vertexVbo);
+			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
+			glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(UMesh::Vertex), &lod->vertices[0], GL_STATIC_DRAW);
+
+			glBindVertexBuffer(0, m_pimpl->m_vertexVbo, 0, sizeof(UMesh::Vertex));
+
+			glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, coord)); // for vertex coord
+			glVertexAttribBinding(0, 0);
+			glEnableVertexAttribArray(0);
+
+			glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, normal)); // for normal
+			glVertexAttribBinding(1, 0);
+			glEnableVertexAttribArray(1);
+
+			glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, uv)); // for texture coord
+			glVertexAttribBinding(2, 0);
+			glEnableVertexAttribArray(2);
+
+			//glVertexAttribFormat(3, 4, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, tangent)); // for tangent coord
+			//glVertexAttribBinding(3, 0);
+			//glEnableVertexAttribArray(3);
+
+			glGenBuffers(1, &m_pimpl->m_faceVbo);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, nOfFaces * sizeof(UMesh::Face), &lod->faces[0], GL_STATIC_DRAW);
+
+			glBindVertexArray(0);
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(2);
+			//glDisableVertexAttribArray(3);
+
+			m_pimpl->m_vbo_loaded = true;
+		}
+		glBindVertexArray(m_pimpl->m_vao);
+		glDrawElements(GL_TRIANGLES, nOfFaces * 3, GL_UNSIGNED_INT, 0);
+	}
+}*/
 
 UMesh::~UMesh() = default;
