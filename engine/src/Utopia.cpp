@@ -136,11 +136,6 @@ bool LIB_API Utopia::init()
 		return false;
 	}
 
-	// Tell OpenGL that you want to use vertex arrays for the given attributes:
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
 	// The OpenGL context is now initialized...
 	setDisplayCallback(displayCallback);
 	setReshapeCallback(reshapeCallback);

@@ -73,40 +73,45 @@ void UMesh::render()
 				textureCoords.push_back(vertex.uv);
 			}
 
+			glGenVertexArrays(1, &m_pimpl->m_vao);
+			glBindVertexArray(m_pimpl->m_vao);
+
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 			glGenBuffers(1, &m_pimpl->m_vertexVbo);
 			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
 			glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+			glVertexPointer(3, GL_FLOAT, 0, nullptr);
 			std::vector<glm::vec3>().swap(vertices); //free the vector 
 
 			glGenBuffers(1, &m_pimpl->m_normalVbo);
 			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_normalVbo);
 			glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+			glNormalPointer(GL_FLOAT, 0, nullptr);
 			std::vector<glm::vec3>().swap(normals); //free the vector 
 
 			glGenBuffers(1, &m_pimpl->m_textureCoordVbo);
 			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
 			glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(glm::vec2), &textureCoords[0], GL_STATIC_DRAW);
+			glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
 			std::vector<glm::vec2>().swap(textureCoords); //free the vector 
 
 			glGenBuffers(1, &m_pimpl->m_faceVbo);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, nOfFaces * sizeof(UMesh::Face), &lod->faces[0], GL_STATIC_DRAW);
 
+			glBindVertexArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 			m_pimpl->m_vbo_loaded = true;
 		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
-		glVertexPointer(3, GL_FLOAT, 0, nullptr);
-		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_normalVbo);
-		glNormalPointer(GL_FLOAT, 0, nullptr);
-		glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_textureCoordVbo);
-		glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
+		glBindVertexArray(m_pimpl->m_vao);
 		glDrawElements(GL_TRIANGLES, nOfFaces * 3, GL_UNSIGNED_INT, nullptr);
-
-		//reset current buffers
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 	}
 }
 
