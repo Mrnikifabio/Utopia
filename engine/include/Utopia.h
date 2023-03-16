@@ -31,6 +31,7 @@
 #include "U2DRenderPipeline.h"
 #include "UMaterial.h"
 #include "UTexture.h"
+#include "UProgramShader.h"
 #include <memory>
 #include <unordered_map>
 
@@ -97,7 +98,6 @@ namespace utopia {
 
 		LIB_API void updateAnisotropyLevelAllTextures(int value);
 
-		
 		LIB_API unsigned int texturesMapSize();
 		LIB_API unsigned int materialsMapSize();
 
@@ -106,6 +106,7 @@ namespace utopia {
 
 		LIB_API void setTimer(int timeoutMs, void(*callback)(int), int value);
 
+		std::shared_ptr<UProgramShader> getBasicProgramShader(); //public but used only internally to the library
 	};
 
 }

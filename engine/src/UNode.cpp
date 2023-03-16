@@ -78,8 +78,10 @@ void UNode::render()
 	/*for (auto& child : m_pimpl->m_children)
 		child->render();*/
 
-	glLoadMatrixf(glm::value_ptr(m));
+	//glLoadMatrixf(glm::value_ptr(m));
 
+	auto modelView = Utopia::getInstance().getBasicProgramShader()->getParamLocation("modelview");
+	Utopia::getInstance().getBasicProgramShader()->setMatrix(modelView, m);
 }
 
 auto UNode::getModelView() const -> const glm::mat4&

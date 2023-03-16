@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\IUProgrammableShader.cpp" />
     <ClCompile Include="src\OVOFactory.cpp" />
     <ClCompile Include="src\OVOLightStrategy.cpp" />
     <ClCompile Include="src\OVOMaterialStrategy.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="src\U2DRenderPipeline.cpp" />
     <ClCompile Include="src\UCamera.cpp" />
     <ClCompile Include="src\UDirectionalLight.cpp" />
+    <ClCompile Include="src\UFragmentShader.cpp" />
     <ClCompile Include="src\ULight.cpp" />
     <ClCompile Include="src\UMaterial.cpp" />
     <ClCompile Include="src\UMesh.cpp" />
@@ -38,6 +40,8 @@
     <ClCompile Include="src\UOmniLight.cpp" />
     <ClCompile Include="src\UOrthographicCamera.cpp" />
     <ClCompile Include="src\UPerspectiveCamera.cpp" />
+    <ClCompile Include="src\UProgramShader.cpp" />
+    <ClCompile Include="src\UShader.cpp" />
     <ClCompile Include="src\USpecialKeys.cpp" />
     <ClCompile Include="src\U3DRenderPipeline.cpp" />
     <ClCompile Include="src\USpotLight.cpp" />
@@ -45,6 +49,7 @@
     <ClCompile Include="src\UTexture.cpp" />
     <ClCompile Include="src\UTextureFactory.cpp" />
     <ClCompile Include="src\Utopia.cpp" />
+    <ClCompile Include="src\UVertexShader.cpp" />
     <ClCompile Include="test\ULightTest.cpp" />
     <ClCompile Include="test\OVOFactoryTest.cpp" />
     <ClCompile Include="test\RunUtopiaTest.cpp" />
@@ -55,6 +60,7 @@
     <ClCompile Include="test\UObjectTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\IUProgrammableShader.h" />
     <ClInclude Include="include\OVOFactory.h" />
     <ClInclude Include="include\OVOLightStrategy.h" />
     <ClInclude Include="include\OVOMaterialStrategy.h" />
@@ -67,6 +73,7 @@
     <ClInclude Include="include\U2DRenderPipeline.h" />
     <ClInclude Include="include\UCamera.h" />
     <ClInclude Include="include\UDirectionalLight.h" />
+    <ClInclude Include="include\UFragmentShader.h" />
     <ClInclude Include="include\ULight.h" />
     <ClInclude Include="include\UMaterial.h" />
     <ClInclude Include="include\UMesh.h" />
@@ -75,6 +82,8 @@
     <ClInclude Include="include\UOmniLight.h" />
     <ClInclude Include="include\UOrthographicCamera.h" />
     <ClInclude Include="include\UPerspectiveCamera.h" />
+    <ClInclude Include="include\UProgramShader.h" />
+    <ClInclude Include="include\UShader.h" />
     <ClInclude Include="include\USpecialKeys.h" />
     <ClInclude Include="include\U3DRenderPipeline.h" />
     <ClInclude Include="include\USpotLight.h" />
@@ -82,6 +91,7 @@
     <ClInclude Include="include\UTexture.h" />
     <ClInclude Include="include\UTextureFactory.h" />
     <ClInclude Include="include\Utopia.h" />
+    <ClInclude Include="include\UVertexShader.h" />
     <ClInclude Include="test\OVOFactoryTest.h" />
     <ClInclude Include="test\Test.h" />
     <ClInclude Include="test\TestRunner.h" />
@@ -203,7 +213,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>FREEGLUT_STATIC;FREEIMAGE_LIB;GLEW_STATIC;_DEBUG;UTOPIA_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEGLUT_STATIC;FREEIMAGE_LIB;GLEW_STATIC;_DEBUG;UTOPIA_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -227,7 +237,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>FREEGLUT_STATIC;FREEIMAGE_LIB;GLEW_STATIC;NDEBUG;UTOPIA_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEGLUT_STATIC;FREEIMAGE_LIB;GLEW_STATIC;NDEBUG;UTOPIA_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>
       </PrecompiledHeader>

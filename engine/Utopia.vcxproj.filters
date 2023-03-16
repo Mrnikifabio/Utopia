@@ -126,6 +126,21 @@
     <ClCompile Include="test\ULightTest.cpp">
       <Filter>Tests\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\IUProgrammableShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UFragmentShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UProgramShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UVertexShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\OVOFactory.h">
@@ -229,6 +244,21 @@
     </ClInclude>
     <ClInclude Include="test\ULightTest.h">
       <Filter>Tests\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IUProgrammableShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UFragmentShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UProgramShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UVertexShader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

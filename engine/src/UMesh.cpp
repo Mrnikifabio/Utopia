@@ -52,6 +52,8 @@ void UMesh::setMaterial(std::shared_ptr<UMaterial> material)
 	m_pimpl.get()->m_material = material;
 }
 
+// render with vao 
+/*
 void UMesh::render()
 {
 	UNode::render();
@@ -114,9 +116,9 @@ void UMesh::render()
 		glBindVertexArray(0);
 	}
 }
+*/
 
-// render with vao 
-/*void UMesh::render()
+void UMesh::render()
 {
 	UNode::render();
 	getMaterial()->render();
@@ -171,6 +173,6 @@ void UMesh::render()
 
 		glBindVertexArray(0);
 	}
-}*/
+}
 
 UMesh::~UMesh() = default;

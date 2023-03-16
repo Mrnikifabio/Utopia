@@ -16,15 +16,18 @@
 #include "UTexture.h"
 #include <memory>
 #include "ULight.h"
+#include "UVertexShader.h"
+#include "UFragmentShader.h"
+#include "UProgramShader.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 
-//////////////
-// DLL MAIN //
-//////////////
+ //////////////
+ // DLL MAIN //
+ //////////////
 
 #ifdef _WINDOWS
 #include <Windows.h>
@@ -62,17 +65,27 @@ using namespace utopia;
 struct Utopia::pimpl
 {
 	bool m_initFlag;
-	std::unique_ptr<U2DRenderPipeline> m_2DRenderPipeline;
-	std::unique_ptr<U3DRenderPipeline> m_3DRenderPipeline;
 	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
 	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
+	std::unique_ptr<UFragmentShader> m_basicFragShader;
+	std::unique_ptr<UVertexShader> m_basicVertShader;
+	std::shared_ptr<UProgramShader> m_basicProgShader;
 
 	pimpl() :
-		m_initFlag{ false } {}
+		m_initFlag{ false }, 
+		m_basicFragShader{std::unique_ptr<UFragmentShader>(new UFragmentShader("basicFrag")) }, 
+		m_basicVertShader{std::unique_ptr<UVertexShader>(new UVertexShader("basicVert"))}, 
+		m_basicProgShader{std::shared_ptr<UProgramShader>(new UProgramShader("basicProgShader"))} 
+	{}
 };
 
 Utopia::Utopia() : m_pimpl{ std::unique_ptr<Utopia::pimpl>(new pimpl()) } {};
 Utopia::~Utopia() {}
+
+std::shared_ptr<UProgramShader> Utopia::getBasicProgramShader()
+{
+	return m_pimpl->m_basicProgShader;
+}
 
 
 void displayCallback()
@@ -84,13 +97,20 @@ void displayCallback()
 void reshapeCallback(int width, int height)
 {
 	glViewport(0, 0, width, height);
+	/*
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(glm::value_ptr(UCamera::getMainCamera().lock()->getCameraMatrix()));
+	glLoadMatrixf();
 	glMatrixMode(GL_MODELVIEW);
-
+	*/
+	auto projLoc = Utopia::getInstance().getBasicProgramShader()->getParamLocation("projection");
+	Utopia::getInstance().getBasicProgramShader()->setMatrix(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
+	
+#ifdef DEBUG
 	std::cout << "[reshape func invoked] " << width << " " << height << std::endl;
+#endif // DEBUG
 }
 
+#ifdef DEBUG
 void __stdcall DebugCallback(GLenum source, GLenum type,
 	GLuint id, GLenum severity,
 	GLsizei length,
@@ -99,6 +119,8 @@ void __stdcall DebugCallback(GLenum source, GLenum type,
 {
 	printf("OpenGL says: %s\n", message);
 }
+#endif // DEBUG
+
 
 
 bool LIB_API Utopia::init()
@@ -140,10 +162,10 @@ bool LIB_API Utopia::init()
 	}
 
 
-	// OpenGL 2.1 is required:
-	if (!glewIsSupported("GL_VERSION_2_1"))
+	// OpenGL 4.4 is required:
+	if (!glewIsSupported("GL_VERSION_4_4"))
 	{
-		std::cout << "OpenGL 2.1 not supported" << std::endl;
+		std::cout << "OpenGL 4.4 not supported" << std::endl;
 		return false;
 	}
 
@@ -157,11 +179,15 @@ bool LIB_API Utopia::init()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
 
+#if DEBUG
 	// Register OpenGL debug callback:
 	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
 	// Enable debug notifications:
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
+#endif // DEBUG
+
+	
 	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 
 
@@ -173,6 +199,44 @@ bool LIB_API Utopia::init()
 
 	//Init Light IDs:
 	utopia::ULight::initIDs();
+
+	//EMBARASSING ''''TEMPORARY'''' LOCATION FOR SHADERS
+	////////////////////////////
+	const char* vertShader = R"(
+	   #version 440 core
+
+	   uniform mat4 projection;
+	   uniform mat4 modelview;
+
+	   layout(location = 0) in vec3 in_Position;
+
+	   out vec3 out_Color;
+
+	   void main(void)
+	   {
+		  gl_Position = projection * modelview * vec4(in_Position, 1.0f);
+		  out_Color = vec3(255,0,0);
+	   }
+	)";
+		////////////////////////////
+		const char* fragShader = R"(
+	   #version 440 core
+
+	   in  vec3 out_Color;
+   
+	   out vec3 frag_Output;
+
+	   void main(void)
+	   {
+		  frag_Output = out_Color;
+	   }
+	)";
+
+	m_pimpl->m_basicVertShader->loadFromMemory(vertShader);
+	m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
+	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
+	m_pimpl->m_basicProgShader->render();
+	m_pimpl->m_basicProgShader->bind(0, "in_Position");
 
 	// Done:
 	m_pimpl->m_initFlag = true;
