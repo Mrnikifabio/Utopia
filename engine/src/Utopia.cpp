@@ -88,7 +88,16 @@ void reshapeCallback(int width, int height)
 	glLoadMatrixf(glm::value_ptr(UCamera::getMainCamera().lock()->getCameraMatrix()));
 	glMatrixMode(GL_MODELVIEW);
 
-	std::cout << "[reshape func invoked] " << width<< " " << height << std::endl;
+	std::cout << "[reshape func invoked] " << width << " " << height << std::endl;
+}
+
+void __stdcall DebugCallback(GLenum source, GLenum type,
+	GLuint id, GLenum severity,
+	GLsizei length,
+	const GLchar* message,
+	GLvoid* userParam)
+{
+	printf("OpenGL says: %s\n", message);
 }
 
 
@@ -100,16 +109,18 @@ bool LIB_API Utopia::init()
 		std::cout << "ERROR: class already initialized" << std::endl;
 		return false;
 	}
-	
+
 	// Init context:
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-	glutInitWindowPosition(100, 100);
 
+	glutInitContextVersion(4, 4);
+	glutInitContextProfile(GLUT_CORE_PROFILE);
+	glutInitWindowPosition(100, 100);
 
 
 	char* myargv[1];
 	int myargc = 1;
-	myargv[0] = {(char*)"Utopia"};
+	myargv[0] = { (char*)"Utopia" };
 	glutInit(&myargc, myargv);
 
 	// Set some optional flags:
@@ -146,6 +157,11 @@ bool LIB_API Utopia::init()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
 
+	// Register OpenGL debug callback:
+	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
+	// Enable debug notifications:
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
 	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 
 
@@ -154,10 +170,10 @@ bool LIB_API Utopia::init()
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "   vendor . . . : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "   renderer . . : " << glGetString(GL_RENDERER) << std::endl;
-	
+
 	//Init Light IDs:
 	utopia::ULight::initIDs();
-	
+
 	// Done:
 	m_pimpl->m_initFlag = true;
 
@@ -168,6 +184,8 @@ void Utopia::clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -300,7 +318,7 @@ void Utopia::swap()
 
 LIB_API void utopia::Utopia::setBackgroundColor(glm::vec4 color)
 {
-	glClearColor(color.r,color.g,color.b,color.a);
+	glClearColor(color.r, color.g, color.b, color.a);
 }
 
 std::shared_ptr<UMaterial> Utopia::getMaterialByName(const std::string& name)
@@ -357,7 +375,7 @@ void Utopia::updateAllTexturesParameteri(void(*parametriSetMethod)(void))
 	for (const auto& kv : m_pimpl->m_textures)
 	{
 		kv.second->updateTextureParameteri(parametriSetMethod);
-		std::cout<<"upload texture: " << kv.first << std::endl;
+		std::cout << "upload texture: " << kv.first << std::endl;
 	}
 }
 

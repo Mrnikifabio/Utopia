@@ -43,7 +43,8 @@ std::shared_ptr<UText> textureFilterModeLabel = std::make_shared<UText>("texture
 
 int main()
 {
-	Utopia::getInstance().init();
+	if (!Utopia::getInstance().init())
+		return 0;
 	Utopia::getInstance().setBackgroundColor(glm::vec4(0.5f, 1.f, 1.f, 1.f));
 	Utopia::getInstance().enableDepth();
 	Utopia::getInstance().enableCullFace();
@@ -187,8 +188,8 @@ int main()
 
 	Utopia::getInstance().enableTexturesRepeat();
 	Utopia::getInstance().enableLinearBipmapLinearFilter();
-	Utopia::getInstance().updateAnisotropyLevelAllTextures(UTexture::getMaxAnisotropicLevel());
-	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(UTexture::getMaxAnisotropicLevel()));
+	Utopia::getInstance().updateAnisotropyLevelAllTextures(maxAnisotropyLevel);
+	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(maxAnisotropyLevel));
 	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
 
 
@@ -312,7 +313,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case 'c':
 		Utopia::getInstance().updateAnisotropyLevelAllTextures(++currentAniLevel);
 		anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(currentAniLevel));
-		if (currentAniLevel >= UTexture::getMaxAnisotropicLevel())
+		if (currentAniLevel >= maxAnisotropyLevel)
 			currentAniLevel = 0;
 		break;
 

@@ -1,4 +1,5 @@
 #include "UObject.h"
+#include "GL/glew.h"
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
 #include "UTexture.h"
@@ -73,7 +74,7 @@ int utopia::UTexture::getMaxAnisotropicLevel()
 {
     int anisotropicLevel;
     // Check for anistropic filtering extension:   
-    if (strstr((const char*)glGetString(GL_EXTENSIONS), "GL_EXT_texture_filter_anisotropic"))
+    if (glewIsSupported("GL_EXT_texture_filter_anisotropic"))
     {
         glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisotropicLevel);
         return anisotropicLevel;
