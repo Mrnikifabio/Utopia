@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 #include "UCamera.h"
 
 using namespace utopia;
@@ -81,7 +82,12 @@ void UNode::render()
 	//glLoadMatrixf(glm::value_ptr(m));
 
 	auto modelView = Utopia::getInstance().getBasicProgramShader()->getParamLocation("modelview");
+	auto normalMatrix = Utopia::getInstance().getBasicProgramShader()->getParamLocation("normalMatrix");
+
+	glm::mat3 nM = glm::inverseTranspose(glm::mat3(m));
+
 	Utopia::getInstance().getBasicProgramShader()->setMatrix(modelView, m);
+	Utopia::getInstance().getBasicProgramShader()->setMatrix(normalMatrix, nM);
 }
 
 auto UNode::getModelView() const -> const glm::mat4&

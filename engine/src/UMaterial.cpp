@@ -54,13 +54,29 @@ UMaterial::UMaterial(const std::string& name, const glm::vec4& emission, const g
 
 void utopia::UMaterial::render()
 {
+    auto matEmission = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matEmission");
+    Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_emission));
 
+    auto matAmbient = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matAmbient");
+    Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_ambient));
+
+    auto matDiffuse = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matDiffuse");
+    Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_diffuse));
+
+    auto matSpecular = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matSpecular");
+    Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_specular));
+
+    auto matShininess = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matShininess");
+    Utopia::getInstance().getBasicProgramShader()->setFloat(matShininess, (GLfloat)m_pimpl->m_shininess);
+
+
+    /*
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, glm::value_ptr(m_pimpl->m_emission));
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_pimpl->m_ambient));
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_pimpl->m_diffuse));
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_pimpl->m_specular));
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, (GLfloat)m_pimpl->m_shininess);
-
+    */
     m_pimpl->m_texture->render();
 
 }

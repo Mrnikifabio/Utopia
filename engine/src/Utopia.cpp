@@ -178,6 +178,8 @@ bool LIB_API Utopia::init()
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_ONE, GL_ONE);
 
 #if DEBUG
 	// Register OpenGL debug callback:
@@ -205,38 +207,80 @@ bool LIB_API Utopia::init()
 	const char* vertShader = R"(
 	   #version 440 core
 
+	   // Uniforms:
 	   uniform mat4 projection;
 	   uniform mat4 modelview;
+	   uniform mat3 normalMatrix;
 
+	   // Attributes:
 	   layout(location = 0) in vec3 in_Position;
+	   layout(location = 1) in vec3 in_Normal;
 
-	   out vec3 out_Color;
+	   // Varying:
+	   out vec4 fragPosition;
+	   out vec3 normal;   
 
 	   void main(void)
 	   {
-		  gl_Position = projection * modelview * vec4(in_Position, 1.0f);
-		  out_Color = vec3(255,0,0);
+		  fragPosition = modelview * vec4(in_Position, 1.0f);
+		  gl_Position = projection * fragPosition;      
+		  normal = normalMatrix * in_Normal;
 	   }
-	)";
-		////////////////////////////
-		const char* fragShader = R"(
-	   #version 440 core
+		)";
 
-	   in  vec3 out_Color;
+	////////////////////////////
+	const char* fragShader = R"(
+   #version 440 core
+
+   in vec4 fragPosition;
+   in vec3 normal;   
    
-	   out vec3 frag_Output;
+   out vec4 fragOutput;
 
-	   void main(void)
-	   {
-		  frag_Output = out_Color;
-	   }
-	)";
+   // Material properties:
+   uniform vec3 matEmission;
+   uniform vec3 matAmbient;
+   uniform vec3 matDiffuse;
+   uniform vec3 matSpecular;
+   uniform float matShininess;
+
+   // Light properties:
+   uniform vec3 lightPosition; 
+   uniform vec3 lightAmbient; 
+   uniform vec3 lightDiffuse; 
+   uniform vec3 lightSpecular;
+
+   void main(void)
+   {      
+      // Ambient term:
+      vec3 fragColor = matEmission + matAmbient * lightAmbient;
+
+      // Diffuse term:
+      vec3 _normal = normalize(normal);
+      vec3 lightDirection = normalize(lightPosition - fragPosition.xyz);      
+      float nDotL = dot(lightDirection, _normal);   
+      if (nDotL > 0.0f)
+      {
+         fragColor += matDiffuse * nDotL * lightDiffuse;
+      
+         // Specular term:
+         vec3 halfVector = normalize(lightDirection + normalize(-fragPosition.xyz));                     
+         float nDotHV = dot(_normal, halfVector);         
+         fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
+      } 
+      
+      // Final color:
+      fragOutput = vec4(fragColor, 1.0f);
+   }
+)";
+
 
 	m_pimpl->m_basicVertShader->loadFromMemory(vertShader);
 	m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
 	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
 	m_pimpl->m_basicProgShader->render();
 	m_pimpl->m_basicProgShader->bind(0, "in_Position");
+	m_pimpl->m_basicProgShader->bind(1, "in_Normal");
 
 	// Done:
 	m_pimpl->m_initFlag = true;

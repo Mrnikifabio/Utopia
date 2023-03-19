@@ -1,4 +1,6 @@
 #include "ULight.h"
+#include "UCamera.h"
+#include "Utopia.h"
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <stdexcept>
@@ -51,12 +53,41 @@ ULight::~ULight() noexcept
 
 void ULight::render()
 {
+	std::cout << "Rendering light " << getName() << std::endl;
 	//render something somehow and then we make a call to UNode render, to render all of the children
 		
 	UNode::render();
 	
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(m_pimpl->m_gAmbient));
+
+	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates())* getModelView();
+
+	auto lightPosition = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightPosition");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightPosition, glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]));
+
+	/*
+	auto lightAmbient = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightAmbient");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightAmbient,glm::vec3(m_pimpl->m_ambient));
+
+	auto lightDiffuse = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightDiffuse");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightDiffuse,glm::vec3(m_pimpl->m_diffuse));
+
+	auto lightSpecular = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightSpecular");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightSpecular,glm::vec3(m_pimpl->m_specular));
+	*/
+
+	
+
+	auto lightAmbient = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightAmbient");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightAmbient,glm::vec3(1.f,1.f,1.f));
+
+	auto lightDiffuse = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightDiffuse");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightDiffuse, glm::vec3(1.f, 1.f, 1.f));
+
+	auto lightSpecular = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightSpecular");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightSpecular,glm::vec3(glm::vec3(1.f, 1.f, 1.f)));
+
 
 	glLightfv(getLightID(), GL_AMBIENT, glm::value_ptr(m_pimpl->m_ambient));
 	glLightfv(getLightID(), GL_DIFFUSE, glm::value_ptr(m_pimpl->m_diffuse));

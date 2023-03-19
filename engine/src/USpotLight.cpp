@@ -28,12 +28,14 @@ USpotLight::~USpotLight() noexcept = default;
 void USpotLight::render()
 {
 	ULight::render();
+	/*
 	glLightfv(getLightID(), GL_POSITION, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 	glLightfv(getLightID(), GL_SPOT_CUTOFF, &m_pimpl->m_cutoff);
 	glLightfv(getLightID(), GL_SPOT_DIRECTION, glm::value_ptr(m_pimpl->m_direction));
 	glLightf(getLightID(), GL_CONSTANT_ATTENUATION, m_pimpl->m_constantAttenuation);
 	glLightf(getLightID(), GL_LINEAR_ATTENUATION, m_pimpl->m_linearAttenuation);
 	glLightf(getLightID(), GL_QUADRATIC_ATTENUATION, m_pimpl->m_quadraticAttenuation);
+	*/
 }
 
 USpotLight::USpotLight(const std::string& name, const float cutoff, const glm::vec3& direction, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation) : ULight{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(cutoff, direction, constantAttenuation, linearAttenuation, quadraticAttenuation)) } {}
