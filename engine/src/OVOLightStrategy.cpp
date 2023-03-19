@@ -96,4 +96,5 @@ std::unique_ptr<UNode> OVOLightStrategy::decodeChunk(std::ifstream& inFile)
 	populateWithChildren(*node, inFile, children);
 
 	return std::move(node);
+	//return nullptr;
 }

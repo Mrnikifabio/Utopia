@@ -24,9 +24,9 @@ struct UMaterial::pimpl
     pimpl()
     {
         this->m_emission = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-        this->m_ambient = glm::vec4(0.2f,0.2f,0.2f,1.0f);
-        this->m_diffuse = glm::vec4(0.8f,0.8f,0.8f,1.0f);
-        this->m_specular = glm::vec4(0.5f,0.5f,0.5f,1.0f);
+        this->m_ambient = glm::vec4(0.1f,0.1f,0.1f,1.0f);
+        this->m_diffuse = glm::vec4(0.7f,0.7f,0.7f,1.0f);
+        this->m_specular = glm::vec4(0.6f,0.6f,0.6f,1.0f);
         m_shininess = 128;
         m_texture = UTexture::getDefaultTexture();
     }
@@ -58,13 +58,13 @@ void utopia::UMaterial::render()
     Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_emission));
 
     auto matAmbient = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matAmbient");
-    Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_ambient));
+    Utopia::getInstance().getBasicProgramShader()->setVec3(matAmbient, glm::vec3(m_pimpl->m_ambient));
 
     auto matDiffuse = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matDiffuse");
-    Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_diffuse));
+    Utopia::getInstance().getBasicProgramShader()->setVec3(matDiffuse, glm::vec3(m_pimpl->m_diffuse));
 
     auto matSpecular = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matSpecular");
-    Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_specular));
+    Utopia::getInstance().getBasicProgramShader()->setVec3(matSpecular, glm::vec3(m_pimpl->m_specular));
 
     auto matShininess = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matShininess");
     Utopia::getInstance().getBasicProgramShader()->setFloat(matShininess, (GLfloat)m_pimpl->m_shininess);

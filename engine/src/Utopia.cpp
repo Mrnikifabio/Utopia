@@ -90,7 +90,8 @@ std::shared_ptr<UProgramShader> Utopia::getBasicProgramShader()
 
 void displayCallback()
 {
-
+	auto lightPosition = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightPosition");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightPosition, glm::vec3(glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * glm::vec4(-22.f, 235.f, 350.f, 1.f)));
 }
 
 
@@ -178,7 +179,7 @@ bool LIB_API Utopia::init()
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
-	//glEnable(GL_BLEND);
+	glEnable(GL_BLEND);
 	//glBlendFunc(GL_ONE, GL_ONE);
 
 #if DEBUG
@@ -275,12 +276,28 @@ bool LIB_API Utopia::init()
 )";
 
 
+	//std::string vertShaderFileName = "shaders/" + std::string("vertShader.vert");
+	//m_pimpl->m_basicVertShader->loadFromFile(vertShaderFileName);
+	//std::string fragShaderFileName = "shaders/" + std::string("fragShader.frag");
+	//m_pimpl->m_basicFragShader->loadFromFile(fragShaderFileName);
+
 	m_pimpl->m_basicVertShader->loadFromMemory(vertShader);
 	m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
+
 	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
 	m_pimpl->m_basicProgShader->render();
 	m_pimpl->m_basicProgShader->bind(0, "in_Position");
 	m_pimpl->m_basicProgShader->bind(1, "in_Normal");
+
+
+	auto lightAmbient = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightAmbient");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightAmbient, glm::vec3(1.f, 1.f, 1.f));
+
+	auto lightDiffuse = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightDiffuse");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightDiffuse, glm::vec3(1.f, 1.f, 1.f));
+
+	auto lightSpecular = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightSpecular");
+	Utopia::getInstance().getBasicProgramShader()->setVec3(lightSpecular, glm::vec3(glm::vec3(1.f, 1.f, 1.f)));
 
 	// Done:
 	m_pimpl->m_initFlag = true;

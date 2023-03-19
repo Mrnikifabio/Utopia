@@ -29,6 +29,8 @@ namespace utopia
         LIB_API virtual ~ULight() noexcept;
         void render() override;
         LIB_API static void initIDs();
+        LIB_API static int getNLightsUsed();
+        LIB_API static int getMaxLights();
 
         LIB_API void setAmbient(const glm::vec4& ambient);
         LIB_API void setDiffuse(const glm::vec4& diffuse);

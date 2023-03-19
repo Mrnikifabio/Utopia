@@ -106,7 +106,7 @@ namespace utopia {
 
 		LIB_API void setTimer(int timeoutMs, void(*callback)(int), int value);
 
-		std::shared_ptr<UProgramShader> getBasicProgramShader(); //public but used only internally to the library
+		LIB_API std::shared_ptr<UProgramShader> getBasicProgramShader(); //public but used only internally to the library
 	};
 
 }

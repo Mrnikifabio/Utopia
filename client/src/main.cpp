@@ -1,5 +1,7 @@
 #include <iostream>
 #include "Utopia.h"
+#include "UShader.h"
+#include "UProgramShader.h"
 #include "UNode.h"
 #include "UMesh.h"
 #include "UPerspectiveCamera.h"
@@ -192,9 +194,14 @@ int main()
 	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(maxAnisotropyLevel));
 	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
 
+	std::cout<<"Lights used: "<<ULight::getNLightsUsed()<<std::endl;
 
+	std::cout<<"Starting main loop"<<std::endl;
 	while (Utopia::getInstance().isRunning())
 	{
+		auto lightPosition = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightPosition");
+		Utopia::getInstance().getBasicProgramShader()->setVec3(lightPosition, glm::vec3( UCamera::getMainCamera().lock()->getFinalWorldCoordinates() * glm::vec4(client::ClientUtility::getInstance().getLocalPosition(freeCamera),1.f)));
+		
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
 
@@ -202,13 +209,13 @@ int main()
 		fpsCounter++;
 		fpsLabel->setText(std::to_string(fpsToPrint));
 
-		shadowRenderPipeline->clear();
-		shadowRenderPipeline->pass(towerNode, glm::scale(glm::translate(glm::mat4(1), glm::vec3(0.f, 1.0f, .0f)), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
-		for (auto& hook : hookPoints)
-		{
-			shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f,1.0f,0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
-		}
-		shadowRenderPipeline->render();
+		//shadowRenderPipeline->clear();
+		//shadowRenderPipeline->pass(towerNode, glm::scale(glm::translate(glm::mat4(1), glm::vec3(0.f, 1.0f, .0f)), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
+		//for (auto& hook : hookPoints)
+		//{
+		//	shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f,1.0f,0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
+		//}
+		//shadowRenderPipeline->render();
 
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
@@ -264,8 +271,8 @@ void passiveMotionCallback(int x, int y)
 
 	freeCamera->setModelView(matRotationY);
 
-	std::cout << "angleX: " << angleX << std::endl;
-	std::cout << "angleY: " << angleY << std::endl;
+	//std::cout << "angleX: " << angleX << std::endl;
+	//std::cout << "angleY: " << angleY << std::endl;
 }
 
 
@@ -279,9 +286,9 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 	auto box = boxesManager->possibleBoxToHook(tower->getFisicalHook(), 150);
 
-
 	switch (key)
 	{
+		
 
 	case 'a':
 		cameraNewPos.x -= 10.00f;
@@ -398,6 +405,8 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		std::cout << "camera" << std::endl;
 		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(freeCamera)) << std::endl;
 	}
+
+	
 
 }
 
