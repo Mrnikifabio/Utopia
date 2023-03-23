@@ -32,6 +32,8 @@
 #include "UMaterial.h"
 #include "UTexture.h"
 #include "UProgramShader.h"
+#include "UVertexShader.h"
+#include "UFragmentShader.h"
 #include <memory>
 #include <unordered_map>
 
@@ -105,8 +107,10 @@ namespace utopia {
 		LIB_API int getWindowHeight();
 
 		LIB_API void setTimer(int timeoutMs, void(*callback)(int), int value);
-
-		LIB_API std::shared_ptr<UProgramShader> getBasicProgramShader(); //public but used only internally to the library
+		
+		std::shared_ptr<UVertexShader> getBasicVertexShader();
+		std::shared_ptr<UFragmentShader> getBasicFragmentShader();
+		std::shared_ptr<UProgramShader> getBasicProgramShader(); //public but used only internally to the library
 	};
 
 }

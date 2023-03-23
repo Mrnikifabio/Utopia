@@ -36,11 +36,13 @@ namespace utopia
 
 		// Get/set:
 		LIB_API int getParamLocation(const std::string& name) const;
-		LIB_API void setMatrix(int param, const glm::mat4& mat);
+		LIB_API void setMatrix4(int param, const glm::mat4& mat);
+		LIB_API void setMatrix3(int param, const glm::mat3& mat);
 		LIB_API void setFloat(int param, float value);
 		LIB_API void setInt(int param, int value);
 		LIB_API void setVec3(int param, const glm::vec3& vect);
 		LIB_API void setVec4(int param, const glm::vec4& vect);
+
 
 		void bind(int location, const char* attribName);
 

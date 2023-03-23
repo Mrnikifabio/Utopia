@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include "UCamera.h"
+#include <glm/gtx/string_cast.hpp>
 
 using namespace utopia;
 
@@ -73,7 +74,6 @@ void UNode::render()
 
 	//auto m = getFinalWorldCoordinates();
 	auto m = getModelView();
-
 	m = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * m;
 
 	/*for (auto& child : m_pimpl->m_children)
@@ -81,14 +81,17 @@ void UNode::render()
 
 	//glLoadMatrixf(glm::value_ptr(m));
 
-	auto modelView = Utopia::getInstance().getBasicProgramShader()->getParamLocation("modelview");
-	auto normalMatrix = Utopia::getInstance().getBasicProgramShader()->getParamLocation("normalMatrix");
+	glm::mat3 nM = glm::transpose(glm::inverse(glm::mat3(m)));
 
-	glm::mat3 nM = glm::inverseTranspose(glm::mat3(m));
+	auto normalMatrix = UProgramShader::getActiveProgramShader()->getParamLocation("normalMatrix");
+	auto modelView = UProgramShader::getActiveProgramShader()->getParamLocation("modelview");
 
-	Utopia::getInstance().getBasicProgramShader()->setMatrix(modelView, m);
-	Utopia::getInstance().getBasicProgramShader()->setMatrix(normalMatrix, nM);
-}
+
+	//std::cout << "normalMatrix: " << glm::to_string(nM) << std::endl;
+
+	UProgramShader::getActiveProgramShader()->setMatrix4(modelView, m);
+	UProgramShader::getActiveProgramShader()->setMatrix3(normalMatrix, nM);
+	}
 
 auto UNode::getModelView() const -> const glm::mat4&
 {

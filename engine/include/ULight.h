@@ -1,6 +1,7 @@
 #pragma once
 #include "UNode.h"
 #include <stack>
+#include "UFragmentShader.h"
 
 #ifdef _WINDOWS 	
 // Export API:
@@ -41,5 +42,6 @@ namespace utopia
         LIB_API auto getSpecular()									const -> const glm::vec4&;
         LIB_API auto getGlobalAmbient()								const -> const glm::vec4&;
         LIB_API auto getLightID()									const -> int;
+
     };
 }

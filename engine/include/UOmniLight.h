@@ -1,5 +1,6 @@
 #pragma once
 #include "ULight.h"
+#include "UFragmentShader.h"
 
 #ifdef _WINDOWS 	
 // Export API:
@@ -20,6 +21,7 @@ namespace utopia
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
+
     public:
         LIB_API virtual ~UOmniLight() noexcept;
         void render() override;

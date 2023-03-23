@@ -138,17 +138,17 @@ void UMesh::render()
 
 			glBindVertexBuffer(0, m_pimpl->m_vertexVbo, 0, sizeof(UMesh::Vertex));
 
+			glEnableVertexAttribArray(0);
 			glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, coord)); // for vertex coord
 			glVertexAttribBinding(0, 0);
-			glEnableVertexAttribArray(0);
 
+			glEnableVertexAttribArray(1);
 			glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, normal)); // for normal
 			glVertexAttribBinding(1, 0);
-			glEnableVertexAttribArray(1);
 
+			glEnableVertexAttribArray(2);
 			glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, uv)); // for texture coord
 			glVertexAttribBinding(2, 0);
-			glEnableVertexAttribArray(2);
 
 			//glVertexAttribFormat(3, 4, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, tangent)); // for tangent coord
 			//glVertexAttribBinding(3, 0);

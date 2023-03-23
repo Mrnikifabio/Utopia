@@ -67,14 +67,15 @@ struct Utopia::pimpl
 	bool m_initFlag;
 	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
 	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
-	std::unique_ptr<UFragmentShader> m_basicFragShader;
-	std::unique_ptr<UVertexShader> m_basicVertShader;
+
+	std::shared_ptr<UFragmentShader> m_basicFragShader;
+	std::shared_ptr<UVertexShader> m_basicVertShader;
 	std::shared_ptr<UProgramShader> m_basicProgShader;
 
 	pimpl() :
 		m_initFlag{ false }, 
-		m_basicFragShader{std::unique_ptr<UFragmentShader>(new UFragmentShader("basicFrag")) }, 
-		m_basicVertShader{std::unique_ptr<UVertexShader>(new UVertexShader("basicVert"))}, 
+		m_basicFragShader{std::shared_ptr<UFragmentShader>(new UFragmentShader("basicFrag")) },
+		m_basicVertShader{std::shared_ptr<UVertexShader>(new UVertexShader("basicVert"))},
 		m_basicProgShader{std::shared_ptr<UProgramShader>(new UProgramShader("basicProgShader"))} 
 	{}
 };
@@ -103,8 +104,8 @@ void reshapeCallback(int width, int height)
 	glLoadMatrixf();
 	glMatrixMode(GL_MODELVIEW);
 	*/
-	auto projLoc = Utopia::getInstance().getBasicProgramShader()->getParamLocation("projection");
-	Utopia::getInstance().getBasicProgramShader()->setMatrix(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
+	auto projLoc = UProgramShader::getActiveProgramShader()->getParamLocation("projection");
+	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
 	
 #ifdef DEBUG
 	std::cout << "[reshape func invoked] " << width << " " << height << std::endl;
@@ -275,29 +276,18 @@ bool LIB_API Utopia::init()
    }
 )";
 
-
-	//std::string vertShaderFileName = "shaders/" + std::string("vertShader.vert");
-	//m_pimpl->m_basicVertShader->loadFromFile(vertShaderFileName);
-	//std::string fragShaderFileName = "shaders/" + std::string("fragShader.frag");
-	//m_pimpl->m_basicFragShader->loadFromFile(fragShaderFileName);
+	std::string vertShaderFileName = "shaders/" + std::string("defaultShader.vert");
+	m_pimpl->m_basicVertShader->loadFromFile(vertShaderFileName);
+	std::string fragShaderFileName = "shaders/" + std::string("defaultShader.frag");
+	m_pimpl->m_basicFragShader->loadFromFile(fragShaderFileName);
 
 	m_pimpl->m_basicVertShader->loadFromMemory(vertShader);
 	m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
-
+	UProgramShader::setActiveProgramShader(m_pimpl->m_basicProgShader);
 	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
-	m_pimpl->m_basicProgShader->render();
 	m_pimpl->m_basicProgShader->bind(0, "in_Position");
 	m_pimpl->m_basicProgShader->bind(1, "in_Normal");
-
-
-	auto lightAmbient = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightAmbient");
-	Utopia::getInstance().getBasicProgramShader()->setVec3(lightAmbient, glm::vec3(1.f, 1.f, 1.f));
-
-	auto lightDiffuse = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightDiffuse");
-	Utopia::getInstance().getBasicProgramShader()->setVec3(lightDiffuse, glm::vec3(1.f, 1.f, 1.f));
-
-	auto lightSpecular = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightSpecular");
-	Utopia::getInstance().getBasicProgramShader()->setVec3(lightSpecular, glm::vec3(glm::vec3(1.f, 1.f, 1.f)));
+	m_pimpl->m_basicProgShader->render();
 
 	// Done:
 	m_pimpl->m_initFlag = true;
@@ -469,6 +459,17 @@ int Utopia::getWindowHeight()
 void Utopia::setTimer(int timeoutMs, void(*callback)(int), int value)
 {
 	glutTimerFunc(timeoutMs, callback, value);
+}
+
+
+std::shared_ptr<UVertexShader> utopia::Utopia::getBasicVertexShader()
+{
+	return m_pimpl->m_basicVertShader;
+}
+
+std::shared_ptr<UFragmentShader> utopia::Utopia::getBasicFragmentShader()
+{
+	return m_pimpl->m_basicFragShader;
 }
 
 

@@ -9,6 +9,8 @@ using namespace utopia;
 
 UProgramShader::UProgramShader(const std::string& name) : built{false}, UShader{name} {}
 
+static std::shared_ptr<UProgramShader> m_programShader;
+
 UProgramShader::~UProgramShader() noexcept
 {
 	int glId = getID();
@@ -99,4 +101,14 @@ bool UProgramShader::build(const UVertexShader& vertexShader, const UFragmentSha
 bool UProgramShader::isBuilt()
 {
 	return built;
+}
+
+void utopia::UProgramShader::setActiveProgramShader(std::shared_ptr<UProgramShader> programShader)
+{
+	m_programShader = programShader;
+}
+
+std::shared_ptr<UProgramShader> utopia::UProgramShader::getActiveProgramShader()
+{
+	return m_programShader;
 }

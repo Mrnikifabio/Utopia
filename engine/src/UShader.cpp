@@ -40,9 +40,14 @@ void UShader::setID(unsigned int id)
 	glId = id;
 }
 
-void UShader::setMatrix(int param, const glm::mat4& mat)
+void UShader::setMatrix4(int param, const glm::mat4& mat)
 {
 	glUniformMatrix4fv(param, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
+void UShader::setMatrix3(int param, const glm::mat3& mat)
+{
+	glUniformMatrix3fv(param,1, GL_FALSE, glm::value_ptr(mat));
 }
 
 void UShader::setFloat(int param, float value)

@@ -60,38 +60,45 @@ void U3DRenderPipeline::pass(std::weak_ptr<UNode> node, const glm::mat4& mat, st
 
 void U3DRenderPipeline::clear()
 {
-	m_pimpl->m_nodes.clear();
 	m_pimpl->m_lights.clear();
+	m_pimpl->m_nodes.clear();
 }
 
 void U3DRenderPipeline::render()
 {
+
+	//int i = 0;
+
 	for (auto& light : m_pimpl->m_lights)
 	{
-		auto oldMat = light->node.lock()->getModelView(); //the matrix is COPIED no auto&
-		light->node.lock()->setModelView(light->mat);
-		light->node.lock()->render();
-		light->node.lock()->setModelView(oldMat);
+		//if (i == 0)
+		//{
+			auto oldMat = light->node.lock()->getModelView(); //the matrix is COPIED no auto&
+			light->node.lock()->setModelView(light->mat);
+			light->node.lock()->render();
+			light->node.lock()->setModelView(oldMat);
 
 
-		for (auto& node : m_pimpl->m_nodes)
-		{
-			auto oldMat = node->node.lock()->getModelView(); //the matrix is COPIED no auto&
-			node->node.lock()->setModelView(node->mat);
-
-			std::shared_ptr<UMaterial> oldMaterial = nullptr;
-			if (dynamic_cast<UMesh*>(node->node.lock().get()))
+			for (auto& node : m_pimpl->m_nodes)
 			{
-				oldMaterial = ((UMesh*)node->node.lock().get())->getMaterial();
-				if (node->material != nullptr)
-					((UMesh*)node->node.lock().get())->setMaterial(node->material);
+				auto oldMat = node->node.lock()->getModelView(); //the matrix is COPIED no auto&
+				node->node.lock()->setModelView(node->mat);
+
+				std::shared_ptr<UMaterial> oldMaterial = nullptr;
+				if (dynamic_cast<UMesh*>(node->node.lock().get()))
+				{
+					oldMaterial = ((UMesh*)node->node.lock().get())->getMaterial();
+					if (node->material != nullptr)
+						((UMesh*)node->node.lock().get())->setMaterial(node->material);
+				}
+
+				node->node.lock()->render();
+
+				node->node.lock()->setModelView(oldMat);
+				if (dynamic_cast<UMesh*>(node->node.lock().get()))
+					((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
 			}
-
-			node->node.lock()->render();
-
-			node->node.lock()->setModelView(oldMat);
-			if (dynamic_cast<UMesh*>(node->node.lock().get()))
-				((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
-		}
+		//}
+		//i++;
 	}
 }

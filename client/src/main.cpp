@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Utopia.h"
 #include "UShader.h"
-#include "UProgramShader.h"
 #include "UNode.h"
 #include "UMesh.h"
 #include "UPerspectiveCamera.h"
@@ -199,9 +198,6 @@ int main()
 	std::cout<<"Starting main loop"<<std::endl;
 	while (Utopia::getInstance().isRunning())
 	{
-		auto lightPosition = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightPosition");
-		Utopia::getInstance().getBasicProgramShader()->setVec3(lightPosition, glm::vec3( UCamera::getMainCamera().lock()->getFinalWorldCoordinates() * glm::vec4(client::ClientUtility::getInstance().getLocalPosition(freeCamera),1.f)));
-		
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
 
@@ -209,13 +205,13 @@ int main()
 		fpsCounter++;
 		fpsLabel->setText(std::to_string(fpsToPrint));
 
-		//shadowRenderPipeline->clear();
-		//shadowRenderPipeline->pass(towerNode, glm::scale(glm::translate(glm::mat4(1), glm::vec3(0.f, 1.0f, .0f)), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
-		//for (auto& hook : hookPoints)
-		//{
-		//	shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f,1.0f,0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
-		//}
-		//shadowRenderPipeline->render();
+		shadowRenderPipeline->clear();
+		shadowRenderPipeline->pass(towerNode, glm::scale(glm::translate(glm::mat4(1), glm::vec3(0.f, 1.0f, .0f)), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
+		for (auto& hook : hookPoints)
+		{
+			shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f,1.0f,0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
+		}
+		shadowRenderPipeline->render();
 
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);

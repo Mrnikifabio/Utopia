@@ -28,5 +28,8 @@ namespace utopia
 		LIB_API void render() override;
 		LIB_API bool build(const UVertexShader& vertexShader, const UFragmentShader& fragmentShader);
 		LIB_API bool isBuilt();
+
+		static void setActiveProgramShader(std::shared_ptr<UProgramShader> programShader);
+		static std::shared_ptr<UProgramShader> getActiveProgramShader();
 	};
 }

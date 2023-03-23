@@ -54,20 +54,20 @@ UMaterial::UMaterial(const std::string& name, const glm::vec4& emission, const g
 
 void utopia::UMaterial::render()
 {
-    auto matEmission = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matEmission");
-    Utopia::getInstance().getBasicProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_emission));
+    auto matEmission = UProgramShader::getActiveProgramShader()->getParamLocation("matEmission");
+    UProgramShader::getActiveProgramShader()->setVec3(matEmission, glm::vec3(m_pimpl->m_emission));
 
-    auto matAmbient = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matAmbient");
-    Utopia::getInstance().getBasicProgramShader()->setVec3(matAmbient, glm::vec3(m_pimpl->m_ambient));
+    auto matAmbient = UProgramShader::getActiveProgramShader()->getParamLocation("matAmbient");
+    UProgramShader::getActiveProgramShader()->setVec3(matAmbient, glm::vec3(m_pimpl->m_ambient));
 
-    auto matDiffuse = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matDiffuse");
-    Utopia::getInstance().getBasicProgramShader()->setVec3(matDiffuse, glm::vec3(m_pimpl->m_diffuse));
+    auto matDiffuse = UProgramShader::getActiveProgramShader()->getParamLocation("matDiffuse");
+    UProgramShader::getActiveProgramShader()->setVec3(matDiffuse, glm::vec3(m_pimpl->m_diffuse));
 
-    auto matSpecular = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matSpecular");
-    Utopia::getInstance().getBasicProgramShader()->setVec3(matSpecular, glm::vec3(m_pimpl->m_specular));
+    auto matSpecular = UProgramShader::getActiveProgramShader()->getParamLocation("matSpecular");
+    UProgramShader::getActiveProgramShader()->setVec3(matSpecular, glm::vec3(m_pimpl->m_specular));
 
-    auto matShininess = Utopia::getInstance().getBasicProgramShader()->getParamLocation("matShininess");
-    Utopia::getInstance().getBasicProgramShader()->setFloat(matShininess, (GLfloat)m_pimpl->m_shininess);
+    auto matShininess = UProgramShader::getActiveProgramShader()->getParamLocation("matShininess");
+    UProgramShader::getActiveProgramShader()->setFloat(matShininess, (GLfloat)m_pimpl->m_shininess);
 
 
     /*
