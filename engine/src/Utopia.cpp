@@ -180,8 +180,10 @@ bool LIB_API Utopia::init()
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
-	glEnable(GL_BLEND);
-	//glBlendFunc(GL_ONE, GL_ONE);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
+	//glBlendEquation(GL_MAX);
+	//glEnable(GL_BLEND);
 
 #if DEBUG
 	// Register OpenGL debug callback:

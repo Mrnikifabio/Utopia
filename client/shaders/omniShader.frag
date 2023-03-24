@@ -12,6 +12,8 @@ uniform vec3 matDiffuse;
 uniform vec3 matSpecular;
 uniform float matShininess;
 
+uniform int nLightUsed;
+
 // Light properties:
 uniform vec3 lightPosition;
 uniform vec3 lightAmbient;
@@ -22,6 +24,7 @@ void main(void)
 {
    // Ambient term:
    vec3 fragColor=matEmission+matAmbient*lightAmbient;
+   fragColor /= nLightUsed; 
    
    // Diffuse term:
    vec3 _normal=normalize(normal);

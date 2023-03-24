@@ -1,6 +1,7 @@
 #include "USpotLight.h"
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include "UProgramShader.h"
 #include "UVertexShader.h"
 #include "Utopia.h"
@@ -53,14 +54,29 @@ void USpotLight::render()
 	*/
 
 
+	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
+	auto direction = glm::vec3(modelViewEye * glm::vec4(m_pimpl->m_direction, 1.f));
+
+	//std::cout << glm::to_string(m_pimpl->m_direction) << std::endl;
+	//std::cout << glm::to_string(direction) << std::endl;
+
 	auto spotLightDirection = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightDirection");
-	UProgramShader::getActiveProgramShader()->setVec3(spotLightDirection, glm::vec3(m_pimpl->m_direction));
+	UProgramShader::getActiveProgramShader()->setVec3(spotLightDirection, direction);
+
 
 	auto spotLightCutoff = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightCutoff");
 	UProgramShader::getActiveProgramShader()->setFloat(spotLightCutoff, m_pimpl->m_cutoff);
 
-	auto spotLightAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightDirection");
-	UProgramShader::getActiveProgramShader()->setFloat(spotLightAttenuation,m_pimpl->m_linearAttenuation);
+
+	auto nLightUsed = UProgramShader::getActiveProgramShader()->getParamLocation("nLightUsed");
+	UProgramShader::getActiveProgramShader()->setInt(nLightUsed, ULight::getNLightsUsed());
+
+	std::cout << ULight::getNLightsUsed() << std::endl;
+
+	
+
+	//auto spotLightAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightAttenuation");
+	//UProgramShader::getActiveProgramShader()->setFloat(spotLightAttenuation,m_pimpl->m_linearAttenuation);
 }
 
 USpotLight::USpotLight(const std::string& name, const float cutoff, const glm::vec3& direction, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation) : ULight{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(cutoff, direction, constantAttenuation, linearAttenuation, quadraticAttenuation)) } 

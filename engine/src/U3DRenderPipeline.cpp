@@ -1,6 +1,8 @@
 #include "U3DRenderPipeline.h"
 #include "UCamera.h"
 #include "ULight.h"
+#include <GL/glew.h>
+#include <gl/freeglut.h>
 #include "UMesh.h"
 #include "UMaterial.h"
 #include <vector>
@@ -66,13 +68,18 @@ void U3DRenderPipeline::clear()
 
 void U3DRenderPipeline::render()
 {
-
-	//int i = 0;
+	int i = 0;
 
 	for (auto& light : m_pimpl->m_lights)
 	{
-		//if (i == 0)
-		//{
+		if (i == 1)
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE);
+			glDepthFunc(GL_LEQUAL);
+		}
+		i++;
+
 			auto oldMat = light->node.lock()->getModelView(); //the matrix is COPIED no auto&
 			light->node.lock()->setModelView(light->mat);
 			light->node.lock()->render();
@@ -98,7 +105,12 @@ void U3DRenderPipeline::render()
 				if (dynamic_cast<UMesh*>(node->node.lock().get()))
 					((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
 			}
-		//}
-		//i++;
 	}
+
+	glDisable(GL_BLEND);
+	glDepthFunc(GL_LESS);
+
+
+
+
 }

@@ -219,7 +219,7 @@ int main()
 
 
 		_2DRenderPipeline->render();
-		Utopia::getInstance().enableLighting();
+		//Utopia::getInstance().enableLighting();
 		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().swap();
 	}
