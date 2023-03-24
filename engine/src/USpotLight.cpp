@@ -71,10 +71,6 @@ void USpotLight::render()
 	auto nLightUsed = UProgramShader::getActiveProgramShader()->getParamLocation("nLightUsed");
 	UProgramShader::getActiveProgramShader()->setInt(nLightUsed, ULight::getNLightsUsed());
 
-	std::cout << ULight::getNLightsUsed() << std::endl;
-
-	
-
 	//auto spotLightAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightAttenuation");
 	//UProgramShader::getActiveProgramShader()->setFloat(spotLightAttenuation,m_pimpl->m_linearAttenuation);
 }
