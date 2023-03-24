@@ -33,22 +33,8 @@ void UOmniLight::render()
 	UProgramShader::getActiveProgramShader()->bind(0, "in_Position");
 	UProgramShader::getActiveProgramShader()->bind(1, "in_Normal");
 
-	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
-	auto lightPosition = UProgramShader::getActiveProgramShader()->getParamLocation("omniLightPosition");
-
 	auto projLoc = UProgramShader::getActiveProgramShader()->getParamLocation("projection");
 	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
-
-	UProgramShader::getActiveProgramShader()->setVec3(lightPosition, glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]));
-
-	auto lightAmbient = UProgramShader::getActiveProgramShader()->getParamLocation("omniLightAmbient");
-	UProgramShader::getActiveProgramShader()->setVec3(lightAmbient, glm::vec3(getAmbient()));
-
-	auto lightDiffuse = UProgramShader::getActiveProgramShader()->getParamLocation("omniLightDiffuse");
-	UProgramShader::getActiveProgramShader()->setVec3(lightDiffuse, glm::vec3(getDiffuse()));
-
-	auto lightSpecular = UProgramShader::getActiveProgramShader()->getParamLocation("omniLightSpecular");
-	UProgramShader::getActiveProgramShader()->setVec3(lightSpecular, glm::vec3(getSpecular()));
 
 	ULight::render();
 }

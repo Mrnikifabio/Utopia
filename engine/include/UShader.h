@@ -54,5 +54,12 @@ namespace utopia
 
 	private:
 		unsigned int glId;
+		static bool uniformJustSaved(const std::string& name);
+		static int getUniformByName(const std::string& name);
+		static void addUniform(const std::string name, int rID);
+
+
+		
+
 	};
 }

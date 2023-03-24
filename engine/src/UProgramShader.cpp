@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
+
 using namespace utopia;
 
 #define MAX_LOGSIZE 4096

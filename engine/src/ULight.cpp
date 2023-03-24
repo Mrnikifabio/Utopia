@@ -69,6 +69,24 @@ void ULight::render()
 	//render something somehow and then we make a call to UNode render, to render all of the children
 		
 	UNode::render();
+
+
+	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
+	auto lightPosition = UProgramShader::getActiveProgramShader()->getParamLocation("lightPosition");
+
+
+
+	UProgramShader::getActiveProgramShader()->setVec3(lightPosition, glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]));
+
+	auto lightAmbient = UProgramShader::getActiveProgramShader()->getParamLocation("lightAmbient");
+	UProgramShader::getActiveProgramShader()->setVec3(lightAmbient, glm::vec3(getAmbient()));
+
+	auto lightDiffuse = UProgramShader::getActiveProgramShader()->getParamLocation("lightDiffuse");
+	UProgramShader::getActiveProgramShader()->setVec3(lightDiffuse, glm::vec3(getDiffuse()));
+
+	auto lightSpecular = UProgramShader::getActiveProgramShader()->getParamLocation("lightSpecular");
+	UProgramShader::getActiveProgramShader()->setVec3(lightSpecular, glm::vec3(getSpecular()));
+
 	/*
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(m_pimpl->m_gAmbient));

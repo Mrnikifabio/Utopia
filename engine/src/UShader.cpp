@@ -1,6 +1,9 @@
 #include "UShader.h"
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <unordered_map>
+
+
 
 
 using namespace utopia;
@@ -9,6 +12,7 @@ UShader::UShader(const std::string& name) : glId{ 0 }, UObject{ name } {}
 
 UShader::~UShader() = default;
 
+static std::unordered_map<std::string, int> m_uniforms;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -19,10 +23,35 @@ UShader::~UShader() = default;
 int UShader::getParamLocation(const std::string& name) const
 {
 	// Return location:
-	int r = glGetUniformLocation(glId, name.c_str());
-	if (r == -1)
-		std::cout << "[ERROR] Param '" << name << "' not found" << std::endl;
-	return r;
+
+	if (uniformJustSaved(name))
+	{
+		return getUniformByName(name);
+	}
+	else
+	{
+		int r = glGetUniformLocation(glId, name.c_str());
+		if (r == -1)
+			std::cout << "[ERROR] Param '" << name << "' not found" << std::endl;
+		else
+			addUniform(name, r);
+		return r;
+	}
+}
+
+bool UShader::uniformJustSaved(const std::string& name)
+{
+	return m_uniforms.count(name) >= 1;
+}
+
+int UShader::getUniformByName(const std::string& name)
+{
+	return m_uniforms.at(name);
+}
+
+void UShader::addUniform(const std::string name, int rID)
+{
+	m_uniforms.insert(std::pair<std::string, int>(name, rID));
 }
 
 void UShader::render()
