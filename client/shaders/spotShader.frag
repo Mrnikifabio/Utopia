@@ -20,11 +20,17 @@ uniform int nLightUsed;
 
 in vec4 fragPosition;
 in vec3 normal;
+in vec2 texCoord;  
 
 out vec4 fragOutput;
 
+layout(binding = 0) uniform sampler2D texSampler;
+
 void main(void)
 {
+    // Texture element:
+    vec4 texel = texture(texSampler, texCoord); 
+
     // Ambient term:
     vec3 fragColor=matEmission+matAmbient*lightAmbient;
     fragColor /= nLightUsed; 
@@ -47,5 +53,5 @@ void main(void)
     }
     
     // Final color:
-    fragOutput=vec4(fragColor,1.f);
+    fragOutput=texel * vec4(fragColor,1.f);
 }
