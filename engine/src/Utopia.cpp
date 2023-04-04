@@ -65,6 +65,7 @@ using namespace utopia;
 struct Utopia::pimpl
 {
 	bool m_initFlag;
+	bool m_steroscopicRender;
 	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
 	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
 
@@ -77,6 +78,7 @@ struct Utopia::pimpl
 
 	pimpl() :
 		m_initFlag{ false }, 
+		m_steroscopicRender{ false },
 		m_basicFragShader{std::shared_ptr<UFragmentShader>(new UFragmentShader("basicFrag")) },
 		m_basicVertShader{std::shared_ptr<UVertexShader>(new UVertexShader("basicVert"))},
 		m_basicProgShader{std::shared_ptr<UProgramShader>(new UProgramShader("basicProgShader"))},
@@ -495,6 +497,12 @@ Utopia& Utopia::getInstance()
 	return m_instance;
 }
 
+void utopia::Utopia::enableStereoscopic(const bool enable)
+{
+	m_pimpl->m_steroscopicRender = enable;
+}
 
 
-
+bool utopia::Utopia::isStereoscopicEnabled() {
+	return m_pimpl->m_steroscopicRender;
+}

@@ -15,11 +15,13 @@ struct U3DRenderPipeline::pimpl {
 	std::vector<std::unique_ptr<U3DRenderNode>> m_nodes;
 	std::vector<std::unique_ptr<U3DRenderNode>> m_lights;
 	std::vector<std::unique_ptr<U2DQuad>> m_eyes;
+	std::unique_ptr<U2DQuad> m_screen;
 	bool m_first;
 
 	pimpl() : m_first { true } {
 		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("left eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f))));
 		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("right eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
+		m_screen = std::unique_ptr<U2DQuad>(new U2DQuad("screen", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f)));
 	}
 };
 
@@ -80,61 +82,78 @@ void U3DRenderPipeline::render()
 	// Store the current viewport size:
 	GLint prevViewport[4];
 	glGetIntegerv(GL_VIEWPORT, prevViewport);
+
+	bool isStereoscopic = Utopia::getInstance().isStereoscopicEnabled();
 	if (m_pimpl->m_first) {
 		for (auto& eye : m_pimpl->m_eyes)
 			eye->init();
+		m_pimpl->m_screen->init();
 		m_pimpl->m_first = false;
 	}
 
-	for (auto& eye : m_pimpl->m_eyes)
-	{
-		eye->activeAsBuffer();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		int i = 0;
-
-		for (auto& light : m_pimpl->m_lights)
+	if (isStereoscopic) {
+		for (auto& eye : m_pimpl->m_eyes)
 		{
-			if (i == 1)
-			{
-				glEnable(GL_BLEND);
-				glBlendFunc(GL_ONE, GL_ONE);
-				glDepthFunc(GL_LEQUAL);
-			}
-			i++;
-
-			auto oldMat = light->node.lock()->getModelView(); //the matrix is COPIED no auto&
-			light->node.lock()->setModelView(light->mat);
-			light->node.lock()->render();
-			light->node.lock()->setModelView(oldMat);
-
-
-			for (auto& node : m_pimpl->m_nodes)
-			{
-				auto oldMat = node->node.lock()->getModelView(); //the matrix is COPIED no auto&
-				node->node.lock()->setModelView(node->mat);
-
-				std::shared_ptr<UMaterial> oldMaterial = nullptr;
-				if (dynamic_cast<UMesh*>(node->node.lock().get()))
-				{
-					oldMaterial = ((UMesh*)node->node.lock().get())->getMaterial();
-					if (node->material != nullptr)
-						((UMesh*)node->node.lock().get())->setMaterial(node->material);
-				}
-
-				node->node.lock()->render();
-
-				node->node.lock()->setModelView(oldMat);
-				if (dynamic_cast<UMesh*>(node->node.lock().get()))
-					((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
-			}
+			eye->activeAsBuffer();
+			renderInBuffer();
+			eye->disableAsBuffer();
 		}
-
-		glDisable(GL_BLEND);
-		glDepthFunc(GL_LESS);
-		eye->disableAsBuffer();
+	}
+	else {
+		m_pimpl->m_screen->activeAsBuffer();
+		renderInBuffer();
+		m_pimpl->m_screen->disableAsBuffer();
 	}
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
-	for (auto& eye : m_pimpl->m_eyes)
-		eye->render();
+	if (isStereoscopic) {
+		for (auto& eye : m_pimpl->m_eyes)
+			eye->render();
+	}
+	else {
+		m_pimpl->m_screen->render();
+	}
+}
+
+void U3DRenderPipeline::renderInBuffer() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	int i = 0;
+	for (auto& light : m_pimpl->m_lights)
+	{
+		if (i == 1)
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE);
+			glDepthFunc(GL_LEQUAL);
+		}
+		i++;
+
+		auto oldMat = light->node.lock()->getModelView(); //the matrix is COPIED no auto&
+		light->node.lock()->setModelView(light->mat);
+		light->node.lock()->render();
+		light->node.lock()->setModelView(oldMat);
+
+
+		for (auto& node : m_pimpl->m_nodes)
+		{
+			auto oldMat = node->node.lock()->getModelView(); //the matrix is COPIED no auto&
+			node->node.lock()->setModelView(node->mat);
+
+			std::shared_ptr<UMaterial> oldMaterial = nullptr;
+			if (dynamic_cast<UMesh*>(node->node.lock().get()))
+			{
+				oldMaterial = ((UMesh*)node->node.lock().get())->getMaterial();
+				if (node->material != nullptr)
+					((UMesh*)node->node.lock().get())->setMaterial(node->material);
+			}
+
+			node->node.lock()->render();
+
+			node->node.lock()->setModelView(oldMat);
+			if (dynamic_cast<UMesh*>(node->node.lock().get()))
+				((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
+		}
+	}
+	glDisable(GL_BLEND);
+	glDepthFunc(GL_LESS);
 }

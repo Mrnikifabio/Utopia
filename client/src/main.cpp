@@ -196,7 +196,7 @@ int main()
 	std::cout<<"Lights used: "<<ULight::getNLightsUsed()<<std::endl;
 
 	std::cout<<"Starting main loop"<<std::endl;
-	Utopia::getInstance().enableShadeModel();
+	//Utopia::getInstance().enableShadeModel();
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
@@ -286,13 +286,13 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	{
 		
 
-	case 'a':
+	case 'a': case 'A':
 		cameraNewPos.x -= 10.00f;
 		break;
-	case 'd':
+	case 'd': case 'D':
 		cameraNewPos.x += 10.00f;
 		break;
-	case 's':
+	case 's': case 'S':
 		cameraNewPos.z += 10.00f;
 		break;
 	case 'w':
@@ -393,6 +393,9 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case '+':
 		tower->moveFisicalHookUpDown(+6.f);
 		break;
+	case 'u': case 'U':
+		Utopia::getInstance().enableStereoscopic(!Utopia::getInstance().isStereoscopicEnabled());
+		break;
 	}
 
 	if (UCamera::getMainCamera().lock()->getName() == "freeCamera")
@@ -400,9 +403,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		freeCamera->setModelView(glm::translate(freeCamera->getModelView(), cameraNewPos));
 		std::cout << "camera" << std::endl;
 		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(freeCamera)) << std::endl;
-	}
-
-	
+	}	
 
 }
 
