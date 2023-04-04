@@ -28,9 +28,11 @@
     <ClCompile Include="src\OVONodeConcreteStrategy.cpp" />
     <ClCompile Include="src\OVOStrategy.cpp" />
     <ClCompile Include="src\U2DObject.cpp" />
+    <ClCompile Include="src\U2DQuad.cpp" />
     <ClCompile Include="src\U2DRenderPipeline.cpp" />
     <ClCompile Include="src\UCamera.cpp" />
     <ClCompile Include="src\UDirectionalLight.cpp" />
+    <ClCompile Include="src\UFbo.cpp" />
     <ClCompile Include="src\UFragmentShader.cpp" />
     <ClCompile Include="src\ULight.cpp" />
     <ClCompile Include="src\UMaterial.cpp" />
@@ -70,9 +72,11 @@
     <ClInclude Include="include\OVOObject.h" />
     <ClInclude Include="include\OVOStrategy.h" />
     <ClInclude Include="include\U2DObject.h" />
+    <ClInclude Include="include\U2DQuad.h" />
     <ClInclude Include="include\U2DRenderPipeline.h" />
     <ClInclude Include="include\UCamera.h" />
     <ClInclude Include="include\UDirectionalLight.h" />
+    <ClInclude Include="include\UFbo.h" />
     <ClInclude Include="include\UFragmentShader.h" />
     <ClInclude Include="include\ULight.h" />
     <ClInclude Include="include\UMaterial.h" />

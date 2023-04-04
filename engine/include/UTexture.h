@@ -52,6 +52,9 @@ namespace utopia
         LIB_API void updateTextureParameteri(void (*parametriSetMethod)(void));
         LIB_API void updateAnisotropyLevelTextureParameteri(int value);
         LIB_API static const std::shared_ptr<UTexture> getDefaultTexture();
+
+
+        unsigned int getTexId();
      
     };
 }

@@ -196,31 +196,31 @@ int main()
 	std::cout<<"Lights used: "<<ULight::getNLightsUsed()<<std::endl;
 
 	std::cout<<"Starting main loop"<<std::endl;
+	Utopia::getInstance().enableShadeModel();
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
 
 		boxesManager->computeGravity();
-		fpsCounter++;
-		fpsLabel->setText(std::to_string(fpsToPrint));
+		//fpsCounter++;
+		//fpsLabel->setText(std::to_string(fpsToPrint));
 
-		shadowRenderPipeline->clear();
+		/*shadowRenderPipeline->clear();
 		shadowRenderPipeline->pass(towerNode, glm::scale(glm::translate(glm::mat4(1), glm::vec3(0.f, 1.0f, .0f)), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
 		for (auto& hook : hookPoints)
 		{
 			shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f,1.0f,0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
 		}
-		shadowRenderPipeline->render();
+		shadowRenderPipeline->render();*/
 
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
 		_3DRenderPipeline->render();
 
 
-		_2DRenderPipeline->render();
+		//_2DRenderPipeline->render();
 		//Utopia::getInstance().enableLighting();
-		Utopia::getInstance().enableShadeModel();
 		Utopia::getInstance().swap();
 	}
 

@@ -21,13 +21,17 @@ namespace utopia
     class UMesh : public UNode
     {
     private:
+        struct pimpl;
+        std::unique_ptr<pimpl> m_pimpl;
+        friend OVOMeshStrategy; // friend !!!
+    public:
         struct Vertex {
             glm::vec3 coord;
             glm::vec3 normal;
             glm::vec2 uv;
             glm::vec4 tangent;
 
-            Vertex(const glm::vec3& coord, const glm::vec3& normal, 
+            Vertex(const glm::vec3& coord, const glm::vec3& normal,
                 const glm::vec2& uv, const glm::vec4& tangent)
             {
                 this->coord = coord;
@@ -46,19 +50,13 @@ namespace utopia
             std::vector<Vertex> vertices;
             std::vector<Face> faces;
         };
-
-        struct pimpl;
-        std::unique_ptr<pimpl> m_pimpl;
         UMesh(const std::string& name);
         UMesh(const std::string& name, std::shared_ptr<UMaterial> material);
-        void pushLOD(std::unique_ptr<LOD>&&);
-        friend OVOMeshStrategy;
-
-    public:
         void render() override;
         LIB_API virtual ~UMesh() noexcept;
         LIB_API std::shared_ptr<UMaterial> getMaterial();
         LIB_API void setMaterial(std::shared_ptr<UMaterial> material);
+        void pushLOD(std::unique_ptr<LOD>&&);
     };
 }
 

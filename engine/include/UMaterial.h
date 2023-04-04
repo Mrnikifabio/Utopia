@@ -28,7 +28,6 @@ namespace utopia
         static std::shared_ptr<UMaterial> m_defaultMaterial;
 
     public:
-        LIB_API void disable();
         void render() override;
         LIB_API virtual ~UMaterial() noexcept;
         LIB_API UMaterial(const std::string& name);

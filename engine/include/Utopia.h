@@ -15,6 +15,12 @@
 #define LIB_NAME      "Utopia"  ///
 #define LIB_VERSION   10                              ///< Library version (divide by 10)
 
+ // Window size:
+#define APP_WINDOWSIZEX   1024
+#define APP_WINDOWSIZEY   512
+#define APP_EYESIZEX      APP_WINDOWSIZEX / 2
+#define APP_EYESIZEY      APP_WINDOWSIZEY / 1
+
 #ifdef _WINDOWS 	
    // Export API:
    // Specifies i/o linkage (VC++ spec):
@@ -111,6 +117,9 @@ namespace utopia {
 		std::shared_ptr<UVertexShader> getBasicVertexShader();
 		std::shared_ptr<UFragmentShader> getBasicFragmentShader();
 		std::shared_ptr<UProgramShader> getBasicProgramShader(); //public but used only internally to the library
+		std::shared_ptr<UVertexShader> getPassThroughVertShader();
+		std::shared_ptr<UFragmentShader> getPassThroughFragmentShader();
+		std::shared_ptr<UProgramShader> getPassThroughProgamShader();
 	};
 
 }

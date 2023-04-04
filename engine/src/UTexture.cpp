@@ -144,12 +144,20 @@ std::shared_ptr<UTexture> UTexture::loadTexture(const std::string& name, GLenum 
     std::cout << "texId: " << texId << std::endl;
     glBindTexture(target, texId);
 
-    gluBuild2DMipmaps(target, component, width, height, format, type, data);
+    //gluBuild2DMipmaps(target, component, width, height, format, type, data);
+
+    glTexImage2D(target, 0, component, width, height, 0, format, type, data);
+    glGenerateMipmap(target);
 
     auto texture = std::shared_ptr<UTexture>(new UTexture(name, texId));
     Utopia::getInstance().addTexture(name, texture);
     return texture;
 
+}
+
+unsigned int utopia::UTexture::getTexId()
+{
+    return m_pimpl->m_texId;
 }
 
 

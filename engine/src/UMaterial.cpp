@@ -114,10 +114,4 @@ const std::shared_ptr<UMaterial> utopia::UMaterial::getDefaultMaterial()
     return m_defaultMaterial;
 }
 
-void UMaterial::disable()
-{
-    if (m_pimpl->m_texture != nullptr)
-        glDisable(GL_TEXTURE_2D);
-}
-
 UMaterial::~UMaterial() = default;

@@ -6,12 +6,21 @@
 #include "UMesh.h"
 #include "UMaterial.h"
 #include <vector>
+#include <U2DQuad.h>
+#include <Utopia.h>
 
 using namespace utopia;
 
 struct U3DRenderPipeline::pimpl {
 	std::vector<std::unique_ptr<U3DRenderNode>> m_nodes;
 	std::vector<std::unique_ptr<U3DRenderNode>> m_lights;
+	std::vector<std::unique_ptr<U2DQuad>> m_eyes;
+	bool m_first;
+
+	pimpl() : m_first { true } {
+		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("left eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f))));
+		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("right eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
+	}
 };
 
 struct U3DRenderPipeline::U3DRenderNode {
@@ -68,17 +77,30 @@ void U3DRenderPipeline::clear()
 
 void U3DRenderPipeline::render()
 {
-	int i = 0;
+	// Store the current viewport size:
+	GLint prevViewport[4];
+	glGetIntegerv(GL_VIEWPORT, prevViewport);
+	if (m_pimpl->m_first) {
+		for (auto& eye : m_pimpl->m_eyes)
+			eye->init();
+		m_pimpl->m_first = false;
+	}
 
-	for (auto& light : m_pimpl->m_lights)
+	for (auto& eye : m_pimpl->m_eyes)
 	{
-		if (i == 1)
+		eye->activeAsBuffer();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		int i = 0;
+
+		for (auto& light : m_pimpl->m_lights)
 		{
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_ONE, GL_ONE);
-			glDepthFunc(GL_LEQUAL);
-		}
-		i++;
+			if (i == 1)
+			{
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_ONE, GL_ONE);
+				glDepthFunc(GL_LEQUAL);
+			}
+			i++;
 
 			auto oldMat = light->node.lock()->getModelView(); //the matrix is COPIED no auto&
 			light->node.lock()->setModelView(light->mat);
@@ -105,12 +127,14 @@ void U3DRenderPipeline::render()
 				if (dynamic_cast<UMesh*>(node->node.lock().get()))
 					((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
 			}
+		}
+
+		glDisable(GL_BLEND);
+		glDepthFunc(GL_LESS);
+		eye->disableAsBuffer();
 	}
+	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
-	glDisable(GL_BLEND);
-	glDepthFunc(GL_LESS);
-
-
-
-
+	for (auto& eye : m_pimpl->m_eyes)
+		eye->render();
 }

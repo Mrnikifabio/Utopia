@@ -28,6 +28,7 @@
  //////////////
  // DLL MAIN //
  //////////////
+#include <UFbo.h>
 
 #ifdef _WINDOWS
 #include <Windows.h>
@@ -61,7 +62,6 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 
 using namespace utopia;
 
-
 struct Utopia::pimpl
 {
 	bool m_initFlag;
@@ -71,12 +71,18 @@ struct Utopia::pimpl
 	std::shared_ptr<UFragmentShader> m_basicFragShader;
 	std::shared_ptr<UVertexShader> m_basicVertShader;
 	std::shared_ptr<UProgramShader> m_basicProgShader;
+	std::shared_ptr<UFragmentShader> m_passThroughFragShader;
+	std::shared_ptr<UVertexShader> m_passThroughVertShader;
+	std::shared_ptr<UProgramShader> m_passThroughProgShader;
 
 	pimpl() :
 		m_initFlag{ false }, 
 		m_basicFragShader{std::shared_ptr<UFragmentShader>(new UFragmentShader("basicFrag")) },
 		m_basicVertShader{std::shared_ptr<UVertexShader>(new UVertexShader("basicVert"))},
-		m_basicProgShader{std::shared_ptr<UProgramShader>(new UProgramShader("basicProgShader"))} 
+		m_basicProgShader{std::shared_ptr<UProgramShader>(new UProgramShader("basicProgShader"))},
+		m_passThroughFragShader{ std::shared_ptr<UFragmentShader>(new UFragmentShader("passThroughFragShader")) },
+		m_passThroughVertShader{ std::shared_ptr<UVertexShader>(new UVertexShader("passThrougVertShader")) },
+		m_passThroughProgShader{ std::shared_ptr<UProgramShader>(new UProgramShader("passThrougProgShader")) }
 	{}
 };
 
@@ -98,7 +104,7 @@ void displayCallback()
 
 void reshapeCallback(int width, int height)
 {
-	glViewport(0, 0, width, height);
+	//glViewport(0, 0, width, height);
 	/*
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf();
@@ -106,13 +112,17 @@ void reshapeCallback(int width, int height)
 	*/
 	auto projLoc = UProgramShader::getActiveProgramShader()->getParamLocation("projection");
 	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
+
+	// (bad) trick to avoid window resizing:
+	if (width != APP_WINDOWSIZEX || height != APP_WINDOWSIZEY)
+		glutReshapeWindow(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 	
-#ifdef DEBUG
+#ifdef _DEBUG
 	std::cout << "[reshape func invoked] " << width << " " << height << std::endl;
 #endif // DEBUG
 }
 
-#ifdef DEBUG
+#ifdef _DEBUG
 void __stdcall DebugCallback(GLenum source, GLenum type,
 	GLuint id, GLenum severity,
 	GLsizei length,
@@ -140,6 +150,7 @@ bool LIB_API Utopia::init()
 	glutInitContextVersion(4, 4);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
 
 	char* myargv[1];
@@ -185,7 +196,8 @@ bool LIB_API Utopia::init()
 	//glBlendEquation(GL_MAX);
 	//glEnable(GL_BLEND);
 
-#if DEBUG
+#if _DEBUG
+	glutInitContextFlags(GLUT_DEBUG);
 	// Register OpenGL debug callback:
 	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
 	// Enable debug notifications:
@@ -206,90 +218,28 @@ bool LIB_API Utopia::init()
 	//Init Light IDs:
 	utopia::ULight::initIDs();
 
-	//EMBARASSING ''''TEMPORARY'''' LOCATION FOR SHADERS
-	////////////////////////////
-	const char* vertShader = R"(
-	   #version 440 core
-
-	   // Uniforms:
-	   uniform mat4 projection;
-	   uniform mat4 modelview;
-	   uniform mat3 normalMatrix;
-
-	   // Attributes:
-	   layout(location = 0) in vec3 in_Position;
-	   layout(location = 1) in vec3 in_Normal;
-
-	   // Varying:
-	   out vec4 fragPosition;
-	   out vec3 normal;   
-
-	   void main(void)
-	   {
-		  fragPosition = modelview * vec4(in_Position, 1.0f);
-		  gl_Position = projection * fragPosition;      
-		  normal = normalMatrix * in_Normal;
-	   }
-		)";
-
-	////////////////////////////
-	const char* fragShader = R"(
-   #version 440 core
-
-   in vec4 fragPosition;
-   in vec3 normal;   
-   
-   out vec4 fragOutput;
-
-   // Material properties:
-   uniform vec3 matEmission;
-   uniform vec3 matAmbient;
-   uniform vec3 matDiffuse;
-   uniform vec3 matSpecular;
-   uniform float matShininess;
-
-   // Light properties:
-   uniform vec3 lightPosition; 
-   uniform vec3 lightAmbient; 
-   uniform vec3 lightDiffuse; 
-   uniform vec3 lightSpecular;
-
-   void main(void)
-   {      
-      // Ambient term:
-      vec3 fragColor = matEmission + matAmbient * lightAmbient;
-
-      // Diffuse term:
-      vec3 _normal = normalize(normal);
-      vec3 lightDirection = normalize(lightPosition - fragPosition.xyz);      
-      float nDotL = dot(lightDirection, _normal);   
-      if (nDotL > 0.0f)
-      {
-         fragColor += matDiffuse * nDotL * lightDiffuse;
-      
-         // Specular term:
-         vec3 halfVector = normalize(lightDirection + normalize(-fragPosition.xyz));                     
-         float nDotHV = dot(_normal, halfVector);         
-         fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
-      } 
-      
-      // Final color:
-      fragOutput = vec4(fragColor, 1.0f);
-   }
-)";
-
 	std::string vertShaderFileName = "shaders/" + std::string("defaultShader.vert");
 	m_pimpl->m_basicVertShader->loadFromFile(vertShaderFileName);
 	std::string fragShaderFileName = "shaders/" + std::string("defaultShader.frag");
 	m_pimpl->m_basicFragShader->loadFromFile(fragShaderFileName);
 
-	m_pimpl->m_basicVertShader->loadFromMemory(vertShader);
-	m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
+	//m_pimpl->m_basicVertShader->loadFromMemory(vertShader);
+	//m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
 	UProgramShader::setActiveProgramShader(m_pimpl->m_basicProgShader);
 	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
 	m_pimpl->m_basicProgShader->bind(0, "in_Position");
 	m_pimpl->m_basicProgShader->bind(1, "in_Normal");
 	m_pimpl->m_basicProgShader->render();
+
+	std::string passThroughVertShaderFileName = "shaders/" + std::string("passThroughShader.vert");
+	m_pimpl->m_passThroughVertShader->loadFromFile(passThroughVertShaderFileName);
+	std::string passThroughFragShaderFileName = "shaders/" + std::string("passThroughShader.frag");
+	m_pimpl->m_passThroughFragShader->loadFromFile(passThroughFragShaderFileName);
+	m_pimpl->m_passThroughProgShader->build(*m_pimpl->m_passThroughVertShader, *m_pimpl->m_passThroughFragShader);
+	m_pimpl->m_passThroughProgShader->bind(0, "in_Position");
+	m_pimpl->m_passThroughProgShader->bind(2, "in_TexCoord");
+	m_pimpl->m_passThroughProgShader->render();
+
 
 	// Done:
 	m_pimpl->m_initFlag = true;
@@ -472,6 +422,17 @@ std::shared_ptr<UVertexShader> utopia::Utopia::getBasicVertexShader()
 std::shared_ptr<UFragmentShader> utopia::Utopia::getBasicFragmentShader()
 {
 	return m_pimpl->m_basicFragShader;
+}
+
+std::shared_ptr<UVertexShader> utopia::Utopia::getPassThroughVertShader() {
+	return m_pimpl->m_passThroughVertShader;
+}
+std::shared_ptr<UFragmentShader> utopia::Utopia::getPassThroughFragmentShader() {
+	return m_pimpl->m_passThroughFragShader;
+}
+
+std::shared_ptr<UProgramShader> utopia::Utopia::getPassThroughProgamShader() {
+	return m_pimpl->m_passThroughProgShader;
 }
 
 
