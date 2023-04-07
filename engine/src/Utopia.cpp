@@ -107,12 +107,12 @@ void reshapeCallback(int width, int height)
 	auto projLoc = UProgramShader::getActiveProgramShader()->getParamLocation("projection");
 	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
 	
-#ifdef DEBUG
+#ifdef _DEBUG
 	std::cout << "[reshape func invoked] " << width << " " << height << std::endl;
 #endif // DEBUG
 }
 
-#ifdef DEBUG
+#ifdef _DEBUG
 void __stdcall DebugCallback(GLenum source, GLenum type,
 	GLuint id, GLenum severity,
 	GLsizei length,
@@ -139,6 +139,9 @@ bool LIB_API Utopia::init()
 
 	glutInitContextVersion(4, 4);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
+#if _DEBUG
+	glutInitContextProfile(GLUT_DEBUG);
+#endif
 	glutInitWindowPosition(100, 100);
 
 
@@ -185,7 +188,7 @@ bool LIB_API Utopia::init()
 	//glBlendEquation(GL_MAX);
 	//glEnable(GL_BLEND);
 
-#if DEBUG
+#if _DEBUG
 	// Register OpenGL debug callback:
 	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
 	// Enable debug notifications:
