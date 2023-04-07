@@ -149,6 +149,9 @@ bool LIB_API Utopia::init()
 
 	glutInitContextVersion(4, 4);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
+#if _DEBUG
+	glutInitContextFlags(GLUT_DEBUG);
+#endif
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
@@ -197,7 +200,6 @@ bool LIB_API Utopia::init()
 	//glEnable(GL_BLEND);
 
 #if _DEBUG
-	glutInitContextFlags(GLUT_DEBUG);
 	// Register OpenGL debug callback:
 	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
 	// Enable debug notifications:
