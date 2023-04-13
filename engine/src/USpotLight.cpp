@@ -54,10 +54,10 @@ void USpotLight::render()
 	*/
 
 
-	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
+	auto modelViewEye = glm::inverse( UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
 	auto direction = glm::vec3(modelViewEye * glm::vec4(m_pimpl->m_direction, 1.f));
 
-	//std::cout << glm::to_string(m_pimpl->m_direction) << std::endl;
+	std::cout << glm::to_string(m_pimpl->m_direction) << std::endl;
 	//std::cout << glm::to_string(direction) << std::endl;
 
 	auto spotLightDirection = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightDirection");

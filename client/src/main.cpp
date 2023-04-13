@@ -42,6 +42,8 @@ float sensibility = 0.5f;
 std::shared_ptr<UText> anisotLevelLabel = std::make_shared<UText>("anisotLevelLabel");
 std::shared_ptr<UText> textureFilterModeLabel = std::make_shared<UText>("textureFilterMode");
 
+std::shared_ptr<ULight> light;
+
 int main()
 {
 	if (!Utopia::getInstance().init())
@@ -193,9 +195,35 @@ int main()
 	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(maxAnisotropyLevel));
 	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
 
-	std::cout<<"Lights used: "<<ULight::getNLightsUsed()<<std::endl;
+	light = std::make_shared<UOmniLight>("testLight");
+	//root->addChild(light);
 
-	std::cout<<"Starting main loop"<<std::endl;
+	//std::shared_ptr<UNode> omniLightNode= client::ClientUtility::getInstance().findGameObjectByName(root, "Omni001");
+	//std::shared_ptr<UNode> spotLightNode = client::ClientUtility::getInstance().findGameObjectByName(root, "Fspot001");
+
+	/*
+	try
+	{
+		root->detachChildById(omniLightNode->getId());
+		spotLightNode->getParent()->detachChildById(spotLightNode->getId());
+		
+	}
+	catch (const std::exception&)
+	{
+		std::cout << "Error detaching light" << std::endl;
+	}
+	*/
+
+
+
+
+	std::cout << "Lights used: " << ULight::getNLightsUsed() << std::endl;
+
+	std::cout << "Starting main loop" << std::endl;
+
+	
+
+
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
@@ -205,13 +233,15 @@ int main()
 		fpsCounter++;
 		fpsLabel->setText(std::to_string(fpsToPrint));
 
+		/*
 		shadowRenderPipeline->clear();
 		shadowRenderPipeline->pass(towerNode, glm::scale(glm::translate(glm::mat4(1), glm::vec3(0.f, 1.0f, .0f)), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
 		for (auto& hook : hookPoints)
 		{
-			shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f,1.0f,0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
+			shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f, 1.0f, 0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
 		}
 		shadowRenderPipeline->render();
+		*/
 
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
@@ -278,13 +308,16 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	static int currentTexturesVisualization = 0;
 
 	glm::vec3 cameraNewPos = glm::vec4(0, 0, 0, 1);
+	glm::vec3 lightNewPos = glm::vec4(0, 0, 0, 1);
+
+	bool isLightMoved=false;
 
 
 	auto box = boxesManager->possibleBoxToHook(tower->getFisicalHook(), 150);
 
 	switch (key)
 	{
-		
+
 
 	case 'a':
 		cameraNewPos.x -= 10.00f;
@@ -305,6 +338,31 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		cameraNewPos.y -= 10.00f;
 		break;
 
+	case 'i':
+		lightNewPos.z -= 100.00f;
+		isLightMoved = true;
+		break;
+	case 'k':
+		lightNewPos.z += 100.00f;
+		isLightMoved = true;
+		break;
+	case 'j':
+		lightNewPos.x -= 100.00f;
+		isLightMoved = true;
+		break;
+	case 'l':
+		lightNewPos.x += 100.00f;
+		isLightMoved = true;
+		break;
+	case 'u':
+		lightNewPos.y += 100.00f;
+		isLightMoved = true;
+		break;
+	case 'o':
+		lightNewPos.y -= 100.00f;
+		isLightMoved = true;
+		break;
+
 	case 'z':
 		Utopia::getInstance().enableSolidMode();
 		break;
@@ -321,7 +379,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 
 	case 'v':
-
 		switch (currentTexturesVisualization++)
 		{
 		case 0:
@@ -348,7 +405,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		}
 		if (currentTexturesVisualization > 4)
 			currentTexturesVisualization = 0;
-
+		break;
 
 
 
@@ -402,7 +459,11 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(freeCamera)) << std::endl;
 	}
 
-	
+	if (isLightMoved)
+	{
+		light->setModelView(glm::translate(light->getModelView(), lightNewPos));
+		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(light)) << std::endl;
+	}
 
 }
 

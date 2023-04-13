@@ -32,8 +32,10 @@ void main(void)
     vec3 _normal=normalize(normal);
     vec3 lightDirection=normalize(lightPosition-fragPosition.xyz);
     float nDotL=dot(lightDirection,_normal);
+
+
     
-    if(degrees(acos(abs(dot(lightDirection,normalize(spotLightDirection)))))<=spotLightCutoff)
+    if(degrees(acos(abs(dot(-lightDirection,normalize(lightPosition-spotLightDirection)))))<=spotLightCutoff)
     {
         if(nDotL>0.f)
         {
