@@ -193,7 +193,8 @@ int main()
 	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(maxAnisotropyLevel));
 	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
 
-	std::cout<<"Lights used: "<<ULight::getNLightsUsed()<<std::endl;
+	std::cout << "Lights used: " << ULight::getNLightsUsed() << std::endl;
+	std::cout << "Starting main loop" << std::endl;
 
 	std::cout<<"Starting main loop"<<std::endl;
 	//Utopia::getInstance().enableShadeModel();
@@ -210,9 +211,10 @@ int main()
 		shadowRenderPipeline->pass(towerNode, glm::scale(glm::translate(glm::mat4(1), glm::vec3(0.f, 1.0f, .0f)), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
 		for (auto& hook : hookPoints)
 		{
-			shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f,1.0f,0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
+			shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f, 1.0f, 0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
 		}
-		shadowRenderPipeline->render();*/
+		shadowRenderPipeline->render();
+		*/
 
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
@@ -278,13 +280,16 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	static int currentTexturesVisualization = 0;
 
 	glm::vec3 cameraNewPos = glm::vec4(0, 0, 0, 1);
+	glm::vec3 lightNewPos = glm::vec4(0, 0, 0, 1);
+
+	bool isLightMoved=false;
 
 
 	auto box = boxesManager->possibleBoxToHook(tower->getFisicalHook(), 150);
 
 	switch (key)
 	{
-		
+
 
 	case 'a': case 'A':
 		cameraNewPos.x -= 10.00f;
@@ -321,7 +326,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 
 	case 'v':
-
 		switch (currentTexturesVisualization++)
 		{
 		case 0:
@@ -343,12 +347,11 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		case 4:
 			Utopia::getInstance().enableLinearBipmapLinearFilter();
 			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
-
 			break;
 		}
 		if (currentTexturesVisualization > 4)
 			currentTexturesVisualization = 0;
-
+		break;
 
 
 

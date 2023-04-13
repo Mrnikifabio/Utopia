@@ -5,15 +5,16 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stdexcept>
 #include "UProgramShader.h"
+#include <glm/gtx/string_cast.hpp>
 
 
 using namespace utopia;
 
 struct ULight::pimpl {
 	
-	glm::vec4 m_ambient = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec4 m_diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec4 m_specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::vec4 m_ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
+	glm::vec4 m_diffuse = glm::vec4(0.6f, 0.6f, 0.6f, 1.0f);
+	glm::vec4 m_specular = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f);
 	glm::vec4 m_gAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
 	int m_lightID;
 	
@@ -75,8 +76,9 @@ void ULight::render()
 	auto lightPosition = UProgramShader::getActiveProgramShader()->getParamLocation("lightPosition");
 
 
+	glm::vec3 lightPos = glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]);
+	UProgramShader::getActiveProgramShader()->setVec3(lightPosition, lightPos);
 
-	UProgramShader::getActiveProgramShader()->setVec3(lightPosition, glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]));
 
 	auto lightAmbient = UProgramShader::getActiveProgramShader()->getParamLocation("lightAmbient");
 	UProgramShader::getActiveProgramShader()->setVec3(lightAmbient, glm::vec3(getAmbient()));

@@ -99,8 +99,6 @@ std::shared_ptr<UProgramShader> Utopia::getBasicProgramShader()
 
 void displayCallback()
 {
-	auto lightPosition = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightPosition");
-	Utopia::getInstance().getBasicProgramShader()->setVec3(lightPosition, glm::vec3(glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * glm::vec4(-22.f, 235.f, 350.f, 1.f)));
 }
 
 
