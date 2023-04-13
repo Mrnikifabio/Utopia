@@ -284,8 +284,8 @@ bool LIB_API Utopia::init()
 	std::string fragShaderFileName = "shaders/" + std::string("defaultShader.frag");
 	m_pimpl->m_basicFragShader->loadFromFile(fragShaderFileName);
 
-	m_pimpl->m_basicVertShader->loadFromMemory(vertShader);
-	m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
+	//m_pimpl->m_basicVertShader->loadFromMemory(vertShader);
+	//m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
 	UProgramShader::setActiveProgramShader(m_pimpl->m_basicProgShader);
 	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
 	m_pimpl->m_basicProgShader->bind(0, "in_Position");
