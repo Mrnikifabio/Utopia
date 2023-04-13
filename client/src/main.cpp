@@ -42,8 +42,6 @@ float sensibility = 0.5f;
 std::shared_ptr<UText> anisotLevelLabel = std::make_shared<UText>("anisotLevelLabel");
 std::shared_ptr<UText> textureFilterModeLabel = std::make_shared<UText>("textureFilterMode");
 
-std::shared_ptr<ULight> light;
-
 int main()
 {
 	if (!Utopia::getInstance().init())
@@ -195,30 +193,7 @@ int main()
 	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(maxAnisotropyLevel));
 	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
 
-	light = std::make_shared<UOmniLight>("testLight");
-	//root->addChild(light);
-
-	//std::shared_ptr<UNode> omniLightNode= client::ClientUtility::getInstance().findGameObjectByName(root, "Omni001");
-	//std::shared_ptr<UNode> spotLightNode = client::ClientUtility::getInstance().findGameObjectByName(root, "Fspot001");
-
-	/*
-	try
-	{
-		root->detachChildById(omniLightNode->getId());
-		spotLightNode->getParent()->detachChildById(spotLightNode->getId());
-		
-	}
-	catch (const std::exception&)
-	{
-		std::cout << "Error detaching light" << std::endl;
-	}
-	*/
-
-
-
-
 	std::cout << "Lights used: " << ULight::getNLightsUsed() << std::endl;
-
 	std::cout << "Starting main loop" << std::endl;
 
 	
@@ -232,6 +207,7 @@ int main()
 		boxesManager->computeGravity();
 		fpsCounter++;
 		fpsLabel->setText(std::to_string(fpsToPrint));
+
 
 		/*
 		shadowRenderPipeline->clear();
@@ -338,31 +314,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		cameraNewPos.y -= 10.00f;
 		break;
 
-	case 'i':
-		lightNewPos.z -= 100.00f;
-		isLightMoved = true;
-		break;
-	case 'k':
-		lightNewPos.z += 100.00f;
-		isLightMoved = true;
-		break;
-	case 'j':
-		lightNewPos.x -= 100.00f;
-		isLightMoved = true;
-		break;
-	case 'l':
-		lightNewPos.x += 100.00f;
-		isLightMoved = true;
-		break;
-	case 'u':
-		lightNewPos.y += 100.00f;
-		isLightMoved = true;
-		break;
-	case 'o':
-		lightNewPos.y -= 100.00f;
-		isLightMoved = true;
-		break;
-
 	case 'z':
 		Utopia::getInstance().enableSolidMode();
 		break;
@@ -400,7 +351,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		case 4:
 			Utopia::getInstance().enableLinearBipmapLinearFilter();
 			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
-
 			break;
 		}
 		if (currentTexturesVisualization > 4)
@@ -458,13 +408,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		std::cout << "camera" << std::endl;
 		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(freeCamera)) << std::endl;
 	}
-
-	if (isLightMoved)
-	{
-		light->setModelView(glm::translate(light->getModelView(), lightNewPos));
-		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(light)) << std::endl;
-	}
-
 }
 
 void fpsCounterCallback(int value)
