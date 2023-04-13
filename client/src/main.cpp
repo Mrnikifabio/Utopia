@@ -49,7 +49,7 @@ int main()
 	Utopia::getInstance().setBackgroundColor(glm::vec4(0.5f, 1.f, 1.f, 1.f));
 	Utopia::getInstance().enableDepth();
 	Utopia::getInstance().enableCullFace();
-	Utopia::getInstance().enableShadeModel();
+	//Utopia::getInstance().enableShadeModel();
 	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
 	Utopia::getInstance().setSpecialCallback(specialCallback);
 	Utopia::getInstance().setCloseCallback(closeCallback);
@@ -196,8 +196,6 @@ int main()
 	std::cout << "Lights used: " << ULight::getNLightsUsed() << std::endl;
 	std::cout << "Starting main loop" << std::endl;
 
-	std::cout<<"Starting main loop"<<std::endl;
-	//Utopia::getInstance().enableShadeModel();
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();

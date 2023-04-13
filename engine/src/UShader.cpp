@@ -22,21 +22,10 @@ static std::unordered_map<std::string, int> m_uniforms;
  */
 int UShader::getParamLocation(const std::string& name) const
 {
-	// Return location:
-
-	if (uniformJustSaved(name))
-	{
-		return getUniformByName(name);
-	}
-	else
-	{
 		int r = glGetUniformLocation(glId, name.c_str());
 		if (r == -1)
 			std::cout << "[ERROR] Param '" << name << "' not found" << std::endl;
-		else
-			addUniform(name, r);
 		return r;
-	}
 }
 
 bool UShader::uniformJustSaved(const std::string& name)

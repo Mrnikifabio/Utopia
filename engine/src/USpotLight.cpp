@@ -39,9 +39,6 @@ void USpotLight::render()
 	UProgramShader::getActiveProgramShader()->bind(0, "in_Position");
 	UProgramShader::getActiveProgramShader()->bind(1, "in_Normal");
 
-	auto projLoc = UProgramShader::getActiveProgramShader()->getParamLocation("projection");
-	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
-
 	ULight::render();
 
 	/*
@@ -67,10 +64,6 @@ void USpotLight::render()
 	auto spotLightCutoff = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightCutoff");
 	UProgramShader::getActiveProgramShader()->setFloat(spotLightCutoff, m_pimpl->m_cutoff);
 
-
-	auto nLightUsed = UProgramShader::getActiveProgramShader()->getParamLocation("nLightUsed");
-	UProgramShader::getActiveProgramShader()->setInt(nLightUsed, ULight::getNLightsUsed());
-
 	//auto spotLightAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightAttenuation");
 	//UProgramShader::getActiveProgramShader()->setFloat(spotLightAttenuation,m_pimpl->m_linearAttenuation);
 }
@@ -87,7 +80,6 @@ USpotLight::USpotLight(const std::string& name, const float cutoff, const glm::v
 		m_vertexShader->loadFromFile("shaders/defaultShader.vert");
 
 		m_programShader->build(*m_vertexShader, *fragShader);
-		
 	}
 }
 

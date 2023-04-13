@@ -71,6 +71,12 @@ void ULight::render()
 		
 	UNode::render();
 
+	auto projLoc = UProgramShader::getActiveProgramShader()->getParamLocation("projection");
+	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
+
+	auto nLightUsed = UProgramShader::getActiveProgramShader()->getParamLocation("nLightUsed");
+	UProgramShader::getActiveProgramShader()->setInt(nLightUsed, ULight::getNLightsUsed());
+
 
 	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
 	auto lightPosition = UProgramShader::getActiveProgramShader()->getParamLocation("lightPosition");

@@ -229,18 +229,16 @@ bool LIB_API Utopia::init()
 	//m_pimpl->m_basicFragShader->loadFromMemory(fragShader);
 	UProgramShader::setActiveProgramShader(m_pimpl->m_basicProgShader);
 	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
+	m_pimpl->m_basicProgShader->render();
 	m_pimpl->m_basicProgShader->bind(0, "in_Position");
 	m_pimpl->m_basicProgShader->bind(1, "in_Normal");
-	m_pimpl->m_basicProgShader->render();
 
 	std::string passThroughVertShaderFileName = "shaders/" + std::string("passThroughShader.vert");
 	m_pimpl->m_passThroughVertShader->loadFromFile(passThroughVertShaderFileName);
 	std::string passThroughFragShaderFileName = "shaders/" + std::string("passThroughShader.frag");
 	m_pimpl->m_passThroughFragShader->loadFromFile(passThroughFragShaderFileName);
 	m_pimpl->m_passThroughProgShader->build(*m_pimpl->m_passThroughVertShader, *m_pimpl->m_passThroughFragShader);
-	m_pimpl->m_passThroughProgShader->bind(0, "in_Position");
-	m_pimpl->m_passThroughProgShader->bind(2, "in_TexCoord");
-	m_pimpl->m_passThroughProgShader->render();
+
 
 
 	// Done:
@@ -402,7 +400,10 @@ void Utopia::addMaterial(std::string name, std::shared_ptr<UMaterial> material)
 
 int Utopia::getWindowWidth()
 {
-	return glutGet(GLUT_WINDOW_WIDTH);
+	if (Utopia::isStereoscopicEnabled())
+		return glutGet(GLUT_WINDOW_WIDTH) / 2;
+	else
+		return glutGet(GLUT_WINDOW_WIDTH);
 }
 
 int Utopia::getWindowHeight()

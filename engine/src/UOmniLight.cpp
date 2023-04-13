@@ -34,12 +34,6 @@ void UOmniLight::render()
 	UProgramShader::getActiveProgramShader()->bind(1, "in_Normal");
 
 	ULight::render();
-	
-	auto projLoc = UProgramShader::getActiveProgramShader()->getParamLocation("projection");
-	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
-
-	auto nLightUsed = UProgramShader::getActiveProgramShader()->getParamLocation("nLightUsed");
-	UProgramShader::getActiveProgramShader()->setInt(nLightUsed, ULight::getNLightsUsed());
 }
 
 UOmniLight::UOmniLight(const std::string& name, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation) : ULight{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(constantAttenuation, linearAttenuation, quadraticAttenuation)) } 

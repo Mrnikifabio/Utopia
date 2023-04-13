@@ -20,7 +20,7 @@ struct U3DRenderPipeline::pimpl {
 
 	pimpl() : m_first { true } {
 		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("left eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f))));
-		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("right eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
+		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("right eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::translate(glm::mat4(1.0f), glm::vec3(APP_WINDOWSIZEX / 2.0f, 0.0f, 0.0f)))));
 		m_screen = std::unique_ptr<U2DQuad>(new U2DQuad("screen", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f)));
 	}
 };
