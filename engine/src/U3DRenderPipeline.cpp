@@ -8,6 +8,7 @@
 #include <vector>
 #include <U2DQuad.h>
 #include <Utopia.h>
+#include "UOVRCamera.h"
 #include "uvr.h"
 
 using namespace utopia;
@@ -97,15 +98,30 @@ void U3DRenderPipeline::render()
 	if (isStereoscopic) {
 		// Update user position:
 		ovr->update();
+		glm::mat4 headPos = ovr->getModelviewMatrix();
 
 		for (int c = 0; c < UVR::EYE_LAST; c++)
 		{
+			// Get OpenVR matrices:
+			UVR::OvEye curEye = (UVR::OvEye)c;
+			glm::mat4 projMat = ovr->getProjMatrix(curEye, 1.0f, 1024.0f);
+			glm::mat4 eye2Head = ovr->getEye2HeadMatrix(curEye);
+
+			// Update camera projection matrix:
+			glm::mat4 ovrProjMat = projMat * glm::inverse(eye2Head);
+			if (dynamic_cast<UOVRCamera*>(UCamera::getMainCamera().lock().get()))
+				((UOVRCamera*)UCamera::getMainCamera().lock().get())->setCameraMatrix(ovrProjMat);
+
+			// Update camera modelview matrix:
+			glm::mat4 ovrModelViewMat = glm::inverse(headPos); // Inverted because this is the camera matrix
+			UCamera::getMainCamera().lock()->setModelView(ovrModelViewMat);
+
 			auto& eye = m_pimpl->m_eyes[c];
 			eye->activeAsBuffer();
-			renderInBuffer((UVR::OvEye)c);
+			renderInBuffer(curEye);
 			eye->disableAsBuffer();
 			
-			ovr->pass((UVR::OvEye)c, eye->getTextureID());
+			ovr->pass(curEye, eye->getTextureID());
 		}
 	}
 	else {

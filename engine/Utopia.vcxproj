@@ -41,6 +41,7 @@
     <ClCompile Include="src\UObject.cpp" />
     <ClCompile Include="src\UOmniLight.cpp" />
     <ClCompile Include="src\UOrthographicCamera.cpp" />
+    <ClCompile Include="src\UOVRCamera.cpp" />
     <ClCompile Include="src\UPerspectiveCamera.cpp" />
     <ClCompile Include="src\UProgramShader.cpp" />
     <ClCompile Include="src\UShader.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="include\OVONodeConcreteStrategy.h" />
     <ClInclude Include="include\OVOObject.h" />
     <ClInclude Include="include\OVOStrategy.h" />
+    <ClInclude Include="include\UOVRCamera.h" />
     <ClInclude Include="include\uvr.h" />
     <ClInclude Include="include\U2DObject.h" />
     <ClInclude Include="include\U2DQuad.h" />

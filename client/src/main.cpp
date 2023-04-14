@@ -184,8 +184,8 @@ int main()
 	solidWireFrame->setText("[z/x] Solid/Wireframe mode");
 	cameraMovement->setText("[WASD R/F] R/F=UP/DOWN");
 
-
-	UCamera::setMainCamera(fixedCamera);
+	if(!Utopia::getInstance().isStereoscopicEnabled()) //if the openvr mode is enabled under conf/global.conf the camera will be internally setted by the engine
+		UCamera::setMainCamera(fixedCamera);
 
 	Utopia::getInstance().enableTexturesRepeat();
 	Utopia::getInstance().enableLinearBipmapLinearFilter();
@@ -271,6 +271,11 @@ void passiveMotionCallback(int x, int y)
 	//std::cout << "angleY: " << angleY << std::endl;
 }
 
+void changeCamera(std::weak_ptr<UCamera> camera)
+{
+	if(!Utopia::getInstance().isStereoscopicEnabled())
+		UCamera::setMainCamera(camera);
+}
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
@@ -354,16 +359,16 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 
 	case '1':
-		UCamera::setMainCamera(freeCamera);
+		changeCamera(freeCamera);
 		break;
 	case '2':
-		UCamera::setMainCamera(towerCamera);
+		changeCamera(towerCamera);
 		break;
 	case '3':
-		UCamera::setMainCamera(orthoCamera);
+		changeCamera(orthoCamera);
 		break;
 	case '4':
-		UCamera::setMainCamera(fixedCamera);
+		changeCamera(fixedCamera);
 		break;
 
 

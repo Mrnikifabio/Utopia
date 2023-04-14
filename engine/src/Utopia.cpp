@@ -20,6 +20,7 @@
 #include "UVertexShader.h"
 #include "UFragmentShader.h"
 #include "UProgramShader.h"
+#include "UOVRCamera.h"
 #include <UFbo.h>
 
 
@@ -79,6 +80,7 @@ struct Utopia::pimpl
 	std::shared_ptr<UProgramShader> m_passThroughProgShader;
 
 	std::shared_ptr<UVR> m_uvr;
+	std::shared_ptr<UOVRCamera> m_ovrCamera;
 
 	pimpl() :
 		m_initFlag{ false }, 
@@ -213,6 +215,10 @@ bool LIB_API Utopia::init()
 	
 	if (openVR)
 	{
+		//in openVR mode the camera is fixed and controlled in U3DRenderPipeline through the OVR Wrapper
+		m_pimpl->m_ovrCamera = std::shared_ptr<UOVRCamera>(new UOVRCamera("openVRCamera"));
+		UCamera::setMainCamera(m_pimpl->m_ovrCamera);
+
 		if (m_pimpl->m_uvr->init() == false)
 		{
 			std::cout << "[ERROR] Unable to init OpenVR" << std::endl;
