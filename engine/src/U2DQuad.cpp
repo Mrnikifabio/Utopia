@@ -77,14 +77,24 @@ bool U2DQuad::init()
 	glGenTextures(1, &m_pimpl->m_texId);
 	glBindTexture(GL_TEXTURE_2D, m_pimpl->m_texId);
 
+
+
+	
 	int width = (int)(m_pimpl->m_topRightPosition.x - m_pimpl->m_bottomLeftPosition.x);
 	int height = (int)(m_pimpl->m_topRightPosition.y - m_pimpl->m_bottomLeftPosition.y);
+	
+	if (Utopia::getInstance().isStereoscopicEnabled())
+	{
+		auto uvr = Utopia::getInstance().getOpenVRWrapper();
+		width = uvr->getHmdIdealHorizRes();
+		height = uvr->getHmdIdealVertRes();
+	}
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 	UTexture::enableTexturesClampToEdge();
 	UTexture::enableLinearFilter();
 
-	m_pimpl->m_fbo = std::make_unique<UFbo>();
+	m_pimpl->m_fbo = std::unique_ptr<UFbo>(new UFbo());
 	m_pimpl->m_fbo->bindTexture(0, UFbo::BIND_COLORTEXTURE, m_pimpl->m_texId);
 	m_pimpl->m_fbo->bindRenderBuffer(1, UFbo::BIND_DEPTHBUFFER, width, height);
 
@@ -108,10 +118,14 @@ void U2DQuad::disableAsBuffer() {
 	UFbo::disable();
 }
 
+unsigned int utopia::U2DQuad::getTextureID() const
+{
+	return m_pimpl->m_texId;
+}
+
 void U2DQuad::render() {
 	glBindVertexArray(m_pimpl->m_vao);
-
-	// Set a matrix for the left "eye":    
+  
 	glm::mat4 f = glm::mat4(1.0f);
 
 	// Setup the passthrough shader:

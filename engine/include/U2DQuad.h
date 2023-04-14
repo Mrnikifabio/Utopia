@@ -19,6 +19,7 @@ namespace utopia {
 		virtual ~U2DQuad() noexcept;
 		void activeAsBuffer();
 		void disableAsBuffer();
+		unsigned int getTextureID() const;
 		void render();
 		bool init();
 	};

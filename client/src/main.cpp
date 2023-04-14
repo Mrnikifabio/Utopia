@@ -394,9 +394,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case '+':
 		tower->moveFisicalHookUpDown(+6.f);
 		break;
-	case 'u': case 'U':
-		Utopia::getInstance().enableStereoscopic(!Utopia::getInstance().isStereoscopicEnabled());
-		break;
 	}
 
 	if (UCamera::getMainCamera().lock()->getName() == "freeCamera")

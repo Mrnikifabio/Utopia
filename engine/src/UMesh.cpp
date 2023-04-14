@@ -110,4 +110,9 @@ void UMesh::render()
 	}
 }
 
-UMesh::~UMesh() = default;
+UMesh::~UMesh()
+{
+	glDeleteBuffers(0, &m_pimpl->m_vertexVbo);
+	glDeleteBuffers(1, &m_pimpl->m_faceVbo);
+	glDeleteVertexArrays(1, &m_pimpl->m_vao);
+}

@@ -8,6 +8,7 @@
 
 #include <string.h>
 #include <iostream>
+#include <fstream>
 #include "Utopia.h"
 #include "UCamera.h"
 #include <GL/glew.h>
@@ -19,6 +20,8 @@
 #include "UVertexShader.h"
 #include "UFragmentShader.h"
 #include "UProgramShader.h"
+#include <UFbo.h>
+
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -28,7 +31,6 @@
  //////////////
  // DLL MAIN //
  //////////////
-#include <UFbo.h>
 
 #ifdef _WINDOWS
 #include <Windows.h>
@@ -76,9 +78,12 @@ struct Utopia::pimpl
 	std::shared_ptr<UVertexShader> m_passThroughVertShader;
 	std::shared_ptr<UProgramShader> m_passThroughProgShader;
 
+	std::shared_ptr<UVR> m_uvr;
+
 	pimpl() :
 		m_initFlag{ false }, 
 		m_steroscopicRender{ false },
+		m_uvr{ std::shared_ptr<UVR>(new UVR("OpenVR wrapper")) },
 		m_basicFragShader{std::shared_ptr<UFragmentShader>(new UFragmentShader("basicFrag")) },
 		m_basicVertShader{std::shared_ptr<UVertexShader>(new UVertexShader("basicVert"))},
 		m_basicProgShader{std::shared_ptr<UProgramShader>(new UProgramShader("basicProgShader"))},
@@ -137,6 +142,26 @@ void __stdcall DebugCallback(GLenum source, GLenum type,
 
 bool LIB_API Utopia::init()
 {
+	bool openVR = false;
+	
+	//read settings, if more settings will be needed PLEASE! FOR THE LOVE OF GOD PLEASE! Create a class and model the whole thing...
+	std::cout<<"Trying reading settings from conf/global.conf..." << std::endl;
+	std::ifstream global("conf/global.conf");
+	if (global.is_open())
+	{
+		std::string line;
+		while (std::getline(global, line))
+		{
+			if (line == "openvr=true;") //quite a check uh?
+				openVR = true;
+		}
+		std::cout << "Done" << std::endl;
+		global.close();
+	}
+	else
+		std::cout << "Cannot read settings" << std::endl;
+
+
 	// Prevent double init:
 	if (m_pimpl->m_initFlag)
 	{
@@ -152,6 +177,7 @@ bool LIB_API Utopia::init()
 #if _DEBUG
 	glutInitContextFlags(GLUT_DEBUG);
 #endif
+	glutInitContextProfile(GLUT_CORE_PROFILE);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
@@ -184,6 +210,16 @@ bool LIB_API Utopia::init()
 		std::cout << "OpenGL 4.4 not supported" << std::endl;
 		return false;
 	}
+	
+	if (openVR)
+	{
+		if (m_pimpl->m_uvr->init() == false)
+		{
+			std::cout << "[ERROR] Unable to init OpenVR" << std::endl;
+			return -2;
+		}
+		enableStereoscopic(true);
+	}
 
 	// The OpenGL context is now initialized...
 	setDisplayCallback(displayCallback);
@@ -194,21 +230,15 @@ bool LIB_API Utopia::init()
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
-	//glBlendEquation(GL_MAX);
-	//glEnable(GL_BLEND);
+	
+	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 
 #if _DEBUG
 	// Register OpenGL debug callback:
 	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
 	// Enable debug notifications:
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-
-#endif // DEBUG
-
-	
-	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
+#endif
 
 
 	// Check OpenGL version:
@@ -267,7 +297,9 @@ void LIB_API Utopia::free()
 	{
 		std::cout << "ERROR: class not initialized" << std::endl;
 	}
-
+	else
+		m_pimpl->m_uvr->free();
+	
 	// Done:
 	m_pimpl->m_initFlag = false;
 }
@@ -436,6 +468,11 @@ std::shared_ptr<UFragmentShader> utopia::Utopia::getPassThroughFragmentShader() 
 
 std::shared_ptr<UProgramShader> utopia::Utopia::getPassThroughProgamShader() {
 	return m_pimpl->m_passThroughProgShader;
+}
+
+std::shared_ptr<UVR> utopia::Utopia::getOpenVRWrapper()
+{
+	return m_pimpl->m_uvr;
 }
 
 

@@ -52,6 +52,7 @@
     <ClCompile Include="src\UTextureFactory.cpp" />
     <ClCompile Include="src\Utopia.cpp" />
     <ClCompile Include="src\UVertexShader.cpp" />
+    <ClCompile Include="src\uvr.cpp" />
     <ClCompile Include="test\ULightTest.cpp" />
     <ClCompile Include="test\OVOFactoryTest.cpp" />
     <ClCompile Include="test\RunUtopiaTest.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="include\OVONodeConcreteStrategy.h" />
     <ClInclude Include="include\OVOObject.h" />
     <ClInclude Include="include\OVOStrategy.h" />
+    <ClInclude Include="include\uvr.h" />
     <ClInclude Include="include\U2DObject.h" />
     <ClInclude Include="include\U2DQuad.h" />
     <ClInclude Include="include\U2DRenderPipeline.h" />
@@ -222,17 +224,18 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include;..\dependencies\glew\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\openvr\include;..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include;..\dependencies\glew\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\freeimage\lib\$(Platform)\$(Configuration);..\dependencies\glew\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FreeImageLib.lib;glew.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\dependencies\openvr\lib\$(Platform);..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\freeimage\lib\$(Platform)\$(Configuration);..\dependencies\glew\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>openvr_api.lib;FreeImageLib.lib;glew.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy bin\$(Configuration)\libengine.dll ..\client\bin\$(Configuration)\libengine.dll</Command>
+      <Command>copy bin\$(Configuration)\libengine.dll ..\client\bin\$(Configuration)\libengine.dll;
+copy ..\dependencies\openvr\bin\x64\openvr_api.dll ..\client\bin\$(Configuration)\openvr_api.dll;</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
