@@ -8,6 +8,7 @@
 #include <vector>
 #include <U2DQuad.h>
 #include <Utopia.h>
+#include "uvr.h"
 
 using namespace utopia;
 
@@ -83,6 +84,8 @@ void U3DRenderPipeline::render()
 	GLint prevViewport[4];
 	glGetIntegerv(GL_VIEWPORT, prevViewport);
 
+	auto ovr = Utopia::getInstance().getOpenVRWrapper();
+
 	bool isStereoscopic = Utopia::getInstance().isStereoscopicEnabled();
 	if (m_pimpl->m_first) {
 		for (auto& eye : m_pimpl->m_eyes)
@@ -92,21 +95,29 @@ void U3DRenderPipeline::render()
 	}
 
 	if (isStereoscopic) {
-		for (auto& eye : m_pimpl->m_eyes)
+		// Update user position:
+		ovr->update();
+
+		for (int c = 0; c < UVR::EYE_LAST; c++)
 		{
+			auto& eye = m_pimpl->m_eyes[c];
 			eye->activeAsBuffer();
-			renderInBuffer();
+			renderInBuffer((UVR::OvEye)c);
 			eye->disableAsBuffer();
+			
+			ovr->pass((UVR::OvEye)c, eye->getTextureID());
 		}
 	}
 	else {
 		m_pimpl->m_screen->activeAsBuffer();
-		renderInBuffer();
+		renderInBuffer(UVR::EYE_LAST);
 		m_pimpl->m_screen->disableAsBuffer();
 	}
+
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
 	if (isStereoscopic) {
+		ovr->render();
 		for (auto& eye : m_pimpl->m_eyes)
 			eye->render();
 	}
@@ -115,7 +126,9 @@ void U3DRenderPipeline::render()
 	}
 }
 
-void U3DRenderPipeline::renderInBuffer() {
+void U3DRenderPipeline::renderInBuffer(UVR::OvEye eye) 
+{
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	int i = 0;
 	for (auto& light : m_pimpl->m_lights)
@@ -154,6 +167,7 @@ void U3DRenderPipeline::renderInBuffer() {
 				((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
 		}
 	}
+
 	glDisable(GL_BLEND);
 	glDepthFunc(GL_LESS);
 }
