@@ -1,11 +1,11 @@
-#include "uvr.h"
+#include "ovr.h"
 #include <GL/glew.h>
 #include <GL/freeglut.h>   
 #include <openvr.h>
 #include <iostream>
 #include <vector>  
 
-struct utopia::UVR::pimpl {
+struct utopia::OvVR::pimpl {
     // OVR objects:	
     vr::IVRSystem* vrSys;
     vr::IVRRenderModels* vrModels;
@@ -19,7 +19,7 @@ struct utopia::UVR::pimpl {
     }
 };
 
-struct utopia::UVR::Controller {
+struct utopia::OvVR::Controller {
         unsigned int id;
         vr::VRControllerState_t pControllerState;
         glm::mat4 matrix;
@@ -89,9 +89,9 @@ struct utopia::UVR::Controller {
         }
 };
 
-utopia::UVR::UVR(const std::string& name) : m_pimpl { std::unique_ptr<utopia::UVR::pimpl>(new utopia::UVR::pimpl()) }, UObject(name) {}
+utopia::OvVR::OvVR(const std::string& name) : m_pimpl { std::unique_ptr<utopia::OvVR::pimpl>(new utopia::OvVR::pimpl()) }, UObject(name) {}
 
-bool utopia::UVR::init()
+bool utopia::OvVR::init()
 {
     vr::EVRInitError error = vr::VRInitError_None;
 
@@ -159,7 +159,7 @@ bool utopia::UVR::init()
 
 }
 
-bool utopia::UVR::free()
+bool utopia::OvVR::free()
 {
     for (unsigned int c = 0; c < m_pimpl->controllers.size(); c++)
         delete m_pimpl->controllers[c];
@@ -174,7 +174,7 @@ bool utopia::UVR::free()
     return true;
 }
 
-std::string utopia::UVR::getTrackingSysName()
+std::string utopia::OvVR::getTrackingSysName()
 {
     unsigned int bufferLen = m_pimpl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_TrackingSystemName_String, nullptr, 0, nullptr);
     if (bufferLen == 0)
@@ -186,7 +186,7 @@ std::string utopia::UVR::getTrackingSysName()
     return result;
 }
 
-bool utopia::UVR::printRenderModels()
+bool utopia::OvVR::printRenderModels()
 {
     for (unsigned int c = 0; c < m_pimpl->vrModels->GetRenderModelCount(); c++)
     {
@@ -206,7 +206,7 @@ bool utopia::UVR::printRenderModels()
     return true;
 }
 
-std::string utopia::UVR::getManufacturerName()
+std::string utopia::OvVR::getManufacturerName()
 {
     unsigned int bufferLen = m_pimpl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ManufacturerName_String, nullptr, 0, nullptr);
     if (bufferLen == 0)
@@ -218,7 +218,7 @@ std::string utopia::UVR::getManufacturerName()
     return result;
 }
 
-std::string utopia::UVR::getModelNumber()
+std::string utopia::OvVR::getModelNumber()
 {
     unsigned int bufferLen = m_pimpl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ModelNumber_String, nullptr, 0, nullptr);
     if (bufferLen == 0)
@@ -230,14 +230,14 @@ std::string utopia::UVR::getModelNumber()
     return result;
 }
 
-unsigned int utopia::UVR::getHmdIdealHorizRes()
+unsigned int utopia::OvVR::getHmdIdealHorizRes()
 {
     unsigned int result, dummy;
     m_pimpl->vrSys->GetRecommendedRenderTargetSize(&result, &dummy);
     return result;
 }
 
-unsigned int utopia::UVR::getHmdIdealVertRes()
+unsigned int utopia::OvVR::getHmdIdealVertRes()
 {
     unsigned int result, dummy;
     m_pimpl->vrSys->GetRecommendedRenderTargetSize(&dummy, &result);
@@ -260,7 +260,7 @@ glm::mat4 ovr2ogl(const vr::HmdMatrix44_t& matrix)
         matrix.m[0][3], matrix.m[1][3], matrix.m[2][3], matrix.m[3][3]);
 }
 
-bool utopia::UVR::update()
+bool utopia::OvVR::update()
 {
     // Main update method:
     m_pimpl->vrComp->WaitGetPoses(m_pimpl->vrPoses, vr::k_unMaxTrackedDeviceCount, nullptr, 0);
@@ -276,7 +276,7 @@ bool utopia::UVR::update()
     return true;
 }
 
-glm::mat4 utopia::UVR::getProjMatrix(OvEye eye, float nearPlane, float farPlane)
+glm::mat4 utopia::OvVR::getProjMatrix(OvEye eye, float nearPlane, float farPlane)
 {
     switch (eye)
     {
@@ -286,7 +286,7 @@ glm::mat4 utopia::UVR::getProjMatrix(OvEye eye, float nearPlane, float farPlane)
     }
 }
 
-glm::mat4 utopia::UVR::getEye2HeadMatrix(OvEye eye)
+glm::mat4 utopia::OvVR::getEye2HeadMatrix(OvEye eye)
 {
     switch (eye)
     {
@@ -296,7 +296,7 @@ glm::mat4 utopia::UVR::getEye2HeadMatrix(OvEye eye)
     }
 }
 
-glm::mat4 utopia::UVR::getModelviewMatrix()
+glm::mat4 utopia::OvVR::getModelviewMatrix()
 {
     if (m_pimpl->vrPoses[vr::k_unTrackedDeviceIndex_Hmd].bPoseIsValid == false)
         return glm::mat4(1.0f);
@@ -305,24 +305,24 @@ glm::mat4 utopia::UVR::getModelviewMatrix()
     return headPos;
 }
 
-unsigned int utopia::UVR::getNrOfControllers()
+unsigned int utopia::OvVR::getNrOfControllers()
 {
     return (unsigned int)m_pimpl->controllers.size();
 }
 
-utopia::UVR::Controller* utopia::UVR::getController(unsigned int pos) const
+utopia::OvVR::Controller* utopia::OvVR::getController(unsigned int pos) const
 {
     if (pos >= m_pimpl->controllers.size())
         return nullptr;
     return m_pimpl->controllers.at(pos);
 }
 
-void utopia::UVR::setReprojection(bool flag)
+void utopia::OvVR::setReprojection(bool flag)
 {
     m_pimpl->vrComp->ForceInterleavedReprojectionOn(flag);
 }
 
-void utopia::UVR::pass(OvEye eye, unsigned int eyeTexture)
+void utopia::OvVR::pass(OvEye eye, unsigned int eyeTexture)
 {
     const vr::Texture_t t = { reinterpret_cast<void*>(uintptr_t(eyeTexture)), vr::TextureType_OpenGL, vr::ColorSpace_Linear };
     switch (eye)
@@ -332,7 +332,7 @@ void utopia::UVR::pass(OvEye eye, unsigned int eyeTexture)
     }
 }
 
-void utopia::UVR::render()
+void utopia::OvVR::render()
 {
     m_pimpl->vrComp->PostPresentHandoff();
 }

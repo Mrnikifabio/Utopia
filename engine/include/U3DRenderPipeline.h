@@ -3,7 +3,6 @@
 #include "UObject.h"
 #include "UMaterial.h"
 #include "UNode.h"
-#include "uvr.h"
 
 #ifdef _WINDOWS 	
 // Export API:
@@ -25,7 +24,7 @@ namespace utopia
 		struct pimpl;
 		struct U3DRenderNode;
 		std::unique_ptr<pimpl> m_pimpl;
-		void renderInBuffer(UVR::OvEye);
+		void renderInBuffer();
 	public:
 		LIB_API U3DRenderPipeline(const std::string& name);
 		LIB_API virtual ~U3DRenderPipeline() noexcept;

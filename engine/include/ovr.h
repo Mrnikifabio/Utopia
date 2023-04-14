@@ -27,7 +27,7 @@
 namespace utopia {
 
 
-class UVR : UObject
+class OvVR : UObject
 {
     //////////
 public: //
@@ -51,13 +51,13 @@ public: //
     /**
     * Constructor
     */
-    UVR(const std::string& name);
+    OvVR(const std::string& name);
 
 
     /**
      * Destructor
      */
-    ~UVR() = default;
+    ~OvVR() = default;
 
 
     /**

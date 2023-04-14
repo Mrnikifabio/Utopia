@@ -79,13 +79,13 @@ struct Utopia::pimpl
 	std::shared_ptr<UVertexShader> m_passThroughVertShader;
 	std::shared_ptr<UProgramShader> m_passThroughProgShader;
 
-	std::shared_ptr<UVR> m_uvr;
+	std::shared_ptr<OvVR> m_uvr;
 	std::shared_ptr<UOVRCamera> m_ovrCamera;
 
 	pimpl() :
 		m_initFlag{ false }, 
 		m_steroscopicRender{ false },
-		m_uvr{ std::shared_ptr<UVR>(new UVR("OpenVR wrapper")) },
+		m_uvr{ std::shared_ptr<OvVR>(new OvVR("OpenVR wrapper")) },
 		m_basicFragShader{std::shared_ptr<UFragmentShader>(new UFragmentShader("basicFrag")) },
 		m_basicVertShader{std::shared_ptr<UVertexShader>(new UVertexShader("basicVert"))},
 		m_basicProgShader{std::shared_ptr<UProgramShader>(new UProgramShader("basicProgShader"))},
@@ -476,7 +476,7 @@ std::shared_ptr<UProgramShader> utopia::Utopia::getPassThroughProgamShader() {
 	return m_pimpl->m_passThroughProgShader;
 }
 
-std::shared_ptr<UVR> utopia::Utopia::getOpenVRWrapper()
+std::shared_ptr<OvVR> utopia::Utopia::getOpenVRWrapper()
 {
 	return m_pimpl->m_uvr;
 }

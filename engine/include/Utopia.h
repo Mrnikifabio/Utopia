@@ -40,7 +40,7 @@
 #include "UProgramShader.h"
 #include "UVertexShader.h"
 #include "UFragmentShader.h"
-#include "uvr.h"
+#include "ovr.h"
 #include <memory>
 #include <unordered_map>
 
@@ -121,7 +121,7 @@ namespace utopia {
 		std::shared_ptr<UVertexShader> getPassThroughVertShader();
 		std::shared_ptr<UFragmentShader> getPassThroughFragmentShader();
 		std::shared_ptr<UProgramShader> getPassThroughProgamShader();
-		std::shared_ptr<UVR> getOpenVRWrapper();
+		std::shared_ptr<OvVR> getOpenVRWrapper();
 		void enableStereoscopic(const bool enable);
 		LIB_API bool isStereoscopicEnabled();
 	};

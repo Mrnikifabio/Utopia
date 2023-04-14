@@ -9,7 +9,7 @@
 #include <U2DQuad.h>
 #include <Utopia.h>
 #include "UOVRCamera.h"
-#include "uvr.h"
+#include "ovr.h"
 
 using namespace utopia;
 
@@ -100,10 +100,10 @@ void U3DRenderPipeline::render()
 		ovr->update();
 		glm::mat4 headPos = ovr->getModelviewMatrix();
 
-		for (int c = 0; c < UVR::EYE_LAST; c++)
+		for (int c = 0; c < OvVR::EYE_LAST; c++)
 		{
 			// Get OpenVR matrices:
-			UVR::OvEye curEye = (UVR::OvEye)c;
+			OvVR::OvEye curEye = (OvVR::OvEye)c;
 			glm::mat4 projMat = ovr->getProjMatrix(curEye, 1.0f, 1024.0f);
 			glm::mat4 eye2Head = ovr->getEye2HeadMatrix(curEye);
 
@@ -118,7 +118,7 @@ void U3DRenderPipeline::render()
 
 			auto& eye = m_pimpl->m_eyes[c];
 			eye->activeAsBuffer();
-			renderInBuffer(curEye);
+			renderInBuffer();
 			eye->disableAsBuffer();
 			
 			ovr->pass(curEye, eye->getTextureID());
@@ -126,7 +126,7 @@ void U3DRenderPipeline::render()
 	}
 	else {
 		m_pimpl->m_screen->activeAsBuffer();
-		renderInBuffer(UVR::EYE_LAST);
+		renderInBuffer();
 		m_pimpl->m_screen->disableAsBuffer();
 	}
 
@@ -142,7 +142,7 @@ void U3DRenderPipeline::render()
 	}
 }
 
-void U3DRenderPipeline::renderInBuffer(UVR::OvEye eye) 
+void U3DRenderPipeline::renderInBuffer() 
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

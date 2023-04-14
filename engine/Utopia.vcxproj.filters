@@ -147,7 +147,7 @@
     <ClCompile Include="src\U2DQuad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\uvr.cpp">
+    <ClCompile Include="src\ovr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\UOVRCamera.cpp">
@@ -278,7 +278,7 @@
     <ClInclude Include="include\U2DQuad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\uvr.h">
+    <ClInclude Include="include\ovr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\UOVRCamera.h">

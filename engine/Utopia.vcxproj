@@ -53,7 +53,7 @@
     <ClCompile Include="src\UTextureFactory.cpp" />
     <ClCompile Include="src\Utopia.cpp" />
     <ClCompile Include="src\UVertexShader.cpp" />
-    <ClCompile Include="src\uvr.cpp" />
+    <ClCompile Include="src\ovr.cpp" />
     <ClCompile Include="test\ULightTest.cpp" />
     <ClCompile Include="test\OVOFactoryTest.cpp" />
     <ClCompile Include="test\RunUtopiaTest.cpp" />
@@ -74,7 +74,7 @@
     <ClInclude Include="include\OVOObject.h" />
     <ClInclude Include="include\OVOStrategy.h" />
     <ClInclude Include="include\UOVRCamera.h" />
-    <ClInclude Include="include\uvr.h" />
+    <ClInclude Include="include\ovr.h" />
     <ClInclude Include="include\U2DObject.h" />
     <ClInclude Include="include\U2DQuad.h" />
     <ClInclude Include="include\U2DRenderPipeline.h" />

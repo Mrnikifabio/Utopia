@@ -39,7 +39,7 @@ void ULight::initIDs()
 
 int utopia::ULight::getNLightsUsed()
 {
-	return getMaxLights() - m_freeLightIDs.size();
+	return getMaxLights() - (int)m_freeLightIDs.size();
 }
 
 int utopia::ULight::getMaxLights()
