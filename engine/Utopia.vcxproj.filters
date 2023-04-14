@@ -13,15 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Tests">
-      <UniqueIdentifier>{4c7661b3-4b70-459a-896f-4856dd302b10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tests\Header Files">
-      <UniqueIdentifier>{a3ddc33b-03b8-4e0d-9750-12f37885d4e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tests\Source Files">
-      <UniqueIdentifier>{b6fbc49b-b332-4a2d-8850-e83d7c3b16e1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OVOFactory.cpp">
@@ -90,12 +81,6 @@
     <ClCompile Include="src\Utopia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test\Test.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\TestRunner.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\U2DRenderPipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,26 +90,8 @@
     <ClCompile Include="src\UText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test\UNodeTest.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\UObjectTest.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\OVOFactoryTest.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\USpecialKeys.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\RunUtopiaTest.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\UCameraTest.cpp">
-      <Filter>Tests\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="test\ULightTest.cpp">
-      <Filter>Tests\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\IUProgrammableShader.cpp">
       <Filter>Source Files</Filter>
@@ -224,12 +191,6 @@
     <ClInclude Include="include\Utopia.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="test\Test.h">
-      <Filter>Tests\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="test\TestRunner.h">
-      <Filter>Tests\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\U2DRenderPipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -239,23 +200,8 @@
     <ClInclude Include="include\UText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="test\UNodeTest.h">
-      <Filter>Tests\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="test\UObjectTest.h">
-      <Filter>Tests\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="test\OVOFactoryTest.h">
-      <Filter>Tests\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\USpecialKeys.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="test\UCameraTest.h">
-      <Filter>Tests\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="test\ULightTest.h">
-      <Filter>Tests\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\IUProgrammableShader.h">
       <Filter>Header Files</Filter>

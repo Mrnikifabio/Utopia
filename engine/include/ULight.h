@@ -22,16 +22,14 @@ namespace utopia
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
-        static std::stack<int> m_freeLightIDs;
+        static unsigned int m_nLightsUsed;
 
     public:
 	
         LIB_API ULight(const std::string& name);
         LIB_API virtual ~ULight() noexcept;
         void render() override;
-        LIB_API static void initIDs();
-        LIB_API static int getNLightsUsed();
-        LIB_API static int getMaxLights();
+        LIB_API static int getnLightsUsed();
 
         LIB_API void setAmbient(const glm::vec4& ambient);
         LIB_API void setDiffuse(const glm::vec4& diffuse);
@@ -41,7 +39,6 @@ namespace utopia
         LIB_API auto getDiffuse()									const -> const glm::vec4&;
         LIB_API auto getSpecular()									const -> const glm::vec4&;
         LIB_API auto getGlobalAmbient()								const -> const glm::vec4&;
-        LIB_API auto getLightID()									const -> int;
 
     };
 }

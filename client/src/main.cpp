@@ -193,7 +193,7 @@ int main()
 	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(maxAnisotropyLevel));
 	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
 
-	std::cout << "Lights used: " << ULight::getNLightsUsed() << std::endl;
+	std::cout << "Lights used: " << ULight::getnLightsUsed() << std::endl;
 	std::cout << "Starting main loop" << std::endl;
 
 	while (Utopia::getInstance().isRunning())

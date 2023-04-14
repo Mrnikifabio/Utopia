@@ -54,14 +54,6 @@
     <ClCompile Include="src\Utopia.cpp" />
     <ClCompile Include="src\UVertexShader.cpp" />
     <ClCompile Include="src\ovr.cpp" />
-    <ClCompile Include="test\ULightTest.cpp" />
-    <ClCompile Include="test\OVOFactoryTest.cpp" />
-    <ClCompile Include="test\RunUtopiaTest.cpp" />
-    <ClCompile Include="test\Test.cpp" />
-    <ClCompile Include="test\TestRunner.cpp" />
-    <ClCompile Include="test\UCameraTest.cpp" />
-    <ClCompile Include="test\UNodeTest.cpp" />
-    <ClCompile Include="test\UObjectTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\IUProgrammableShader.h" />
@@ -100,13 +92,6 @@
     <ClInclude Include="include\UTextureFactory.h" />
     <ClInclude Include="include\Utopia.h" />
     <ClInclude Include="include\UVertexShader.h" />
-    <ClInclude Include="test\OVOFactoryTest.h" />
-    <ClInclude Include="test\Test.h" />
-    <ClInclude Include="test\TestRunner.h" />
-    <ClInclude Include="test\UCameraTest.h" />
-    <ClInclude Include="test\ULightTest.h" />
-    <ClInclude Include="test\UNodeTest.h" />
-    <ClInclude Include="test\UObjectTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

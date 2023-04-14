@@ -253,9 +253,6 @@ bool LIB_API Utopia::init()
 	std::cout << "   vendor . . . : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "   renderer . . : " << glGetString(GL_RENDERER) << std::endl;
 
-	//Init Light IDs:
-	utopia::ULight::initIDs();
-
 	std::string vertShaderFileName = "shaders/" + std::string("defaultShader.vert");
 	m_pimpl->m_basicVertShader->loadFromFile(vertShaderFileName);
 	std::string fragShaderFileName = "shaders/" + std::string("defaultShader.frag");

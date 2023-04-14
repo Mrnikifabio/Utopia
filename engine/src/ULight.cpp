@@ -16,53 +16,24 @@ struct ULight::pimpl {
 	glm::vec4 m_diffuse = glm::vec4(0.6f, 0.6f, 0.6f, 1.0f);
 	glm::vec4 m_specular = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f);
 	glm::vec4 m_gAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-	int m_lightID;
 	
-	pimpl(const int lightID)
-	{
-		this->m_lightID = lightID;
-	}
+	pimpl() {}
 };
 
-std::stack<int> ULight::m_freeLightIDs = std::stack<int>();
+unsigned int ULight::m_nLightsUsed{ 0 };
 
-void ULight::initIDs()
+int utopia::ULight::getnLightsUsed()
 {
-	int maxLights;
-	glGetIntegerv(GL_MAX_LIGHTS, &maxLights);
-
-	for (int i = 0; i < maxLights; i++)
-	{
-		m_freeLightIDs.push(GL_LIGHT0 + i);
-	}
+	return m_nLightsUsed;
 }
 
-int utopia::ULight::getNLightsUsed()
+ULight::ULight(const std::string& name) : m_pimpl{ std::unique_ptr<pimpl>(new pimpl())}, UNode { name }
 {
-	return getMaxLights() - (int)m_freeLightIDs.size();
+	m_nLightsUsed++;
 }
-
-int utopia::ULight::getMaxLights()
+ULight::~ULight() noexcept
 {
-	GLint maxLights;
-	glGetIntegerv(GL_MAX_LIGHTS, &maxLights);
-	return maxLights;
-}
-
-ULight::ULight(const std::string& name) : UNode{ name }
-{
-	if (m_freeLightIDs.empty())
-	{
-		throw std::runtime_error("No more lights available");
-	}
-	m_pimpl = std::unique_ptr<pimpl>(new pimpl(m_freeLightIDs.top()));
-	m_freeLightIDs.pop();
-}
-
-ULight::~ULight() noexcept 
-{
-	m_freeLightIDs.push(m_pimpl->m_lightID);
-	glDisable(m_pimpl->m_lightID);
+	m_nLightsUsed--;
 }
 
 void ULight::render()
@@ -75,7 +46,7 @@ void ULight::render()
 	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
 
 	auto nLightUsed = UProgramShader::getActiveProgramShader()->getParamLocation("nLightUsed");
-	UProgramShader::getActiveProgramShader()->setInt(nLightUsed, ULight::getNLightsUsed());
+	UProgramShader::getActiveProgramShader()->setInt(nLightUsed, ULight::getnLightsUsed());
 
 
 	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
@@ -158,11 +129,6 @@ auto ULight::getDiffuse() const -> const glm::vec4&
 auto ULight::getSpecular() const -> const glm::vec4&
 {
 	return m_pimpl->m_specular;
-}
-
-auto ULight::getLightID() const -> int
-{
-	return m_pimpl->m_lightID;
 }
 
 void ULight::setGlobalAmbient(const glm::vec4& gAmbient)
