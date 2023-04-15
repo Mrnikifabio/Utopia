@@ -236,7 +236,7 @@ copy ..\dependencies\openvr\bin\x64\openvr_api.dll ..\client\bin\$(Configuration
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include;..\dependencies\glew\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\openvr\include;..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include;..\dependencies\glew\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -244,11 +244,12 @@ copy ..\dependencies\openvr\bin\x64\openvr_api.dll ..\client\bin\$(Configuration
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\freeimage\lib\$(Platform)\$(Configuration);..\dependencies\glew\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FreeImageLib.lib;glew.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\dependencies\openvr\lib\$(Platform);..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\freeimage\lib\$(Platform)\$(Configuration);..\dependencies\glew\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>openvr_api.lib;FreeImageLib.lib;glew.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy bin\$(Configuration)\libengine.dll ..\client\bin\$(Configuration)\libengine.dll</Command>
+      <Command>copy bin\$(Configuration)\libengine.dll ..\client\bin\$(Configuration)\libengine.dll;
+copy ..\dependencies\openvr\bin\x64\openvr_api.dll ..\client\bin\$(Configuration)\openvr_api.dll;</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -48,5 +48,5 @@ void main(void)
    }
    
    // Final color:
-   fragOutput= texel * vec4(fragColor,1.f);
+   fragOutput= texel * vec4(fragColor,1.f) * 1.25;
 }

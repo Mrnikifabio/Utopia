@@ -62,51 +62,55 @@ void UMesh::render()
 		auto& lod = m_pimpl->m_lods[0];
 		unsigned int nOfPoints = lod->nOfvertices;
 		unsigned int nOfFaces = (unsigned int) lod->faces.size();
-		if (!m_pimpl->m_vbo_loaded) {
 
-			glGenVertexArrays(1, &m_pimpl->m_vao);
+		if(nOfPoints > 0 && nOfFaces > 0) //somthing is off in the model?
+		{
+			if (!m_pimpl->m_vbo_loaded) {
+
+				glGenVertexArrays(1, &m_pimpl->m_vao);
+				glBindVertexArray(m_pimpl->m_vao);
+
+				glGenBuffers(1, &m_pimpl->m_vertexVbo);
+				glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
+				glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(UMesh::Vertex), &lod->vertices[0], GL_STATIC_DRAW);
+
+				glBindVertexBuffer(0, m_pimpl->m_vertexVbo, 0, sizeof(UMesh::Vertex));
+
+				glEnableVertexAttribArray(0);
+				glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, coord)); // for vertex coord
+				glVertexAttribBinding(0, 0);
+
+				glEnableVertexAttribArray(1);
+				glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, normal)); // for normal
+				glVertexAttribBinding(1, 0);
+
+				glEnableVertexAttribArray(2);
+				glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, uv)); // for texture coord
+				glVertexAttribBinding(2, 0);
+
+				//glVertexAttribFormat(3, 4, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, tangent)); // for tangent coord
+				//glVertexAttribBinding(3, 0);
+				//glEnableVertexAttribArray(3);
+
+				glGenBuffers(1, &m_pimpl->m_faceVbo);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, nOfFaces * sizeof(UMesh::Face), &lod->faces[0], GL_STATIC_DRAW);
+
+				glBindVertexArray(0);
+				glDisableVertexAttribArray(0);
+				glDisableVertexAttribArray(1);
+				glDisableVertexAttribArray(2);
+				//glDisableVertexAttribArray(3);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+				m_pimpl->m_vbo_loaded = true;
+			}
 			glBindVertexArray(m_pimpl->m_vao);
-
-			glGenBuffers(1, &m_pimpl->m_vertexVbo);
-			glBindBuffer(GL_ARRAY_BUFFER, m_pimpl->m_vertexVbo);
-			glBufferData(GL_ARRAY_BUFFER, nOfPoints * sizeof(UMesh::Vertex), &lod->vertices[0], GL_STATIC_DRAW);
-
-			glBindVertexBuffer(0, m_pimpl->m_vertexVbo, 0, sizeof(UMesh::Vertex));
-
-			glEnableVertexAttribArray(0);
-			glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, coord)); // for vertex coord
-			glVertexAttribBinding(0, 0);
-
-			glEnableVertexAttribArray(1);
-			glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, normal)); // for normal
-			glVertexAttribBinding(1, 0);
-
-			glEnableVertexAttribArray(2);
-			glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, uv)); // for texture coord
-			glVertexAttribBinding(2, 0);
-
-			//glVertexAttribFormat(3, 4, GL_FLOAT, GL_FALSE, offsetof(UMesh::Vertex, tangent)); // for tangent coord
-			//glVertexAttribBinding(3, 0);
-			//glEnableVertexAttribArray(3);
-
-			glGenBuffers(1, &m_pimpl->m_faceVbo);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pimpl->m_faceVbo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, nOfFaces * sizeof(UMesh::Face), &lod->faces[0], GL_STATIC_DRAW);
+			glDrawElements(GL_TRIANGLES, nOfFaces * 3, GL_UNSIGNED_INT, 0);
 
 			glBindVertexArray(0);
-			glDisableVertexAttribArray(0);
-			glDisableVertexAttribArray(1);
-			glDisableVertexAttribArray(2);
-			//glDisableVertexAttribArray(3);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-			m_pimpl->m_vbo_loaded = true;
 		}
-		glBindVertexArray(m_pimpl->m_vao);
-		glDrawElements(GL_TRIANGLES, nOfFaces * 3, GL_UNSIGNED_INT, 0);
-
-		glBindVertexArray(0);
 	}
 }
 
