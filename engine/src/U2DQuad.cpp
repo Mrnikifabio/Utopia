@@ -91,8 +91,10 @@ bool U2DQuad::init()
 	}
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-	UTexture::enableTexturesClampToEdge();
-	UTexture::enableLinearFilter();
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	m_pimpl->m_fbo = std::unique_ptr<UFbo>(new UFbo());
 	m_pimpl->m_fbo->bindTexture(0, UFbo::BIND_COLORTEXTURE, m_pimpl->m_texId);

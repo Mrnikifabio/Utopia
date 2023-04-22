@@ -1,6 +1,6 @@
 #include "UMaterial.h"
 #include "UObject.h"
-#include "UTexture.h"
+#include "U2DTexture.h"
 #include "Utopia.h"
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -9,6 +9,7 @@
 using namespace utopia;
 
 std::shared_ptr<UMaterial> UMaterial::m_defaultMaterial;
+std::unordered_map<std::string, std::shared_ptr<UMaterial>> UMaterial::m_materials;
 
 struct UMaterial::pimpl
 {
@@ -19,7 +20,7 @@ struct UMaterial::pimpl
     glm::vec4 m_specular;
     int m_shininess;
 
-    std::shared_ptr<UTexture> m_texture;
+    std::shared_ptr<U2DTexture> m_texture;
 
     pimpl()
     {
@@ -28,7 +29,7 @@ struct UMaterial::pimpl
         this->m_diffuse = glm::vec4(0.7f,0.7f,0.7f,1.0f);
         this->m_specular = glm::vec4(0.6f,0.6f,0.6f,1.0f);
         m_shininess = 128;
-        m_texture = UTexture::getDefaultTexture();
+        m_texture = U2DTexture::getDefaultTexture();
     }
 
     pimpl(glm::vec4 emission, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, int shininess)
@@ -38,7 +39,7 @@ struct UMaterial::pimpl
         this->m_diffuse = diffuse;
         this->m_specular = specular;
         m_shininess = shininess;
-        m_texture = UTexture::getDefaultTexture();
+        m_texture = U2DTexture::getDefaultTexture();
     }
 
 };
@@ -102,16 +103,53 @@ void UMaterial::setShininess(int shininess)
     m_pimpl->m_shininess = shininess;
 }
 
-void UMaterial::setTexture(std::shared_ptr<UTexture> texture)
+void UMaterial::setTexture(std::shared_ptr<U2DTexture> texture)
 {
     m_pimpl->m_texture = texture;
 }
 
-const std::shared_ptr<UMaterial> utopia::UMaterial::getDefaultMaterial()
+const std::shared_ptr<UMaterial> UMaterial::getDefaultMaterial()
 {
     if(m_defaultMaterial==nullptr)
         m_defaultMaterial = std::make_shared<UMaterial>("default");
     return m_defaultMaterial;
+}
+
+
+bool UMaterial::contains(const std::string& name)
+{
+    return m_materials.count(name) >= 1;
+}
+
+unsigned int UMaterial::size()
+{
+    return (unsigned int)m_materials.size();
+}
+
+void utopia::UMaterial::forEach(std::function<void(std::shared_ptr<UMaterial>)> apply)
+{
+#ifdef _DEBUG
+    std::cout << "n materials to upload: " << m_pimpl->m_materials.size() << std::endl;
+#endif
+
+    for (const auto& kv : m_materials)
+    {
+        apply(kv.second);
+#ifdef _DEBUG
+        std::cout << "upload material: " << kv.first << std::endl;
+#endif
+
+    }
+}
+
+std::shared_ptr<UMaterial> UMaterial::getByName(const std::string& name)
+{
+    return m_materials.at(name);
+}
+
+void UMaterial::add(std::string name, std::shared_ptr<UMaterial> material)
+{
+    m_materials.insert(std::pair<std::string, std::shared_ptr<UMaterial>>(name, material));
 }
 
 UMaterial::~UMaterial() = default;

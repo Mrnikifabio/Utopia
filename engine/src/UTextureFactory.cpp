@@ -1,5 +1,4 @@
 #include "UTextureFactory.h"
-#include "UTexture.h"
 #include "Utopia.h"
 #include <gl/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,13 +17,13 @@ UTextureFactory& UTextureFactory::getInstance()
 	return m_instance;
 }
 
-std::shared_ptr<UTexture> UTextureFactory::fromFile(const std::string& name)
+std::shared_ptr<U2DTexture> UTextureFactory::fromFile2D(const std::string& name)
 {
 	FreeImage_Initialise();
 
 	FIBITMAP* bitmap = FreeImage_Load(FreeImage_GetFileType(name.c_str(), 0), name.c_str());
 
-	auto texture = UTexture::loadTexture(name, GL_TEXTURE_2D, GL_RGBA, FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap), GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)FreeImage_GetBits(bitmap));
+	auto texture = U2DTexture::loadTexture(name, GL_RGBA, FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap), GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)FreeImage_GetBits(bitmap));
 
 
 	FreeImage_Unload(bitmap);

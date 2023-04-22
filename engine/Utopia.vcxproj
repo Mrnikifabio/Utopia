@@ -50,6 +50,7 @@
     <ClCompile Include="src\USpotLight.cpp" />
     <ClCompile Include="src\UText.cpp" />
     <ClCompile Include="src\UTexture.cpp" />
+    <ClCompile Include="src\U2DTexture.cpp" />
     <ClCompile Include="src\UTextureFactory.cpp" />
     <ClCompile Include="src\Utopia.cpp" />
     <ClCompile Include="src\UVertexShader.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="include\USpotLight.h" />
     <ClInclude Include="include\UText.h" />
     <ClInclude Include="include\UTexture.h" />
+    <ClInclude Include="include\U2DTexture.h" />
     <ClInclude Include="include\UTextureFactory.h" />
     <ClInclude Include="include\Utopia.h" />
     <ClInclude Include="include\UVertexShader.h" />

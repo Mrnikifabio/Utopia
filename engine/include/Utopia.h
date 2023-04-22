@@ -35,14 +35,11 @@
 
 #include "U3DRenderPipeline.h"
 #include "U2DRenderPipeline.h"
-#include "UMaterial.h"
-#include "UTexture.h"
 #include "UProgramShader.h"
 #include "UVertexShader.h"
 #include "UFragmentShader.h"
 #include "ovr.h"
 #include <memory>
-#include <unordered_map>
 
 namespace utopia {
 
@@ -52,13 +49,10 @@ namespace utopia {
 	private:
 		struct pimpl;
 		std::unique_ptr<pimpl> m_pimpl;
-		void updateAllTexturesParameteri(void(*parametriSetMethod)(void));
-		// Const/dest (as private to prevent instanciation):
 		Utopia();
 		~Utopia();
 
 	public:
-
 		LIB_API static Utopia& getInstance();
 		
 		Utopia(Utopia const&) = delete;
@@ -75,14 +69,6 @@ namespace utopia {
 		LIB_API void enableWireFrameMode();
 		LIB_API void enableSolidMode();
 
-		LIB_API void enableNearestFilter();
-		LIB_API void enableNearestBipmapNearestFilter();
-		LIB_API void enableLinearFilter();
-		LIB_API void enableLinearBipmapNearestFilter();
-		LIB_API void enableLinearBipmapLinearFilter();
-		LIB_API void enableTexturesRepeat();
-		LIB_API void enableTexturesClampToEdge();
-
 		LIB_API void setKeyboardCallback(void (*callback)(unsigned char, int, int));
 		LIB_API void setDisplayCallback(void (*callback)(void));
 		LIB_API void setReshapeCallback(void (*callback)(int, int));
@@ -96,20 +82,6 @@ namespace utopia {
 
 		LIB_API void setBackgroundColor(glm::vec4 color);
 
-		LIB_API std::shared_ptr<UMaterial> getMaterialByName(const std::string& name);
-		LIB_API void addMaterial(std::string name, std::shared_ptr<UMaterial> material);
-		LIB_API bool containMaterial(const std::string& name);
-
-
-		LIB_API std::shared_ptr<UTexture> getTextureByName(const std::string& name);
-		LIB_API void addTexture(const std::string&, std::shared_ptr<UTexture> texture);
-		LIB_API bool containTexture(const std::string& name);
-
-		LIB_API void updateAnisotropyLevelAllTextures(int value);
-
-		LIB_API unsigned int texturesMapSize();
-		LIB_API unsigned int materialsMapSize();
-
 		LIB_API int getWindowWidth();
 		LIB_API int getWindowHeight();
 
@@ -122,6 +94,7 @@ namespace utopia {
 		std::shared_ptr<UFragmentShader> getPassThroughFragmentShader();
 		std::shared_ptr<UProgramShader> getPassThroughProgamShader();
 		std::shared_ptr<OvVR> getOpenVRWrapper();
+
 		void enableStereoscopic(const bool enable);
 		LIB_API bool isStereoscopicEnabled();
 	};

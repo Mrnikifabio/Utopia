@@ -21,8 +21,6 @@
 
 using namespace utopia;
 
-std::shared_ptr<UTexture> UTexture::m_defaultTexture;
-
 struct UTexture::pimpl
 {
 
@@ -32,7 +30,6 @@ struct UTexture::pimpl
     {
         m_texId = texId;
     }
-
 };
 
 UTexture::UTexture(const std::string& name, unsigned int texId)
@@ -41,32 +38,37 @@ UTexture::UTexture(const std::string& name, unsigned int texId)
 
 void utopia::UTexture::enableNearestFilter()
 {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glBindTexture(getGlTextureType(), m_pimpl.get()->m_texId);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
-void utopia::UTexture::enableNearestBipmapNearestFilter()
+void utopia::UTexture::enableNearestBitmapNearestFilter()
 {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+    glBindTexture(getGlTextureType(), m_pimpl.get()->m_texId);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 }
 
 void utopia::UTexture::enableLinearFilter()
 {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBindTexture(getGlTextureType(), m_pimpl.get()->m_texId);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
-void utopia::UTexture::enableLinearBipmapNearestFilter()
+void utopia::UTexture::enableLinearBitmapNearestFilter()
 {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    glBindTexture(getGlTextureType(), m_pimpl.get()->m_texId);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 }
 
-void utopia::UTexture::enableLinearBipmapLinearFilter()
+void utopia::UTexture::enableLinearBitmapLinearFilter()
 {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glBindTexture(getGlTextureType(), m_pimpl.get()->m_texId);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(getGlTextureType(), GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 }
 
 
@@ -85,22 +87,13 @@ int utopia::UTexture::getMaxAnisotropicLevel()
 
 void UTexture::render()
 {
-    glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
+    glBindTexture(getGlTextureType(), m_pimpl.get()->m_texId);
 }
 
-void UTexture::enableTexturesRepeat()
+void utopia::UTexture::updateAnisotropyLevel(int level)
 {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-}
-void UTexture::enableTexturesClampToEdge()
-{
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-}
+    glBindTexture(getGlTextureType(), m_pimpl.get()->m_texId);
 
-void UTexture::setAnisotropyLevel(int level)
-{
     int maxAnisotropy = UTexture::getMaxAnisotropicLevel();
     if (level > maxAnisotropy)
         level = maxAnisotropy;
@@ -108,58 +101,12 @@ void UTexture::setAnisotropyLevel(int level)
         if (level < 1)
             level = 1;
 
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, (GLfloat)level);
-}
-
-std::shared_ptr<UTexture> utopia::UTexture::createWhiteTexture()
-{ 
-    GLubyte texData[] = { 255, 255, 255, 255 };
-    return loadTexture("default",GL_TEXTURE_2D, GL_RGBA, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, texData);
-}
-
-void utopia::UTexture::updateTextureParameteri(void(*parametriSetMethod)(void))
-{
-    glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
-    parametriSetMethod();
-}
-
-void utopia::UTexture::updateAnisotropyLevelTextureParameteri(int value)
-{
-    glBindTexture(GL_TEXTURE_2D, m_pimpl.get()->m_texId);
-    setAnisotropyLevel(value);
-}
-
-const std::shared_ptr<UTexture> utopia::UTexture::getDefaultTexture()
-{
-    if (m_defaultTexture == nullptr)
-        m_defaultTexture = createWhiteTexture();
-    return m_defaultTexture;
-}
-
-std::shared_ptr<UTexture> UTexture::loadTexture(const std::string& name, GLenum target, GLint component, GLint width, GLint height, GLenum format, GLenum type, const void* data)
-{
-    unsigned int texId;
-
-    glGenTextures(1, &texId);
-    std::cout << "texId: " << texId << std::endl;
-    glBindTexture(target, texId);
-
-    //gluBuild2DMipmaps(target, component, width, height, format, type, data);
-
-    glTexImage2D(target, 0, component, width, height, 0, format, type, data);
-    glGenerateMipmap(target);
-
-    auto texture = std::shared_ptr<UTexture>(new UTexture(name, texId));
-    Utopia::getInstance().addTexture(name, texture);
-    return texture;
-
+    glTexParameterf(getGlTextureType(), GL_TEXTURE_MAX_ANISOTROPY_EXT, (GLfloat)level);
 }
 
 unsigned int utopia::UTexture::getTexId()
 {
     return m_pimpl->m_texId;
 }
-
-
 
 UTexture::~UTexture() = default;

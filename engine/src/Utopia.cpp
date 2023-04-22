@@ -22,6 +22,7 @@
 #include "UProgramShader.h"
 #include "UOVRCamera.h"
 #include <UFbo.h>
+#include "U2DTexture.h"
 
 
 #include <glm/glm.hpp>
@@ -69,8 +70,6 @@ struct Utopia::pimpl
 {
 	bool m_initFlag;
 	bool m_steroscopicRender;
-	std::unordered_map<std::string, std::shared_ptr<UMaterial>> m_materials;
-	std::unordered_map<std::string, std::shared_ptr<UTexture>> m_textures;
 
 	std::shared_ptr<UFragmentShader> m_basicFragShader;
 	std::shared_ptr<UVertexShader> m_basicVertShader;
@@ -231,13 +230,13 @@ bool LIB_API Utopia::init()
 	setDisplayCallback(displayCallback);
 	setReshapeCallback(reshapeCallback);
 
-	UTexture::enableTexturesClampToEdge();
-	UTexture::enableLinearFilter();
+	U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) {
+		texture->enableTextureClampToEdge();
+		texture->enableLinearFilter();
+	});
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
-	
-	glClearColor(1.0f, 0.6f, 0.1f, 1.0f);
 
 #if _DEBUG
 	// Register OpenGL debug callback:
@@ -327,47 +326,10 @@ void Utopia::enableWireFrameMode()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-
 void Utopia::enableSolidMode()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
-
-void utopia::Utopia::enableNearestFilter()
-{
-	updateAllTexturesParameteri(UTexture::enableNearestFilter);
-}
-
-void utopia::Utopia::enableNearestBipmapNearestFilter()
-{
-	updateAllTexturesParameteri(UTexture::enableNearestBipmapNearestFilter);
-}
-
-void utopia::Utopia::enableLinearFilter()
-{
-	updateAllTexturesParameteri(UTexture::enableLinearFilter);
-}
-
-void utopia::Utopia::enableLinearBipmapNearestFilter()
-{
-	updateAllTexturesParameteri(UTexture::enableLinearBipmapNearestFilter);
-}
-
-void utopia::Utopia::enableLinearBipmapLinearFilter()
-{
-	updateAllTexturesParameteri(UTexture::enableLinearBipmapLinearFilter);
-}
-
-void utopia::Utopia::enableTexturesRepeat()
-{
-	updateAllTexturesParameteri(UTexture::enableTexturesRepeat);
-}
-
-void utopia::Utopia::enableTexturesClampToEdge()
-{
-	updateAllTexturesParameteri(UTexture::enableTexturesClampToEdge);
-}
-
 
 void Utopia::setKeyboardCallback(void(*callback)(unsigned char, int, int))
 {
@@ -419,16 +381,6 @@ LIB_API void utopia::Utopia::setBackgroundColor(glm::vec4 color)
 	glClearColor(color.r, color.g, color.b, color.a);
 }
 
-std::shared_ptr<UMaterial> Utopia::getMaterialByName(const std::string& name)
-{
-	return m_pimpl->m_materials.at(name);
-}
-
-void Utopia::addMaterial(std::string name, std::shared_ptr<UMaterial> material)
-{
-	m_pimpl->m_materials.insert(std::pair<std::string, std::shared_ptr<UMaterial>>(name, material));
-}
-
 int Utopia::getWindowWidth()
 {
 	if (Utopia::isStereoscopicEnabled())
@@ -448,13 +400,11 @@ void Utopia::setTimer(int timeoutMs, void(*callback)(int), int value)
 }
 
 
-std::shared_ptr<UVertexShader> utopia::Utopia::getBasicVertexShader()
-{
+std::shared_ptr<UVertexShader> utopia::Utopia::getBasicVertexShader() {
 	return m_pimpl->m_basicVertShader;
 }
 
-std::shared_ptr<UFragmentShader> utopia::Utopia::getBasicFragmentShader()
-{
+std::shared_ptr<UFragmentShader> utopia::Utopia::getBasicFragmentShader() {
 	return m_pimpl->m_basicFragShader;
 }
 
@@ -474,59 +424,6 @@ std::shared_ptr<OvVR> utopia::Utopia::getOpenVRWrapper()
 	return m_pimpl->m_uvr;
 }
 
-
-std::shared_ptr<UTexture> Utopia::getTextureByName(const std::string& name)
-{
-	return m_pimpl->m_textures.at(name);
-}
-void Utopia::addTexture(const std::string& name, std::shared_ptr<UTexture> texture)
-{
-	m_pimpl->m_textures.insert(std::pair<std::string, std::shared_ptr<UTexture>>(name, texture));
-
-	std::cout << "n textures: " << m_pimpl->m_textures.size() << std::endl;
-}
-
-bool Utopia::containTexture(const std::string& name)
-{
-	return m_pimpl->m_textures.count(name) >= 1;
-}
-
-bool Utopia::containMaterial(const std::string& name)
-{
-	return m_pimpl->m_materials.count(name) >= 1;
-}
-
-void Utopia::updateAllTexturesParameteri(void(*parametriSetMethod)(void))
-{
-	std::cout << "n textures to upload: " << m_pimpl->m_textures.size() << std::endl;
-
-	for (const auto& kv : m_pimpl->m_textures)
-	{
-		kv.second->updateTextureParameteri(parametriSetMethod);
-		std::cout << "upload texture: " << kv.first << std::endl;
-	}
-}
-
-void utopia::Utopia::updateAnisotropyLevelAllTextures(int value)
-{
-	std::cout << "n textures to upload the anisotropy level: " << m_pimpl->m_textures.size() << std::endl;
-
-	for (const auto& kv : m_pimpl->m_textures)
-	{
-		kv.second->updateAnisotropyLevelTextureParameteri(value);
-		std::cout << "upload texture: " << kv.first << std::endl;
-	}
-}
-
-unsigned int Utopia::texturesMapSize()
-{
-	return (unsigned int)m_pimpl->m_textures.size();
-}
-unsigned int Utopia::materialsMapSize()
-{
-	return (unsigned int)m_pimpl->m_materials.size();
-}
-
 Utopia& Utopia::getInstance()
 {
 	static Utopia m_instance; // Guaranteed to be destroyed.
@@ -538,7 +435,6 @@ void utopia::Utopia::enableStereoscopic(const bool enable)
 {
 	m_pimpl->m_steroscopicRender = enable;
 }
-
 
 bool utopia::Utopia::isStereoscopicEnabled() {
 	return m_pimpl->m_steroscopicRender;
