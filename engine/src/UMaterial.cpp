@@ -29,7 +29,7 @@ struct UMaterial::pimpl
         this->m_diffuse = glm::vec4(0.7f,0.7f,0.7f,1.0f);
         this->m_specular = glm::vec4(0.6f,0.6f,0.6f,1.0f);
         m_shininess = 128;
-        m_texture = U2DTexture::getDefaultTexture();
+        m_texture = U2DTexture::getDefault();
     }
 
     pimpl(glm::vec4 emission, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, int shininess)
@@ -39,7 +39,7 @@ struct UMaterial::pimpl
         this->m_diffuse = diffuse;
         this->m_specular = specular;
         m_shininess = shininess;
-        m_texture = U2DTexture::getDefaultTexture();
+        m_texture = U2DTexture::getDefault();
     }
 
 };
@@ -129,7 +129,7 @@ unsigned int UMaterial::size()
 void utopia::UMaterial::forEach(std::function<void(std::shared_ptr<UMaterial>)> apply)
 {
 #ifdef _DEBUG
-    std::cout << "n materials to upload: " << m_pimpl->m_materials.size() << std::endl;
+    std::cout << "n materials to upload: " << m_materials.size() << std::endl;
 #endif
 
     for (const auto& kv : m_materials)

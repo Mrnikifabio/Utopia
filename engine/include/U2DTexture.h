@@ -1,11 +1,12 @@
 #pragma once
-#pragma once
 
-#include "UTexture.h"
-#include <iostream>
-#include "glm/glm.hpp"
 #include <functional>
 #include <unordered_map>
+#include <iostream>
+
+#include "UTexture.h"
+
+#include "glm/glm.hpp"
 
 #ifdef _WINDOWS 	
 // Export API:
@@ -39,8 +40,8 @@ namespace utopia
     public:
         LIB_API virtual ~U2DTexture() noexcept;
 
-        LIB_API static std::shared_ptr<U2DTexture> loadTexture(const std::string& name, int component, int width, int height, unsigned int format, unsigned int type, const void* data);
-        LIB_API static const std::shared_ptr<U2DTexture> getDefaultTexture();
+        static std::shared_ptr<U2DTexture> load(const std::string& name, const UTextureData& data);
+        LIB_API static const std::shared_ptr<U2DTexture> getDefault();
 
 
         LIB_API void enableTextureRepeat() override;

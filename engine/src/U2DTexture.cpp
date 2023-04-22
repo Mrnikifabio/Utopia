@@ -1,5 +1,7 @@
 #include "U2DTexture.h"
+
 #include "Utopia.h"
+
 #include "GL/glew.h"
 #include <gl/freeglut.h>
 
@@ -14,26 +16,28 @@ std::shared_ptr<U2DTexture> U2DTexture::m_defaultTexture;
 std::shared_ptr<U2DTexture> U2DTexture::createWhiteTexture()
 {
     GLubyte texData[] = { 255, 255, 255, 255 };
-    return loadTexture("default", GL_RGBA, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+    UTextureData data = UTextureData(0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+    return load("default", data);
 }
 
-std::shared_ptr<U2DTexture> U2DTexture::loadTexture(const std::string& name, int component, int width, int height, unsigned int format, unsigned int type, const void* data)
+std::shared_ptr<U2DTexture> U2DTexture::load(const std::string& name, const UTextureData& data)
 {
     unsigned int texId;
 
     glGenTextures(1, &texId);
+#ifdef _DEBUG
     std::cout << "texId: " << texId << std::endl;
+#endif // _DEBUG
     glBindTexture(GL_TEXTURE_2D, texId);
 
     //gluBuild2DMipmaps(target, component, width, height, format, type, data);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, component, width, height, 0, format, type, data);
+    glTexImage2D(GL_TEXTURE_2D, data.level, data.internalformat, data.width, data.height, data.border, data.format, data.type, data.pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     auto texture = std::shared_ptr<U2DTexture>(new U2DTexture(name, texId));
     U2DTexture::add(name, texture);
     return texture;
-
 }
 
 unsigned int utopia::U2DTexture::getGlTextureType()
@@ -43,7 +47,7 @@ unsigned int utopia::U2DTexture::getGlTextureType()
 
 utopia::U2DTexture::~U2DTexture() = default;
 
-const std::shared_ptr<U2DTexture> U2DTexture::getDefaultTexture()
+const std::shared_ptr<U2DTexture> U2DTexture::getDefault()
 {
     if (m_defaultTexture == nullptr)
         m_defaultTexture = createWhiteTexture();
@@ -67,7 +71,7 @@ void U2DTexture::enableTextureClampToEdge()
 void U2DTexture::forEach(std::function<void(std::shared_ptr<U2DTexture>)> apply)
 {
 #ifdef _DEBUG
-    std::cout << "n textures to upload: " << m_pimpl->m_textures.size() << std::endl;
+    std::cout << "n textures to upload: " << m_textures.size() << std::endl;
 #endif
 
     for (const auto& kv : m_textures)
@@ -94,7 +98,7 @@ void U2DTexture::add(const std::string& name, std::shared_ptr<U2DTexture> textur
     m_textures.insert(std::pair<std::string, std::shared_ptr<U2DTexture>>(name, texture));
 
 #ifdef _DEBUG
-    std::cout << "n textures: " << m_pimpl->m_textures.size() << std::endl;
+    std::cout << "n textures: " << m_textures.size() << std::endl;
 #endif
 }
 

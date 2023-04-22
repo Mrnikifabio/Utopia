@@ -109,4 +109,8 @@ unsigned int utopia::UTexture::getTexId()
     return m_pimpl->m_texId;
 }
 
-UTexture::~UTexture() = default;
+UTexture::~UTexture()
+{
+    unsigned int id = getTexId();
+    glDeleteTextures(1, (GLuint*)(&id));
+}

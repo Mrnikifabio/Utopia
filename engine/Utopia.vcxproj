@@ -31,6 +31,7 @@
     <ClCompile Include="src\U2DQuad.cpp" />
     <ClCompile Include="src\U2DRenderPipeline.cpp" />
     <ClCompile Include="src\UCamera.cpp" />
+    <ClCompile Include="src\UCubeMapTexture.cpp" />
     <ClCompile Include="src\UDirectionalLight.cpp" />
     <ClCompile Include="src\UFbo.cpp" />
     <ClCompile Include="src\UFragmentShader.cpp" />
@@ -66,6 +67,9 @@
     <ClInclude Include="include\OVONodeConcreteStrategy.h" />
     <ClInclude Include="include\OVOObject.h" />
     <ClInclude Include="include\OVOStrategy.h" />
+    <ClInclude Include="include\UCubeMapTexture.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="include\UOVRCamera.h" />
     <ClInclude Include="include\ovr.h" />
     <ClInclude Include="include\U2DObject.h" />

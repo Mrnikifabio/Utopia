@@ -30,6 +30,41 @@ namespace utopia
         virtual unsigned int getGlTextureType() = 0;
 
     public:
+
+        struct UTextureData {
+            int level;
+            int internalformat;
+            int width;
+            int height;
+            int border;
+            unsigned int format;
+            unsigned int type;
+            const void* pixels;
+
+            UTextureData() 
+            {
+                this->level = 0;
+                this->internalformat = 0;
+                this->width = 0;
+                this->height = 0;
+                this->border = 0;
+                this->format = 0;
+                this->type = 0;
+                this->pixels = nullptr;
+            };
+            UTextureData(int level, int internalformat, int width, int height, int border, unsigned int format, unsigned int type, const void* pixels)
+            {
+                this->level = level;
+                this->internalformat = internalformat;
+                this->width = width;
+                this->height = height;
+                this->border = border;
+                this->format = format;
+                this->type = type;
+                this->pixels = pixels;
+            }
+        };
+
         UTexture(const std::string& name, unsigned int texId);
         
         LIB_API virtual ~UTexture() noexcept;

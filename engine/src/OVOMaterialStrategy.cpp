@@ -84,7 +84,7 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 			material.setTexture(UTextureFactory::getInstance().fromFile2D("assets/" + albedoMap));
 	}
 	else
-		material.setTexture(U2DTexture::getDefaultTexture());
+		material.setTexture(U2DTexture::getDefault());
 
 	// Optional target node, [none] if not used:
 	std::string normalMap = std::string(buffer.data.get() + buffer.position);
