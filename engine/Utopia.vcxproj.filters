@@ -126,6 +126,9 @@
     <ClCompile Include="src\UCubeMapTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\USkybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\OVOFactory.h">
@@ -240,6 +243,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\UCubeMapTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\USkybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

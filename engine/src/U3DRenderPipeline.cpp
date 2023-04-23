@@ -10,6 +10,7 @@
 #include <Utopia.h>
 #include "UOVRCamera.h"
 #include "ovr.h"
+#include "USkybox.h"
 
 using namespace utopia;
 
@@ -18,12 +19,14 @@ struct U3DRenderPipeline::pimpl {
 	std::vector<std::unique_ptr<U3DRenderNode>> m_lights;
 	std::vector<std::unique_ptr<U2DQuad>> m_eyes;
 	std::unique_ptr<U2DQuad> m_screen;
+	std::unique_ptr<USkybox> m_skybox;
 	bool m_first;
 
 	pimpl() : m_first { true } {
 		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("left eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f))));
 		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("right eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::translate(glm::mat4(1.0f), glm::vec3(APP_WINDOWSIZEX / 2.0f, 0.0f, 0.0f)))));
 		m_screen = std::unique_ptr<U2DQuad>(new U2DQuad("screen", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f)));
+		m_skybox = nullptr;
 	}
 };
 
@@ -71,6 +74,21 @@ void U3DRenderPipeline::pass(std::weak_ptr<UNode> node, const glm::mat4& mat, st
 
 	for (auto& child : node.lock()->getChildren())
 		pass(child, mat, material);
+}
+
+void U3DRenderPipeline::enableSkybox(std::shared_ptr<UCubeMapTexture> cubeMap, const glm::mat4& modelView)
+{
+	if (m_pimpl->m_skybox == nullptr)
+	{
+		m_pimpl->m_skybox = std::unique_ptr<USkybox>(new USkybox(getName() + "Skybox"));
+		m_pimpl->m_skybox->setModelView(modelView);
+	}
+	m_pimpl->m_skybox->setTexture(cubeMap);
+}
+
+void U3DRenderPipeline::disableSkybox()
+{
+	m_pimpl->m_skybox = nullptr;
 }
 
 void U3DRenderPipeline::clear()
@@ -148,9 +166,9 @@ void U3DRenderPipeline::render()
 
 void U3DRenderPipeline::renderInBuffer() 
 {
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	int i = 0;
+
 	for (auto& light : m_pimpl->m_lights)
 	{
 		if (i == 1)
@@ -165,7 +183,6 @@ void U3DRenderPipeline::renderInBuffer()
 		light->node.lock()->setModelView(light->mat);
 		light->node.lock()->render();
 		light->node.lock()->setModelView(oldMat);
-
 
 		for (auto& node : m_pimpl->m_nodes)
 		{
@@ -190,4 +207,9 @@ void U3DRenderPipeline::renderInBuffer()
 
 	glDisable(GL_BLEND);
 	glDepthFunc(GL_LESS);
+
+
+	//if a skybox has been requested
+	if (m_pimpl->m_skybox != nullptr)
+		m_pimpl->m_skybox->render();
 }

@@ -43,7 +43,7 @@ std::shared_ptr<UCubeMapTexture> UTextureFactory::fromFileCubeMaps(const std::ar
     for (int curSide = 0; curSide < 6; curSide++)
     {
         // Load texture:
-        FIBITMAP* fBitmap = FreeImage_Load(FreeImage_GetFileType(names[curSide].c_str(), 0), names[curSide].c_str());
+        FIBITMAP* fBitmap = FreeImage_Load(FreeImage_GetFileType(("assets/" + names[curSide]).c_str(), 0), ("assets/" + names[curSide]).c_str());
         bitmaps[curSide] = fBitmap;
 
         if (fBitmap == nullptr)

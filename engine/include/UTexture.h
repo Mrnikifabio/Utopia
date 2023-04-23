@@ -27,7 +27,7 @@ namespace utopia
 
         static std::shared_ptr<UTexture> m_defaultTexture;
         
-        virtual unsigned int getGlTextureType() = 0;
+        virtual unsigned int getGlTextureType() const = 0;
 
     public:
 
@@ -83,7 +83,7 @@ namespace utopia
         LIB_API virtual void enableTextureRepeat() = 0;
         LIB_API virtual void enableTextureClampToEdge() = 0;
 
-        unsigned int getTexId();
+        unsigned int getTexId() const;
     };
 }
 

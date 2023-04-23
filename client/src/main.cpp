@@ -14,6 +14,7 @@
 #include "USpecialKeys.h"
 #include "U2DTexture.h"
 #include "UText.h"
+#include "UTextureFactory.h"
 
 #include "ClientUtility.h"
 #include "Tower.h"
@@ -50,7 +51,7 @@ int main()
 {
 	if (!Utopia::getInstance().init())
 		return 0;
-	Utopia::getInstance().setBackgroundColor(glm::vec4(0.0f, 0.f, 0.f, 0.f));
+	Utopia::getInstance().setBackgroundColor(glm::vec4(1.0f, 1.f, 1.f, 1.f));
 	Utopia::getInstance().enableDepth();
 	Utopia::getInstance().enableCullFace();
 	//Utopia::getInstance().enableShadeModel();
@@ -67,18 +68,18 @@ int main()
 	maxAnisotropyLevel = UTexture::getMaxAnisotropicLevel();
 
 	freeCamera = std::make_shared<UPerspectiveCamera>("freeCamera");
-	freeCamera->setFar(3000.0f);
+	freeCamera->setFar(4000.0f);
 	freeCamera->setNear(0.1f);
 	freeCamera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.8f, 0.0f)));
 
 	towerCamera = std::make_shared<UPerspectiveCamera>("towerCamera");
-	towerCamera->setFar(3000.0f);
+	towerCamera->setFar(4000.0f);
 	towerCamera->setNear(0.1f);
 	towerCamera->setModelView(glm::rotate(glm::mat4(1.f), glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f)));
 	towerCamera->setModelView(glm::rotate(towerCamera->getModelView(), glm::radians(-45.f), glm::vec3(1.f, 0.f, 0.f)));
 
 	fixedCamera = std::make_shared<UPerspectiveCamera>("fixedCamera");
-	fixedCamera->setFar(3000.0f);
+	fixedCamera->setFar(4000.0f);
 	fixedCamera->setNear(0.1f);
 	fixedCamera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f, 30.0f, 50.0f)));
 	fixedCamera->setModelView(glm::rotate(fixedCamera->getModelView(), glm::radians(-40.f), glm::vec3(0.f, 1.f, 0.f)));
@@ -87,6 +88,18 @@ int main()
 
 
 	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
+
+	auto cubeMap = UTextureFactory::getInstance().fromFileCubeMaps({
+	  "skybox/px.png",
+	  "skybox/nx.png",
+	  "skybox/py.png",
+	  "skybox/ny.png",
+	  "skybox/pz.png",
+	  "skybox/nz.png",
+	});
+
+	cubeMap->enableTextureClampToEdge();
+	_3DRenderPipeline->enableSkybox(cubeMap, glm::scale(glm::mat4(1.0f), glm::vec3(550.0f, 550.0f, 550.0f)));
 
 	//std::shared_ptr<UMaterial> shadowMaterial = std::make_shared<UMaterial>("shadow", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 128);
 

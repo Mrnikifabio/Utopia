@@ -46,6 +46,7 @@
     <ClCompile Include="src\UPerspectiveCamera.cpp" />
     <ClCompile Include="src\UProgramShader.cpp" />
     <ClCompile Include="src\UShader.cpp" />
+    <ClCompile Include="src\USkybox.cpp" />
     <ClCompile Include="src\USpecialKeys.cpp" />
     <ClCompile Include="src\U3DRenderPipeline.cpp" />
     <ClCompile Include="src\USpotLight.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="include\UPerspectiveCamera.h" />
     <ClInclude Include="include\UProgramShader.h" />
     <ClInclude Include="include\UShader.h" />
+    <ClInclude Include="include\USkybox.h" />
     <ClInclude Include="include\USpecialKeys.h" />
     <ClInclude Include="include\U3DRenderPipeline.h" />
     <ClInclude Include="include\USpotLight.h" />

@@ -40,7 +40,7 @@ std::shared_ptr<U2DTexture> U2DTexture::load(const std::string& name, const UTex
     return texture;
 }
 
-unsigned int utopia::U2DTexture::getGlTextureType()
+unsigned int utopia::U2DTexture::getGlTextureType() const
 {
     return GL_TEXTURE_2D;
 }

@@ -104,7 +104,7 @@ void utopia::UTexture::updateAnisotropyLevel(int level)
     glTexParameterf(getGlTextureType(), GL_TEXTURE_MAX_ANISOTROPY_EXT, (GLfloat)level);
 }
 
-unsigned int utopia::UTexture::getTexId()
+unsigned int utopia::UTexture::getTexId() const
 {
     return m_pimpl->m_texId;
 }

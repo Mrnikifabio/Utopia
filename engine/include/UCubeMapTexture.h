@@ -32,7 +32,7 @@ namespace utopia
         UCubeMapTexture(const std::string& name);
         friend UTextureFactory;
 
-        unsigned int getGlTextureType() override;
+        unsigned int getGlTextureType() const override;
 
     public:
         LIB_API virtual ~UCubeMapTexture() noexcept;

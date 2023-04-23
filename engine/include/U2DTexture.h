@@ -35,7 +35,7 @@ namespace utopia
         friend UTextureFactory;
         static std::shared_ptr<U2DTexture> createWhiteTexture();
 
-        unsigned int getGlTextureType() override; 
+        unsigned int getGlTextureType() const override; 
 
     public:
         LIB_API virtual ~U2DTexture() noexcept;

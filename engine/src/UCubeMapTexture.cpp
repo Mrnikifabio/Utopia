@@ -17,7 +17,7 @@ std::shared_ptr<UCubeMapTexture> UCubeMapTexture::load(const std::string& name, 
     std::cout << "texId: " << texId << std::endl;
 #endif // _DEBUG
 
-    glBindTexture(GL_TEXTURE_2D, texId);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texId);
 
     for (int curSide = 0; curSide < 6; curSide++)
     {
@@ -25,10 +25,11 @@ std::shared_ptr<UCubeMapTexture> UCubeMapTexture::load(const std::string& name, 
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + curSide, d.level, d.internalformat, d.width, d.height, d.border, d.format, d.type, d.pixels);
     }
 
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
     return std::shared_ptr<UCubeMapTexture>(new UCubeMapTexture(name, texId));
 }
 
-unsigned int utopia::UCubeMapTexture::getGlTextureType()
+unsigned int utopia::UCubeMapTexture::getGlTextureType() const
 {
     return GL_TEXTURE_CUBE_MAP;
 }
