@@ -1,20 +1,26 @@
 #include <iostream>
+
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
+
 #include "Utopia.h"
 #include "UShader.h"
 #include "UNode.h"
 #include "UMesh.h"
 #include "UPerspectiveCamera.h"
 #include "UOrthographicCamera.h"
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
 #include "OVOFactory.h"
 #include "UOmniLight.h"
-#include "ClientUtility.h"
 #include "USpecialKeys.h"
+#include "U2DTexture.h"
+#include "UText.h"
+#include "UTextureFactory.h"
+
+#include "ClientUtility.h"
 #include "Tower.h"
 #include "BoxesManager.h"
 #include "Box.h"
-#include <UText.h>
+
 
 using namespace utopia;
 
@@ -45,7 +51,7 @@ int main()
 {
 	if (!Utopia::getInstance().init())
 		return 0;
-	Utopia::getInstance().setBackgroundColor(glm::vec4(0.0f, 0.f, 0.f, 0.f));
+	Utopia::getInstance().setBackgroundColor(glm::vec4(1.0f, 1.f, 1.f, 1.f));
 	Utopia::getInstance().enableDepth();
 	Utopia::getInstance().enableCullFace();
 	//Utopia::getInstance().enableShadeModel();
@@ -62,18 +68,18 @@ int main()
 	maxAnisotropyLevel = UTexture::getMaxAnisotropicLevel();
 
 	freeCamera = std::make_shared<UPerspectiveCamera>("freeCamera");
-	freeCamera->setFar(3000.0f);
+	freeCamera->setFar(4000.0f);
 	freeCamera->setNear(0.1f);
 	freeCamera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.8f, 0.0f)));
 
 	towerCamera = std::make_shared<UPerspectiveCamera>("towerCamera");
-	towerCamera->setFar(3000.0f);
+	towerCamera->setFar(4000.0f);
 	towerCamera->setNear(0.1f);
 	towerCamera->setModelView(glm::rotate(glm::mat4(1.f), glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f)));
 	towerCamera->setModelView(glm::rotate(towerCamera->getModelView(), glm::radians(-45.f), glm::vec3(1.f, 0.f, 0.f)));
 
 	fixedCamera = std::make_shared<UPerspectiveCamera>("fixedCamera");
-	fixedCamera->setFar(3000.0f);
+	fixedCamera->setFar(4000.0f);
 	fixedCamera->setNear(0.1f);
 	fixedCamera->setModelView(glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f, 30.0f, 50.0f)));
 	fixedCamera->setModelView(glm::rotate(fixedCamera->getModelView(), glm::radians(-40.f), glm::vec3(0.f, 1.f, 0.f)));
@@ -82,6 +88,18 @@ int main()
 
 
 	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
+
+	auto cubeMap = UTextureFactory::getInstance().fromFileCubeMaps({
+	  "skybox/px.png",
+	  "skybox/nx.png",
+	  "skybox/py.png",
+	  "skybox/ny.png",
+	  "skybox/pz.png",
+	  "skybox/nz.png",
+	});
+
+	cubeMap->enableTextureClampToEdge();
+	_3DRenderPipeline->enableSkybox(cubeMap, glm::scale(glm::mat4(1.0f), glm::vec3(550.0f, 550.0f, 550.0f)));
 
 	//std::shared_ptr<UMaterial> shadowMaterial = std::make_shared<UMaterial>("shadow", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 128);
 
@@ -187,11 +205,14 @@ int main()
 	else
 		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
 
-	Utopia::getInstance().enableTexturesRepeat();
-	Utopia::getInstance().enableLinearBipmapLinearFilter();
-	Utopia::getInstance().updateAnisotropyLevelAllTextures(maxAnisotropyLevel);
+	U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) {
+		texture->enableTextureRepeat();
+		texture->enableLinearBitmapLinearFilter();
+		texture->updateAnisotropyLevel(maxAnisotropyLevel);
+	});
+
 	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(maxAnisotropyLevel));
-	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
+	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBitmapLinear");
 
 	std::cout << "Lights used: " << ULight::getnLightsUsed() << std::endl;
 	std::cout << "Starting main loop" << std::endl;
@@ -322,7 +343,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 
 	case 'c':
-		Utopia::getInstance().updateAnisotropyLevelAllTextures(++currentAniLevel);
+		U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->updateAnisotropyLevel(++currentAniLevel); });
 		anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(currentAniLevel));
 		if (currentAniLevel >= maxAnisotropyLevel)
 			currentAniLevel = 0;
@@ -332,24 +353,24 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		switch (currentTexturesVisualization++)
 		{
 		case 0:
-			Utopia::getInstance().enableNearestFilter();
+			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableNearestFilter(); });
 			textureFilterModeLabel->setText("[v] textureFilterMode: Nearest");
 			break;
 		case 1:
-			Utopia::getInstance().enableNearestBipmapNearestFilter();
-			textureFilterModeLabel->setText("[v] textureFilterMode: NearestBipmapNearest");
+			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableNearestBitmapNearestFilter(); });
+			textureFilterModeLabel->setText("[v] textureFilterMode: NearestBitmapNearest");
 			break;
 		case 2:
-			Utopia::getInstance().enableLinearFilter();
+			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableLinearFilter(); });
 			textureFilterModeLabel->setText("[v] textureFilterMode: Linear");
 			break;
 		case 3:
-			Utopia::getInstance().enableLinearBipmapNearestFilter();
-			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapNearest");
+			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableLinearBitmapNearestFilter(); });
+			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBitmapNearest");
 			break;
 		case 4:
-			Utopia::getInstance().enableLinearBipmapLinearFilter();
-			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBipmapLinear");
+			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableLinearBitmapLinearFilter(); });
+			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBitmapLinear");
 			break;
 		}
 		if (currentTexturesVisualization > 4)

@@ -19,43 +19,71 @@
 
 namespace utopia
 {
-    class UTextureFactory;
-
     class UTexture : public UObject
     {
     private:
         struct pimpl;
         std::unique_ptr<pimpl> m_pimpl;
-        static std::shared_ptr<UTexture> m_defaultTexture;
-        UTexture(const std::string& name, unsigned int texId);
-        UTexture(const std::string& name);
-        friend UTextureFactory;
-        static void setAnisotropyLevel(int level);
-        static std::shared_ptr<UTexture> createWhiteTexture();
 
+        static std::shared_ptr<UTexture> m_defaultTexture;
+        
+        virtual unsigned int getGlTextureType() const = 0;
 
     public:
+
+        struct UTextureData {
+            int level;
+            int internalformat;
+            int width;
+            int height;
+            int border;
+            unsigned int format;
+            unsigned int type;
+            const void* pixels;
+
+            UTextureData() 
+            {
+                this->level = 0;
+                this->internalformat = 0;
+                this->width = 0;
+                this->height = 0;
+                this->border = 0;
+                this->format = 0;
+                this->type = 0;
+                this->pixels = nullptr;
+            };
+            UTextureData(int level, int internalformat, int width, int height, int border, unsigned int format, unsigned int type, const void* pixels)
+            {
+                this->level = level;
+                this->internalformat = internalformat;
+                this->width = width;
+                this->height = height;
+                this->border = border;
+                this->format = format;
+                this->type = type;
+                this->pixels = pixels;
+            }
+        };
+
+        UTexture(const std::string& name, unsigned int texId);
+        
         LIB_API virtual ~UTexture() noexcept;
 
         void render() override;
 
         LIB_API static int getMaxAnisotropicLevel();
-        LIB_API static void enableNearestFilter();
-        LIB_API static void enableNearestBipmapNearestFilter();
-        LIB_API static void enableLinearFilter();
-        LIB_API static void enableLinearBipmapNearestFilter();
-        LIB_API static void enableLinearBipmapLinearFilter();
-        LIB_API static void enableTexturesRepeat();
-        LIB_API static void enableTexturesClampToEdge();
-        LIB_API static std::shared_ptr<UTexture> loadTexture(const std::string& name, unsigned int target, int component, int width, int height, unsigned int format, unsigned int type, const void* data);
 
-        LIB_API void updateTextureParameteri(void (*parametriSetMethod)(void));
-        LIB_API void updateAnisotropyLevelTextureParameteri(int value);
-        LIB_API static const std::shared_ptr<UTexture> getDefaultTexture();
+        LIB_API void enableNearestFilter();
+        LIB_API void enableNearestBitmapNearestFilter();
+        LIB_API void enableLinearFilter();
+        LIB_API void enableLinearBitmapNearestFilter();
+        LIB_API void enableLinearBitmapLinearFilter();
+        LIB_API void updateAnisotropyLevel(int value);
+        
+        LIB_API virtual void enableTextureRepeat() = 0;
+        LIB_API virtual void enableTextureClampToEdge() = 0;
 
-
-        unsigned int getTexId();
-     
+        unsigned int getTexId() const;
     };
 }
 

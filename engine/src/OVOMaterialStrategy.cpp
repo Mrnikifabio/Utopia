@@ -21,7 +21,7 @@ std::unique_ptr<UNode> OVOMaterialStrategy::decodeChunk(std::ifstream& inFile)
 
 	auto materialToMake = std::make_shared<UMaterial>("");
 	readMaterial(*materialToMake, *buffer);
-	Utopia::getInstance().addMaterial(materialToMake.get()->getName(), materialToMake);
+	UMaterial::add(materialToMake.get()->getName(), materialToMake);
 
 	return nullptr;
 }
@@ -75,16 +75,16 @@ void OVOMaterialStrategy::readMaterial(UMaterial& material, Buffer& buffer)
 	{
 		std::cout << "loading texture " << albedoMap << std::endl;
 
-		if (Utopia::getInstance().containTexture(albedoMap))
+		if (UMaterial::contains(albedoMap))
 		{
 			std::cout << "texture " << albedoMap << " presente" << std::endl;
-			material.setTexture(Utopia::getInstance().getTextureByName(albedoMap));
+			material.setTexture(U2DTexture::getByName(albedoMap));
 		}
 		else
-			material.setTexture(UTextureFactory::getInstance().fromFile("assets/" + albedoMap));
+			material.setTexture(UTextureFactory::getInstance().fromFile2D("assets/" + albedoMap));
 	}
 	else
-		material.setTexture(UTexture::getDefaultTexture());
+		material.setTexture(U2DTexture::getDefault());
 
 	// Optional target node, [none] if not used:
 	std::string normalMap = std::string(buffer.data.get() + buffer.position);
