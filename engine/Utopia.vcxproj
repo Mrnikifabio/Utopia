@@ -90,11 +90,16 @@
     <ClInclude Include="include\UText.h" />
     <ClInclude Include="include\UTexture.h" />
     <ClInclude Include="include\UTextureFactory.h" />
+    <ClInclude Include="include\UToolkit.h" />
     <ClInclude Include="include\Utopia.h" />
     <ClInclude Include="include\UVertexShader.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Utopia.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

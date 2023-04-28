@@ -9,6 +9,8 @@
 #include <U2DQuad.h>
 #include <Utopia.h>
 #include "UOVRCamera.h"
+#include "UToolkit.h"
+#include <glm/gtx/string_cast.hpp>
 #include "ovr.h"
 
 using namespace utopia;
@@ -148,6 +150,11 @@ void U3DRenderPipeline::render()
 
 void U3DRenderPipeline::renderInBuffer() 
 {
+	auto camera = UCamera::getMainCamera().lock();
+	auto centerDistance = (camera->getNear() + camera->getFar()) / 2; // middle point between near and far plane
+	auto centerSphere= glm::vec3(0,0, -centerDistance);  // center of the sphere in camera space
+	auto radiousSphere = centerDistance + camera->getNear();
+
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	int i = 0;
@@ -175,16 +182,31 @@ void U3DRenderPipeline::renderInBuffer()
 			std::shared_ptr<UMaterial> oldMaterial = nullptr;
 			if (dynamic_cast<UMesh*>(node->node.lock().get()))
 			{
+				
+
 				oldMaterial = ((UMesh*)node->node.lock().get())->getMaterial();
 				if (node->material != nullptr)
 					((UMesh*)node->node.lock().get())->setMaterial(node->material);
-			}
 
-			node->node.lock()->render();
+				
+				// check if the node is inside the sphere
+				auto matrixEyeCoordinates= glm::inverse(camera->getFinalWorldCoordinates()) * node->node.lock()->getModelView();
+				auto distance = glm::distance(centerSphere, glm::UToolkit::getPositionByMatrix(matrixEyeCoordinates));
+				
+				
+				if (distance < radiousSphere + ((UMesh*)node->node.lock().get())->getRadious())
+				{
+					node->node.lock()->render();
+				}
+			}
+			else
+				node->node.lock()->render(); //render the node if it is not a mesh
 
 			node->node.lock()->setModelView(oldMat);
 			if (dynamic_cast<UMesh*>(node->node.lock().get()))
+			{
 				((UMesh*)node->node.lock().get())->setMaterial(oldMaterial);
+			}
 		}
 	}
 
