@@ -118,12 +118,6 @@ void U3DRenderPipeline::render()
 		ovr->update();
 		glm::mat4 headPos = ovr->getModelviewMatrix();
 
-		// Update camera modelview matrix: THIS WHOLE THING IS SUSPICIOUS
-		headPos[3][0] = 0;
-		headPos[3][1] = 0;
-		headPos[3][2] = 0;
-		headPos = glm::rotate(headPos, glm::radians(-45.f), glm::vec3(0.f, 1.f, 0.f));
-
 		for (int c = 0; c < OvVR::EYE_LAST; c++)
 		{
 			// Get OpenVR matrices:

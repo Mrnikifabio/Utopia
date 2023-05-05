@@ -116,7 +116,21 @@ int main()
 	towerNode = client::ClientUtility::getInstance().findGameObjectByName(root, "tower");
 	fisicalHookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "fisicalHook");
 	cableNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cable");
-	towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTower");
+
+
+	if (!Utopia::getInstance().isStereoscopicEnabled()) //if the openvr mode is enabled under conf/global.conf the camera will be internally setted by the engine
+	{
+		towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTowerNoStereo");
+		towerCameraNode->addChild(towerCamera);
+		UCamera::setMainCamera(fixedCamera);
+	}
+	else
+	{
+		towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTower");
+		UCamera::getMainCamera().lock()->setFar(4000.0f);
+		UCamera::getMainCamera().lock()->setNear(0.1f);
+		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
+	}
 
 
 	//Node associated to all the boxes
@@ -196,14 +210,6 @@ int main()
 	cameraMovement->setText("[WASD R/F] R/F=UP/DOWN");
 
 	*/
-
-	if (!Utopia::getInstance().isStereoscopicEnabled()) //if the openvr mode is enabled under conf/global.conf the camera will be internally setted by the engine
-	{
-		UCamera::setMainCamera(fixedCamera);
-		towerCameraNode->addChild(towerCamera);
-	}
-	else
-		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
 
 	U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) {
 		texture->enableTextureRepeat();
