@@ -7,7 +7,8 @@ uniform vec3 lightSpecular;
 
 uniform vec3 spotLightDirection;
 uniform float spotLightCutoff;
-uniform float spotLightAttenuation;
+uniform float spotLightLinearAttenuation;
+uniform float spotLightQuadraticAttenuation;
 
 // Material properties:
 uniform vec3 matEmission;
@@ -15,6 +16,7 @@ uniform vec3 matAmbient;
 uniform vec3 matDiffuse;
 uniform vec3 matSpecular;
 uniform float matShininess;
+
 
 uniform int nLightUsed;
 
@@ -25,6 +27,8 @@ in vec2 texCoord;
 out vec4 fragOutput;
 
 layout(binding = 0) uniform sampler2D texSampler;
+
+float quadraticFunction(float x);
 
 void main(void)
 {
@@ -40,20 +44,31 @@ void main(void)
     float nDotL=dot(lightDirection,_normal);
 
 
-    
-    if(degrees(acos(abs(dot(-lightDirection,normalize(lightPosition-spotLightDirection)))))<=spotLightCutoff)
+    float angle = degrees(acos(abs(dot(-lightDirection,normalize(lightPosition-spotLightDirection)))));
+    if(angle<=spotLightCutoff)
     {
+        
         if(nDotL>0.f)
         {
-            fragColor+=matDiffuse*nDotL*lightDiffuse;
+            float distance=length(lightPosition-fragPosition.xyz);
+            float attenuation=1.f/(1.f+spotLightLinearAttenuation*distance+spotLightQuadraticAttenuation*distance*distance);
+            float sideAttenuation= quadraticFunction(angle/spotLightCutoff);
+            if(sideAttenuation<0.f)
+                sideAttenuation=0.f;
+            fragColor+=matDiffuse*nDotL*lightDiffuse*attenuation*sideAttenuation;
             
             // Specular term:
             vec3 halfVector=normalize(lightDirection+normalize(-fragPosition.xyz));
             float nDotHV=dot(_normal,halfVector);
-            fragColor+=matSpecular*pow(nDotHV,matShininess)*lightSpecular;
+            fragColor+=matSpecular*pow(nDotHV,matShininess)*lightSpecular*sideAttenuation;
         }
     }
     
     // Final color:
     fragOutput=texel * vec4(fragColor,1.f);
+}
+
+float quadraticFunction(float x)
+{
+    return -x*x+1f;
 }

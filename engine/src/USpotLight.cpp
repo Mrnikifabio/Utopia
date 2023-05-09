@@ -64,8 +64,12 @@ void USpotLight::render()
 	auto spotLightCutoff = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightCutoff");
 	UProgramShader::getActiveProgramShader()->setFloat(spotLightCutoff, m_pimpl->m_cutoff);
 
-	//auto spotLightAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightAttenuation");
-	//UProgramShader::getActiveProgramShader()->setFloat(spotLightAttenuation,m_pimpl->m_linearAttenuation);
+
+	auto spotLightLinearAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightLinearAttenuation");
+	UProgramShader::getActiveProgramShader()->setFloat(spotLightLinearAttenuation, m_pimpl->m_linearAttenuation);
+
+	auto spotLightQuadraticAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightQuadraticAttenuation");
+	UProgramShader::getActiveProgramShader()->setFloat(spotLightQuadraticAttenuation, m_pimpl->m_quadraticAttenuation);
 }
 
 USpotLight::USpotLight(const std::string& name, const float cutoff, const glm::vec3& direction, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation) : ULight{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(cutoff, direction, constantAttenuation, linearAttenuation, quadraticAttenuation)) } 

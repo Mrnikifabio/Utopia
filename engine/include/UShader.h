@@ -42,6 +42,7 @@ namespace utopia
 		LIB_API void setInt(int param, int value);
 		LIB_API void setVec3(int param, const glm::vec3& vect);
 		LIB_API void setVec4(int param, const glm::vec4& vect);
+		LIB_API void setBool(int param, const bool value);
 
 
 		void bind(int location, const char* attribName);
