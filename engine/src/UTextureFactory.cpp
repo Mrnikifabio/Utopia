@@ -24,7 +24,7 @@ std::shared_ptr<U2DTexture> UTextureFactory::fromFile2D(const std::string& name)
 	FreeImage_Initialise();
 
 	FIBITMAP* bitmap = FreeImage_Load(FreeImage_GetFileType(name.c_str(), 0), name.c_str());
-
+    FreeImage_FlipVertical(bitmap);    // Correct JPG's upside-down
     auto texture = U2DTexture::load(name, UTexture::UTextureData(0, GL_RGBA, FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap), 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)FreeImage_GetBits(bitmap)));
 
 
