@@ -56,7 +56,7 @@ namespace utopia
         LIB_API virtual ~UMesh() noexcept;
         LIB_API std::shared_ptr<UMaterial> getMaterial();
         LIB_API void setMaterial(std::shared_ptr<UMaterial> material);
-        void pushLOD(std::unique_ptr<LOD>&&);
+        void pushLOD(std::shared_ptr<LOD>);
     };
 }
 

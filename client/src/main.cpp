@@ -15,6 +15,7 @@
 #include "U2DTexture.h"
 #include "UText.h"
 #include "UTextureFactory.h"
+#include "UHands.h"
 
 #include "ClientUtility.h"
 #include "Tower.h"
@@ -87,7 +88,14 @@ int main()
 
 
 
+	auto hands = std::make_shared<UHands>();
 	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
+	
+
+	root->addChild(hands);
+
+	if (!hands->init())
+		std::cout << "leap not working" << std::endl;
 
 	auto cubeMap = UTextureFactory::getInstance().fromFileCubeMaps({
 	  "skybox/px.png",
@@ -234,9 +242,10 @@ int main()
 		}
 		shadowRenderPipeline->render();
 		*/
-
+		hands->update();
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
+		//_3DRenderPipeline->pass(hands);
 		_3DRenderPipeline->render();
 
 

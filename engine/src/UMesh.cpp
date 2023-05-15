@@ -9,7 +9,7 @@
 using namespace utopia;
 
 struct UMesh::pimpl {
-	std::vector<std::unique_ptr<LOD>> m_lods;
+	std::vector<std::shared_ptr<LOD>> m_lods;
 	std::shared_ptr<UMaterial> m_material;
 	unsigned int m_vertexVbo;
 	unsigned int m_normalVbo;
@@ -33,9 +33,9 @@ struct UMesh::pimpl {
 UMesh::UMesh(const std::string& name) : UNode{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {}
 UMesh::UMesh(const std::string& name, std::shared_ptr<UMaterial> material) : UNode{ name }, m_pimpl { std::unique_ptr<pimpl>(new pimpl(material)) } {}
 
-void UMesh::pushLOD(std::unique_ptr<LOD>&& lod)
+void UMesh::pushLOD(std::shared_ptr<LOD> lod)
 {
-	m_pimpl->m_lods.push_back(std::move(lod));
+	m_pimpl->m_lods.push_back(lod);
 }
 
 std::shared_ptr<UMaterial> UMesh::getMaterial()
