@@ -33,6 +33,14 @@ void UOmniLight::render()
 	UProgramShader::getActiveProgramShader()->bind(0, "in_Position");
 	UProgramShader::getActiveProgramShader()->bind(1, "in_Normal");
 
+	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
+	auto lightPosition = UProgramShader::getActiveProgramShader()->getParamLocation("lightPosition");
+
+	glm::vec3 lightPos = glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]);
+	UProgramShader::getActiveProgramShader()->setVec3(lightPosition, lightPos);
+
+
+
 	ULight::render();
 }
 
