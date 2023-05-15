@@ -122,7 +122,7 @@ void U3DRenderPipeline::render()
 		{
 			// Get OpenVR matrices:
 			OvVR::OvEye curEye = (OvVR::OvEye)c;
-			glm::mat4 projMat = ovr->getProjMatrix(curEye, 1.0f, 1024.0f);
+			glm::mat4 projMat = ovr->getProjMatrix(curEye, UCamera::getMainCamera().lock()->getNear(), UCamera::getMainCamera().lock()->getFar());
 			glm::mat4 eye2Head = ovr->getEye2HeadMatrix(curEye);
 
 			// Update camera projection matrix:
