@@ -31,7 +31,12 @@ struct UHands::pimpl {
 };
 
 std::shared_ptr<UNode> getSphere() {
-    return OVOFactory::getInstance().fromFile("sphere.ovo")->detachChild(0);
+    auto f = OVOFactory::getInstance().fromFile("sphere.ovo");
+    if (f == nullptr || f->getChildCount() == 0) {
+        std::cout << "Sphere file not found or sphere missing from root" << std::endl;
+        return std::shared_ptr<UNode>(new UNode("dummy"));
+    }
+    return f->detachChild(0);
 }
     
 bool UHands::init() {
@@ -65,16 +70,7 @@ bool UHands::init() {
         }
     }
 
-    //fingers begin from the thumb
-    /*m_pimpl->m_hands[eLeapHandType::eLeapHandType_Left] = OVOFactory::getInstance().fromFile("hand.ovo");
 
-    m_pimpl->m_hands[eLeapHandType::eLeapHandType_Right] = OVOFactory::getInstance().fromFile("hand.ovo");
-
-    if (m_pimpl->m_hands[eLeapHandType::eLeapHandType_Left] == nullptr || m_pimpl->m_hands[eLeapHandType::eLeapHandType_Right] == nullptr)
-        return false;
-
-    m_pimpl->m_hands[eLeapHandType::eLeapHandType_Left]->setName("handLeft");
-    m_pimpl->m_hands[eLeapHandType::eLeapHandType_Right]->setName("handRight");*/
 
     m_pimpl->m_initiated = m_pimpl->m_leap->init();
     if (!m_pimpl->m_initiated)
@@ -153,67 +149,6 @@ void UHands::update() {
             }
         }
     }
-    /*
-    float mmToM = 10.0f;
-
-    for (unsigned int h = 0; h < l->nHands; h++)
-    {
-        LEAP_HAND hand = l->pHands[h];
-        this->addChild(m_pimpl->m_hands[hand.type]);
-
-        glm::mat4 camMV = UCamera::getMainCamera().lock()->getModelView();
-        glm::mat4 camProjMat = UCamera::getMainCamera().lock()->getCameraMatrix();
-        glm::vec3 camPos = glm::vec3(camMV[3][0], camMV[3][1], camMV[3][2]);
-        camMV[3][0] = 0.0f;
-        camMV[3][1] = 0.0f;
-        camMV[3][2] = 0.0f;
-        glm::vec3 camDirX = glm::normalize(glm::mat3(camMV) * glm::vec3(camProjMat[0][0], camProjMat[1][0], camProjMat[2][0]));
-        glm::vec3 camDirY = glm::normalize(glm::mat3(camMV) * glm::vec3(camProjMat[0][1], camProjMat[1][1], camProjMat[2][1]));
-        glm::vec3 camDirZ = glm::normalize(glm::mat3(camMV) * glm::vec3(camProjMat[0][2], camProjMat[1][2], camProjMat[2][2]));
-        this->setModelView(glm::translate(camMV, camPos - camDirY + 2.0f * camDirZ));
-
-        // Elbow:
-        glm::mat4 c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.prev_joint.x, hand.arm.prev_joint.y, hand.arm.prev_joint.z) / 1000.0f);
-
-        // Wrist:
-        c = glm::translate(c, glm::vec3(hand.arm.next_joint.x, hand.arm.next_joint.y, hand.arm.next_joint.z) / 1000.0f);
-
-        
-
-        m_pimpl->m_hands[hand.type]->setModelView(c);
-        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.01f));
-        // Palm:
-        glm::vec3 palmPos = glm::vec3(hand.palm.position.x, hand.palm.position.y, hand.palm.position.z) / mmToM;
-        c = glm::translate(glm::mat4(1.0f), palmPos);
-        auto palmNode = m_pimpl->m_hands[hand.type]->getChild(0);
-        //palmNode.lock()->setModelView(scale * c);
-
-        
-        glm::vec3 v1 = glm::vec3(hand.digits[0].bones[0].next_joint.x, hand.digits[0].bones[0].next_joint.y, hand.digits[0].bones[0].next_joint.z) / mmToM;
-        glm::vec3 v2 = glm::vec3(hand.digits[2].bones[0].next_joint.x, hand.digits[2].bones[0].next_joint.y, hand.digits[2].bones[0].next_joint.z) / mmToM;
-        glm::vec3 up = -glm::normalize(glm::cross(glm::normalize(v1), glm::normalize(v2)));
-        glm::vec3 direction = glm::normalize(v2-palmPos);
-        glm::mat4 pm = glm::lookAt(palmPos, direction, up);
-        palmNode.lock()->setModelView(scale * pm);
-
-        // Distal ends of bones for each digit:
-        for (unsigned int d = 0; d < 5; d++)
-        {
-            LEAP_DIGIT finger = hand.digits[d];
-            auto fingerNode = palmNode;
-            for (unsigned int b = 0; b < 3; b++)
-            {
-                if (b == 0)
-                    fingerNode = fingerNode.lock()->getChild(d); // choose the finger
-                else
-                    fingerNode = fingerNode.lock()->getChild(0); // choose the joint
-                LEAP_BONE bone = finger.bones[b];
-                glm::vec3 jointPos = glm::vec3(bone.next_joint.x, bone.next_joint.y, bone.next_joint.z) / mmToM;
-                c = glm::translate(glm::mat4(1.0f), jointPos);
-                fingerNode.lock()->setModelView(c);
-            }
-        }
-    }*/
 }
 
 void utopia::UHands::setXDistanceFromCam(float units)

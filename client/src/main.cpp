@@ -48,6 +48,9 @@ float sensibility = 0.5f;
 std::shared_ptr<UText> anisotLevelLabel = std::make_shared<UText>("anisotLevelLabel");
 std::shared_ptr<UText> textureFilterModeLabel = std::make_shared<UText>("textureFilterMode");
 
+std::shared_ptr<UHands> hands;
+void handsUpdateCallback(int value);
+
 int main()
 {
 	if (!Utopia::getInstance().init())
@@ -86,15 +89,16 @@ int main()
 	fixedCamera->setModelView(glm::rotate(fixedCamera->getModelView(), glm::radians(-40.f), glm::vec3(0.f, 1.f, 0.f)));
 	fixedCamera->setModelView(glm::rotate(fixedCamera->getModelView(), glm::radians(-22.f), glm::vec3(1.f, 0.f, 0.f)));
 
-
-
-	auto hands = std::make_shared<UHands>();
 	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
 	
+	hands = std::make_shared<UHands>();
 	root->addChild(hands);
+	
 
 	if (!hands->init())
 		std::cout << "error with hands maybe leap not connected/not working or hands model not present" << std::endl;
+	else
+		Utopia::getInstance().setTimer(10, handsUpdateCallback, 10);
 
 	auto cubeMap = UTextureFactory::getInstance().fromFileCubeMaps({
 	  "skybox/px.png",
@@ -241,10 +245,9 @@ int main()
 		}
 		shadowRenderPipeline->render();
 		*/
-		hands->update();
+
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
-		//_3DRenderPipeline->pass(hands);
 		_3DRenderPipeline->render();
 
 
@@ -441,6 +444,11 @@ void fpsCounterCallback(int value)
 	fpsToPrint = fpsCounter;
 	fpsCounter = 0;
 	Utopia::getInstance().setTimer(1000, fpsCounterCallback, 0);
+}
+
+void handsUpdateCallback(int value) {
+	hands->update();
+	Utopia::getInstance().setTimer(value, handsUpdateCallback, value);
 }
 
 void specialCallback(int key, int mouseX, int mouseY)
