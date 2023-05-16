@@ -25,6 +25,9 @@ namespace utopia
         std::unique_ptr<pimpl> m_pimpl;
         friend OVOMeshStrategy; // friend !!!
     public:
+        float getRadious();
+        void setRadious(float radious);
+
         struct Vertex {
             glm::vec3 coord;
             glm::vec3 normal;

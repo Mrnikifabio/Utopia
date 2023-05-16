@@ -245,13 +245,10 @@
     <ClInclude Include="include\UOVRCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\U2DTexture.h">
+    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\UCubeMapTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\USkybox.h">
+    <ClInclude Include="include\UToolkit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ULeap.h">
@@ -263,5 +260,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Utopia.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

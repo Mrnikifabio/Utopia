@@ -57,14 +57,14 @@ void client::Box::computeGravity()
 {
 	if (!m_pimpl->m_isGrounded||!m_pimpl->m_isHooked)
 	{
-		m_pimpl->m_hookPoint->setModelView(glm::translate(m_pimpl->m_hookPoint->getModelView(), glm::vec3(0.f,- 2.0f, 0.f)));
+		m_pimpl->m_hookPoint->setModelView(glm::translate(m_pimpl->m_hookPoint->getModelView(), glm::vec3(0.f, -2.0f, 0.f)));
 	
 		auto boxPosition = client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_groundNode);
 		
 		if (boxPosition.y < 0)
 		{
 			m_pimpl->m_isGrounded = true;
-			m_pimpl->m_hookPoint->setModelView(glm::translate(m_pimpl->m_hookPoint->getModelView(), glm::vec3(0.f, -boxPosition.y-1.5f, 0.f)));
+			m_pimpl->m_hookPoint->setModelView(glm::translate(m_pimpl->m_hookPoint->getModelView(), glm::vec3(0.f, -boxPosition.y, 0.f)));
 		}
 	}
 }

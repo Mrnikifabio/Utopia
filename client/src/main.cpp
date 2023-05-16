@@ -28,12 +28,12 @@ using namespace utopia;
 void keyboardCallback(unsigned char key, int mouseX, int mouseY);
 void specialCallback(int key, int mouseX, int mouseY);
 void passiveMotionCallback(int x, int y);
-void fpsCounterCallback(int value);
+void boxesSimulationCounterCallback(int value);
 void closeCallback();
 
-int fpsCounter = 0;
-int fpsToPrint = 0;
 int maxAnisotropyLevel;
+
+const int simulationDelay = 32; //milliseconds
 
 std::shared_ptr<UCamera> freeCamera;
 std::shared_ptr<UCamera> fixedCamera;
@@ -58,12 +58,10 @@ int main()
 	Utopia::getInstance().setBackgroundColor(glm::vec4(1.0f, 1.f, 1.f, 1.f));
 	Utopia::getInstance().enableDepth();
 	Utopia::getInstance().enableCullFace();
-	//Utopia::getInstance().enableShadeModel();
 	Utopia::getInstance().setKeyboardCallback(keyboardCallback);
 	Utopia::getInstance().setSpecialCallback(specialCallback);
 	Utopia::getInstance().setCloseCallback(closeCallback);
 	Utopia::getInstance().setPassiveMotionCallback(passiveMotionCallback);
-	Utopia::getInstance().setTimer(1000, fpsCounterCallback, 0);
 
 	auto _2DRenderPipeline = std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline"));
 	auto _3DRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline"));
@@ -112,8 +110,6 @@ int main()
 	cubeMap->enableTextureClampToEdge();
 	_3DRenderPipeline->enableSkybox(cubeMap, glm::scale(glm::mat4(1.0f), glm::vec3(550.0f, 550.0f, 550.0f)));
 
-	//std::shared_ptr<UMaterial> shadowMaterial = std::make_shared<UMaterial>("shadow", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 128);
-
 	//Node associated to the tower
 
 	std::shared_ptr<UNode> hookNode;
@@ -127,7 +123,21 @@ int main()
 	towerNode = client::ClientUtility::getInstance().findGameObjectByName(root, "tower");
 	fisicalHookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "fisicalHook");
 	cableNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cable");
-	towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTower");
+
+
+	if (!Utopia::getInstance().isStereoscopicEnabled()) //if the openvr mode is enabled under conf/global.conf the camera will be internally setted by the engine
+	{
+		towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTowerNoStereo");
+		towerCameraNode->addChild(towerCamera);
+		UCamera::setMainCamera(fixedCamera);
+	}
+	else
+	{
+		towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTower");
+		UCamera::getMainCamera().lock()->setFar(4000.0f);
+		UCamera::getMainCamera().lock()->setNear(0.1f);
+		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
+	}
 
 
 	//Node associated to all the boxes
@@ -153,68 +163,13 @@ int main()
 	tower->setCable(cableNode);
 	tower->setRoot(root);
 
-	tower->setFisicalHookLimitDown(-17.f);
+	tower->setFisicalHookLimitDown(-24.f);
 	tower->setFisicalHookLimitUp(-1.f);
-	tower->setHookLimitbackward(-6.0f);
-	tower->setHookLimitforward(2.5f);
+	tower->setHookLimitbackward(-12.0f);
+	tower->setHookLimitforward(3.5f);
 
 	//passes boxes to the boxes manager
 	boxesManager->setBoxes(boxesVector);
-
-	/*
-	//2D text creation
-
-	std::shared_ptr<UText> fpsLabel = std::make_shared<UText>("fpsLabel");
-	fpsLabel->setColor(glm::vec3(255, 0, 0));
-
-	std::shared_ptr<UText> UpDownLabel = std::make_shared<UText>("UpDownLabel");
-	UpDownLabel->setColor(glm::vec3(255, 255, 255));
-
-	std::shared_ptr<UText> backFrontLabel = std::make_shared<UText>("BackFront");
-	backFrontLabel->setColor(glm::vec3(255, 255, 255));
-
-	std::shared_ptr<UText> camerasLabel = std::make_shared<UText>("Camera [1,2,3,4]");
-	camerasLabel->setColor(glm::vec3(255, 255, 255));
-
-	std::shared_ptr<UText> rotateTower = std::make_shared<UText>("Tower");
-	rotateTower->setColor(glm::vec3(255, 255, 255));
-
-	anisotLevelLabel->setColor(glm::vec3(255, 0, 0));
-	textureFilterModeLabel->setColor(glm::vec3(255, 0, 0));
-
-	std::shared_ptr<UText> solidWireFrame = std::make_shared<UText>("solidWireFrame");
-	solidWireFrame->setColor(glm::vec3(255, 0, 0));
-
-	std::shared_ptr<UText> cameraMovement = std::make_shared<UText>("cameraMovement");
-	cameraMovement->setColor(glm::vec3(255, 255, 255));
-
-
-	_2DRenderPipeline->pass(fpsLabel, glm::vec2(10, 10));
-	_2DRenderPipeline->pass(UpDownLabel, glm::vec2(10, 30));
-	_2DRenderPipeline->pass(backFrontLabel, glm::vec2(10, 50));
-	_2DRenderPipeline->pass(rotateTower, glm::vec2(10, 70));
-	_2DRenderPipeline->pass(camerasLabel, glm::vec2(10, 90));
-	_2DRenderPipeline->pass(cameraMovement, glm::vec2(10, 110));
-	_2DRenderPipeline->pass(anisotLevelLabel, glm::vec2(10, 130));
-	_2DRenderPipeline->pass(textureFilterModeLabel, glm::vec2(10, 150));
-	_2DRenderPipeline->pass(solidWireFrame, glm::vec2(10, 170));
-
-	UpDownLabel->setText("[+/-] UpDown Hook");
-	backFrontLabel->setText("[ARROW UP/DOWN] FrontBack Hook");
-	rotateTower->setText("[ARROW LEFT/RIGHT] Rotate Tower");
-	camerasLabel->setText("[1,2,3,4] Change Camera View");
-	solidWireFrame->setText("[z/x] Solid/Wireframe mode");
-	cameraMovement->setText("[WASD R/F] R/F=UP/DOWN");
-
-	*/
-
-	if (!Utopia::getInstance().isStereoscopicEnabled()) //if the openvr mode is enabled under conf/global.conf the camera will be internally setted by the engine
-	{
-		UCamera::setMainCamera(fixedCamera);
-		towerCameraNode->addChild(towerCamera);
-	}
-	else
-		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
 
 	U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) {
 		texture->enableTextureRepeat();
@@ -228,31 +183,17 @@ int main()
 	std::cout << "Lights used: " << ULight::getnLightsUsed() << std::endl;
 	std::cout << "Starting main loop" << std::endl;
 
+	Utopia::getInstance().setTimer(simulationDelay, boxesSimulationCounterCallback, 0);
+
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
 
-		boxesManager->computeGravity();
-		//fpsCounter++;
-		//fpsLabel->setText(std::to_string(fpsToPrint));
-
-		/*shadowRenderPipeline->clear();
-		shadowRenderPipeline->pass(towerNode, glm::scale(glm::translate(glm::mat4(1), glm::vec3(0.f, 1.0f, .0f)), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
-		for (auto& hook : hookPoints)
-		{
-			shadowRenderPipeline->pass(hook, glm::translate(glm::mat4(1.f), glm::vec3(0.f, 1.0f, 0.f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 0.f, 1.f)), shadowMaterial);
-		}
-		shadowRenderPipeline->render();
-		*/
-
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
 		_3DRenderPipeline->render();
 
-
-		//_2DRenderPipeline->render();
-		//Utopia::getInstance().enableLighting();
 		Utopia::getInstance().swap();
 	}
 
@@ -262,14 +203,16 @@ int main()
 void passiveMotionCallback(int x, int y)
 {
 	auto currentCamera = UCamera::getMainCamera().lock();
-	if (currentCamera->getName() != "freeCamera" && currentCamera->getName() != "towerCamera")
+	auto cameraName = currentCamera->getName();
+
+	if (cameraName != "freeCamera" && cameraName != "towerCamera")
 		return;
 
 	static int previousPositionX = x;
 	static int previousPositionY = y;
 
-	static float angleX = 0;
-	static float angleY = 0;
+	static float angleX = -90.0f;
+	static float angleY = -45.0f;
 
 	float xRotationToDo = (float)(previousPositionX - x);
 	float yRotationToDo = (float)(previousPositionY - y);
@@ -298,9 +241,6 @@ void passiveMotionCallback(int x, int y)
 	glm::mat4 matRotationY = glm::rotate(matRotationX, glm::radians(angleY), glm::vec3(1.f, 0.f, 0.f));
 
 	currentCamera->setModelView(matRotationY);
-
-	//std::cout << "angleX: " << angleX << std::endl;
-	//std::cout << "angleY: " << angleY << std::endl;
 }
 
 void changeCamera(std::weak_ptr<UCamera> camera)
@@ -439,11 +379,10 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 }
 
-void fpsCounterCallback(int value)
+void boxesSimulationCounterCallback(int value)
 {
-	fpsToPrint = fpsCounter;
-	fpsCounter = 0;
-	Utopia::getInstance().setTimer(1000, fpsCounterCallback, 0);
+	boxesManager->computeGravity();
+	Utopia::getInstance().setTimer(simulationDelay, boxesSimulationCounterCallback, 0);
 }
 
 void handsUpdateCallback(int value) {

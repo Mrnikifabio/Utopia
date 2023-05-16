@@ -78,6 +78,11 @@ void UShader::setInt(int param, int value)
 	glUniform1i(param, value);
 }
 
+void utopia::UShader::setBool(int param, const bool value)
+{
+	glUniform1i(param, value);
+}
+
 void UShader::setVec3(int param, const glm::vec3& vect)
 {
 	glUniform3fv(param, 1, glm::value_ptr(vect));

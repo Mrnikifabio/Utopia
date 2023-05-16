@@ -54,8 +54,12 @@ void USpotLight::render()
 	auto modelViewEye = glm::inverse( UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
 	auto direction = glm::vec3(modelViewEye * glm::vec4(m_pimpl->m_direction, 1.f));
 
-	//std::cout << glm::to_string(m_pimpl->m_direction) << std::endl;
-	//std::cout << glm::to_string(direction) << std::endl;
+	auto lightPosition = UProgramShader::getActiveProgramShader()->getParamLocation("lightPosition");
+
+	glm::vec3 lightPos = glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]);
+	UProgramShader::getActiveProgramShader()->setVec3(lightPosition, lightPos);
+
+
 
 	auto spotLightDirection = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightDirection");
 	UProgramShader::getActiveProgramShader()->setVec3(spotLightDirection, direction);
@@ -64,8 +68,12 @@ void USpotLight::render()
 	auto spotLightCutoff = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightCutoff");
 	UProgramShader::getActiveProgramShader()->setFloat(spotLightCutoff, m_pimpl->m_cutoff);
 
-	//auto spotLightAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightAttenuation");
-	//UProgramShader::getActiveProgramShader()->setFloat(spotLightAttenuation,m_pimpl->m_linearAttenuation);
+
+	auto spotLightLinearAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightLinearAttenuation");
+	UProgramShader::getActiveProgramShader()->setFloat(spotLightLinearAttenuation, m_pimpl->m_linearAttenuation);
+
+	auto spotLightQuadraticAttenuation = UProgramShader::getActiveProgramShader()->getParamLocation("spotLightQuadraticAttenuation");
+	UProgramShader::getActiveProgramShader()->setFloat(spotLightQuadraticAttenuation, m_pimpl->m_quadraticAttenuation);
 }
 
 USpotLight::USpotLight(const std::string& name, const float cutoff, const glm::vec3& direction, const float constantAttenuation, const float linearAttenuation, const float quadraticAttenuation) : ULight{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl(cutoff, direction, constantAttenuation, linearAttenuation, quadraticAttenuation)) } 

@@ -11,6 +11,9 @@ using namespace utopia;
 struct UMesh::pimpl {
 	std::vector<std::shared_ptr<LOD>> m_lods;
 	std::shared_ptr<UMaterial> m_material;
+
+	float m_radius = -1.f;
+
 	unsigned int m_vertexVbo;
 	unsigned int m_normalVbo;
 	unsigned int m_textureCoordVbo;
@@ -29,6 +32,17 @@ struct UMesh::pimpl {
 	}
 
 };
+
+float utopia::UMesh::getRadious()
+{
+	return m_pimpl->m_radius;
+}
+
+void utopia::UMesh::setRadious(float radious)
+{
+	m_pimpl->m_radius = radious;
+}
+
 
 UMesh::UMesh(const std::string& name) : UNode{ name }, m_pimpl{ std::unique_ptr<pimpl>(new pimpl()) } {}
 UMesh::UMesh(const std::string& name, std::shared_ptr<UMaterial> material) : UNode{ name }, m_pimpl { std::unique_ptr<pimpl>(new pimpl(material)) } {}

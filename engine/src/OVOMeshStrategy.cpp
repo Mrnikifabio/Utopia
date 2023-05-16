@@ -54,7 +54,11 @@ std::unique_ptr<UNode> OVOMeshStrategy::decodeChunk(std::ifstream& inFile)
 
 
     // Mesh bounding sphere radius:
+    float radius;
+    memcpy(&radius, buffer->data.get() + buffer->position, sizeof(float));
     buffer->position += sizeof(float);
+
+    mesh->setRadious(radius);
 
     // Mesh bounding box minimum corner:
     buffer->position += sizeof(glm::vec3);
