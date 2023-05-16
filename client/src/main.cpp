@@ -91,11 +91,10 @@ int main()
 	auto hands = std::make_shared<UHands>();
 	auto root = OVOFactory::getInstance().fromFile("gru28.ovo");
 	
-
 	root->addChild(hands);
 
 	if (!hands->init())
-		std::cout << "leap not working" << std::endl;
+		std::cout << "error with hands maybe leap not connected/not working or hands model not present" << std::endl;
 
 	auto cubeMap = UTextureFactory::getInstance().fromFileCubeMaps({
 	  "skybox/px.png",

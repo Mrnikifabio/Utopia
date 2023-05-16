@@ -15,5 +15,9 @@ namespace utopia {
 		LIB_API bool init();
 		//void render() override;
 		LIB_API void update();
+		LIB_API void setXDistanceFromCam(float units);
+		LIB_API void setYDistanceFromCam(float units);
+		LIB_API void setZDistanceFromCam(float units);
+		LIB_API void setDownScaleFactorForLeap(float factor);
 	};
 }
