@@ -48,15 +48,6 @@ void ULight::render()
 	auto nLightUsed = UProgramShader::getActiveProgramShader()->getParamLocation("nLightUsed");
 	UProgramShader::getActiveProgramShader()->setInt(nLightUsed, ULight::getnLightsUsed());
 
-
-	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates()) * getModelView();
-	auto lightPosition = UProgramShader::getActiveProgramShader()->getParamLocation("lightPosition");
-
-
-	glm::vec3 lightPos = glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]);
-	UProgramShader::getActiveProgramShader()->setVec3(lightPosition, lightPos);
-
-
 	auto lightAmbient = UProgramShader::getActiveProgramShader()->getParamLocation("lightAmbient");
 	UProgramShader::getActiveProgramShader()->setVec3(lightAmbient, glm::vec3(getAmbient()));
 
