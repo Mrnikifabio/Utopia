@@ -257,6 +257,15 @@
     <ClInclude Include="include\UHands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\U2DTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UCubeMapTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\USkybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

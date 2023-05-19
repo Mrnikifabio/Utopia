@@ -177,4 +177,61 @@ UHands::UHands() : UNode{ "hands" }, m_pimpl{new pimpl()}
 
 UHands::~UHands() {
     m_pimpl->m_leap->free();
-};
+}
+
+bool isIn(std::shared_ptr<UNode> sphere, std::shared_ptr<UMesh> ob) {
+    std::shared_ptr<UMesh> sphereMesh = std::dynamic_pointer_cast<UMesh>(sphere);
+    auto sphereMatrix = sphereMesh->getFinalWorldCoordinates();
+    glm::vec3 sphereCenter = glm::vec3(sphereMatrix[3][0], sphereMatrix[3][1], sphereMatrix[3][2]);
+
+    auto obMatrix = ob->getFinalWorldCoordinates();
+    glm::vec3 obPosition = glm::vec3(obMatrix[3][0], obMatrix[3][1], obMatrix[3][2]);
+
+    auto distance = glm::distance(sphereCenter, obPosition);
+
+    return distance < sphereMesh->getRadious() + ob->getRadious();
+}
+
+bool UHands::checkIfHandsAreIn(std::shared_ptr<UMesh> mesh) {
+    for (unsigned int h = 0; h < 2; h++)
+    {
+        //check if hands are attached
+        if (m_pimpl->m_hands[h]->getParent() != nullptr) {
+
+            // Elbow:
+            auto elbow = m_pimpl->m_hands[h]->getChild(0);
+            if (isIn(elbow.lock(), mesh))
+                return true;
+
+            // Wrist:
+            auto wirstNode = elbow.lock()->getChild(0);
+            if (isIn(wirstNode.lock(), mesh))
+                return true;
+
+            // Palm:
+            auto palmNode = wirstNode.lock()->getChild(0);
+            if (isIn(palmNode.lock(), mesh))
+                return true;
+
+            // Distal ends of bones for each digit:
+            for (unsigned int d = 0; d < 5; d++)
+            {
+                auto fingerNode = palmNode;
+                for (unsigned int b = 0; b < 4; b++)
+                {
+                    if (b == 0) {
+                        fingerNode = fingerNode.lock()->getChild(d); // choose the finger
+                    }
+                    else {
+                        fingerNode = fingerNode.lock()->getChild(0); // choose the joint
+                    }
+                    if (isIn(fingerNode.lock(), mesh))
+                        return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+

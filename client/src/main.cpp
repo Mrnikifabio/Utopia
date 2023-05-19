@@ -91,7 +91,6 @@ int main()
 	
 	hands = std::make_shared<UHands>();
 	root->addChild(hands);
-	
 
 	if (!hands->init())
 		std::cout << "error with hands maybe leap not connected/not working or hands model not present" << std::endl;
@@ -124,7 +123,6 @@ int main()
 	fisicalHookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "fisicalHook");
 	cableNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cable");
 
-
 	if (!Utopia::getInstance().isStereoscopicEnabled()) //if the openvr mode is enabled under conf/global.conf the camera will be internally setted by the engine
 	{
 		towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTowerNoStereo");
@@ -139,6 +137,13 @@ int main()
 		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
 	}
 
+	//buttons test
+	auto sph = OVOFactory::getInstance().fromFile("sphere.ovo");
+	auto sphere = sph->detachChild(0);
+	sphere->setModelView(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f)), glm::vec3(5.0f)));
+	towerCameraNode->addChild(sphere);
+	std::shared_ptr<UMesh> sphereMesh = std::dynamic_pointer_cast<UMesh>(sphere);
+	
 
 	//Node associated to all the boxes
 
@@ -193,6 +198,10 @@ int main()
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
 		_3DRenderPipeline->render();
+
+		if (hands->checkIfHandsAreIn(sphereMesh)) {
+			std::cout << "funziona!!!" << std::endl;
+		}
 
 		Utopia::getInstance().swap();
 	}

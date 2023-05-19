@@ -1,5 +1,6 @@
 #pragma once
 #include "UObject.h"
+#include <UMesh.h>
 #include <U3DRenderPipeline.h>
 
 namespace utopia {
@@ -19,5 +20,6 @@ namespace utopia {
 		LIB_API void setYDistanceFromCam(float units);
 		LIB_API void setZDistanceFromCam(float units);
 		LIB_API void setDownScaleFactorForLeap(float factor);
+		LIB_API bool checkIfHandsAreIn(std::shared_ptr<UMesh> mesh);
 	};
 }
