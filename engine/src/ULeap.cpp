@@ -143,11 +143,12 @@ bool ULeap::update()
    // Only tracking events are processed:
    if (msg.type != eLeapEventType_Tracking)
       return false;   
-
+#ifdef _DEBUG
    // We are lagging badly:
    if (frameSkipping > 5)
-      std::cout << "[WARNING] Lag detected (" << frameSkipping << " frames skipped)" << std::endl;
-   
+       std::cout << "[WARNING] Lag detected (" << frameSkipping << " frames skipped)" << std::endl;
+#endif // DEBUG
+
    // Update only when necessary:   
    if (msg.tracking_event->tracking_frame_id > lastFrameId)
    {

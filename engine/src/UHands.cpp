@@ -23,10 +23,10 @@ struct UHands::pimpl {
     pimpl() :       m_leap{ std::unique_ptr<ULeap>(new ULeap()) },
         m_initiated{false},
         m_hands{ std::shared_ptr<UMesh>(new UMesh("hand_0")), std::shared_ptr<UMesh>(new UMesh("hand_1")) },
-        m_leapDownScaleFactor{ 0.003f},
+        m_leapDownScaleFactor{ 1000.0f},
         m_handsXDistance{0.0f},
-        m_handsYDistance{-1.0f},
-        m_handsZDistance{1.5f}
+        m_handsYDistance{-0.25f},
+        m_handsZDistance{0.5f}
     {}
 };
 
@@ -87,7 +87,7 @@ void UHands::update() {
     for (int h = this->getChildCount()-1; h >= 0; h--) //clear hands
         this->detachChild(h);
 
-    float mmToM = 1.0f / m_pimpl->m_leapDownScaleFactor;
+    float mmToM = m_pimpl->m_leapDownScaleFactor;
     // Render hands using spheres:
     for (unsigned int h = 0; h < l->nHands; h++)
     {
@@ -181,23 +181,25 @@ UHands::~UHands() {
 
 bool isIn(std::shared_ptr<UNode> sphere, std::shared_ptr<UMesh> ob) {
     std::shared_ptr<UMesh> sphereMesh = std::dynamic_pointer_cast<UMesh>(sphere);
+    //std::cout << "Mesh: " << getRadiusOfSphere(ob) << ", elbow: " << getRadiusOfSphere(sphereMesh) << std::endl;
     auto sphereMatrix = sphereMesh->getFinalWorldCoordinates();
     glm::vec3 sphereCenter = glm::vec3(sphereMatrix[3][0], sphereMatrix[3][1], sphereMatrix[3][2]);
 
     auto obMatrix = ob->getFinalWorldCoordinates();
     glm::vec3 obPosition = glm::vec3(obMatrix[3][0], obMatrix[3][1], obMatrix[3][2]);
 
-    auto distance = glm::distance(sphereCenter, obPosition);
+    float distance = glm::distance(sphereCenter, obPosition);
 
-    return distance < sphereMesh->getRadious() + ob->getRadious();
+    float radiusSum = (sphereMesh->getRadious() + ob->getRadious());//getRadiusOfSphere(sphereMesh) + getRadiusOfSphere(ob); 
+
+    return distance < radiusSum;
 }
 
 bool UHands::checkIfHandsAreIn(std::shared_ptr<UMesh> mesh) {
     for (unsigned int h = 0; h < 2; h++)
     {
-        //check if hands are attached
+        /*//check if hands are attached
         if (m_pimpl->m_hands[h]->getParent() != nullptr) {
-
             // Elbow:
             auto elbow = m_pimpl->m_hands[h]->getChild(0);
             if (isIn(elbow.lock(), mesh))
@@ -229,6 +231,23 @@ bool UHands::checkIfHandsAreIn(std::shared_ptr<UMesh> mesh) {
                         return true;
                 }
             }
+        }*/
+        if (m_pimpl->m_hands[h]->getParent() != nullptr) {
+            // Elbow:
+            auto elbow = m_pimpl->m_hands[h]->getChild(0);
+            // Wrist:
+            auto wirstNode = elbow.lock()->getChild(0);
+            // Palm:
+            auto palmNode = wirstNode.lock()->getChild(0);
+
+            auto indexNode = palmNode.lock()->getChild(1);
+            for (unsigned int b = 1; b < 4; b++)
+            {
+                indexNode = indexNode.lock()->getChild(0); // choose the last joint of the finger
+
+            }
+            if (isIn(indexNode.lock(), mesh))
+                return true;
         }
     }
     return false;

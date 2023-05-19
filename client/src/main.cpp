@@ -2,6 +2,7 @@
 
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include <map>
 
 #include "Utopia.h"
 #include "UShader.h"
@@ -23,6 +24,7 @@
 #include "Box.h"
 
 
+
 using namespace utopia;
 
 void keyboardCallback(unsigned char key, int mouseX, int mouseY);
@@ -30,6 +32,7 @@ void specialCallback(int key, int mouseX, int mouseY);
 void passiveMotionCallback(int x, int y);
 void boxesSimulationCounterCallback(int value);
 void closeCallback();
+void handsCollisionCallback(int value);
 
 int maxAnisotropyLevel;
 
@@ -50,6 +53,10 @@ std::shared_ptr<UText> textureFilterModeLabel = std::make_shared<UText>("texture
 
 std::shared_ptr<UHands> hands;
 void handsUpdateCallback(int value);
+
+std::map<std::string, std::shared_ptr<UNode>> buttons;
+std::vector<std::string> buttonsNames = { "cart_backward", "cart_forward", "crane_down", "crane_up", "left", "pick", "right" };
+int buttonUpdate = 50; //milliseconds
 
 int main()
 {
@@ -136,13 +143,6 @@ int main()
 		UCamera::getMainCamera().lock()->setNear(0.1f);
 		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
 	}
-
-	//buttons test
-	auto sph = OVOFactory::getInstance().fromFile("sphere.ovo");
-	auto sphere = sph->detachChild(0);
-	sphere->setModelView(glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f)), glm::vec3(5.0f)));
-	towerCameraNode->addChild(sphere);
-	std::shared_ptr<UMesh> sphereMesh = std::dynamic_pointer_cast<UMesh>(sphere);
 	
 
 	//Node associated to all the boxes
@@ -189,7 +189,14 @@ int main()
 	std::cout << "Starting main loop" << std::endl;
 
 	Utopia::getInstance().setTimer(simulationDelay, boxesSimulationCounterCallback, 0);
-
+	
+	auto controls = client::ClientUtility::getInstance().findGameObjectByName(root, "controls");
+	buttons = std::map<std::string, std::shared_ptr<UNode>>();
+	for (auto name : buttonsNames)
+	{
+		buttons[name] = client::ClientUtility::getInstance().findGameObjectByName(controls, name);
+	}
+	Utopia::getInstance().setTimer(buttonUpdate, handsCollisionCallback, buttonUpdate);
 	while (Utopia::getInstance().isRunning())
 	{
 		Utopia::getInstance().mainLoop();
@@ -198,10 +205,6 @@ int main()
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
 		_3DRenderPipeline->render();
-
-		if (hands->checkIfHandsAreIn(sphereMesh)) {
-			std::cout << "funziona!!!" << std::endl;
-		}
 
 		Utopia::getInstance().swap();
 	}
@@ -397,6 +400,59 @@ void boxesSimulationCounterCallback(int value)
 void handsUpdateCallback(int value) {
 	hands->update();
 	Utopia::getInstance().setTimer(value, handsUpdateCallback, value);
+}
+
+std::vector<std::string> getButtonNameCollisons() {
+	std::vector<std::string> hitted = {};
+	for (auto name : buttonsNames) {
+		if (hands->checkIfHandsAreIn(std::dynamic_pointer_cast<UMesh>(buttons[name])))
+			hitted.push_back(name);
+	}
+	return hitted;
+}
+
+void handsCollisionCallback(int value) {
+	for (std::string name : getButtonNameCollisons()) {
+		std::cout << name << std::endl;
+		auto box = boxesManager->possibleBoxToHook(tower->getFisicalHook(), 3);
+		if (name == "cart_backward") {
+			tower->moveHookBackwardForward(-0.3f);
+		}
+		else if (name == "cart_forward") {
+			tower->moveHookBackwardForward(0.3f);
+		}
+		else if( name == "crane_down") {
+			tower->moveFisicalHookUpDown(-0.3f);
+		}
+		else if (name == "crane_up") {
+			tower->moveFisicalHookUpDown(+0.3f);
+		}
+		else if (name == "left") {
+			tower->rotateTower(glm::radians(0.5f));
+		}
+		else if (name == "pick") {
+			if (box != nullptr && !tower->isHooking())
+			{
+				tower->take(box);
+			}
+			else
+			{
+				if (tower->isHooking())
+				{
+					tower->release();
+					std::cout << "is Hooking: " << std::endl;
+				}
+				else
+				{
+					std::cout << "is not Hooking: " << std::endl;
+				}
+			}
+		}
+		else if (name == "right") {
+			tower->rotateTower(glm::radians(-0.5f));
+		}
+	}
+	Utopia::getInstance().setTimer(value, handsCollisionCallback, value);
 }
 
 void specialCallback(int key, int mouseX, int mouseY)
