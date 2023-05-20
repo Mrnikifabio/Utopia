@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <map>
+#include <chrono>
 
 #include "Utopia.h"
 #include "UShader.h"
@@ -53,10 +54,13 @@ std::shared_ptr<UText> textureFilterModeLabel = std::make_shared<UText>("texture
 
 std::shared_ptr<UHands> hands;
 void handsUpdateCallback(int value);
+//int handsUpdateTime = 1; //milliseconds
 
 std::map<std::string, std::shared_ptr<UNode>> buttons;
 std::vector<std::string> buttonsNames = { "cart_backward", "cart_forward", "crane_down", "crane_up", "left", "pick", "right" };
 int buttonUpdate = 50; //milliseconds
+int hookDelay = 1000; //milliseconds
+std::chrono::steady_clock::time_point hookLastUpdate = std::chrono::high_resolution_clock::now();
 
 int main()
 {
@@ -101,8 +105,8 @@ int main()
 
 	if (!hands->init())
 		std::cout << "error with hands maybe leap not connected/not working or hands model not present" << std::endl;
-	else
-		Utopia::getInstance().setTimer(10, handsUpdateCallback, 10);
+	//else
+		//Utopia::getInstance().setTimer(handsUpdateTime, handsUpdateCallback, handsUpdateTime);
 
 	auto cubeMap = UTextureFactory::getInstance().fromFileCubeMaps({
 	  "skybox/px.png",
@@ -138,12 +142,10 @@ int main()
 	}
 	else
 	{
-		towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTower");
 		UCamera::getMainCamera().lock()->setFar(4000.0f);
 		UCamera::getMainCamera().lock()->setNear(0.1f);
 		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
 	}
-	
 
 	//Node associated to all the boxes
 
@@ -202,6 +204,7 @@ int main()
 		Utopia::getInstance().mainLoop();
 		Utopia::getInstance().clear();
 
+		hands->update();
 		_3DRenderPipeline->clear();
 		_3DRenderPipeline->pass(root);
 		_3DRenderPipeline->render();
@@ -421,36 +424,41 @@ void handsCollisionCallback(int value) {
 		else if (name == "cart_forward") {
 			tower->moveHookBackwardForward(0.3f);
 		}
-		else if( name == "crane_down") {
+		if( name == "crane_down") {
 			tower->moveFisicalHookUpDown(-0.3f);
 		}
 		else if (name == "crane_up") {
 			tower->moveFisicalHookUpDown(+0.3f);
 		}
-		else if (name == "left") {
+		if (name == "left") {
 			tower->rotateTower(glm::radians(0.5f));
-		}
-		else if (name == "pick") {
-			if (box != nullptr && !tower->isHooking())
-			{
-				tower->take(box);
-			}
-			else
-			{
-				if (tower->isHooking())
-				{
-					tower->release();
-					std::cout << "is Hooking: " << std::endl;
-				}
-				else
-				{
-					std::cout << "is not Hooking: " << std::endl;
-				}
-			}
 		}
 		else if (name == "right") {
 			tower->rotateTower(glm::radians(-0.5f));
 		}
+		if (name == "pick") {
+			auto now = std::chrono::high_resolution_clock::now();
+			if (std::chrono::duration_cast<std::chrono::milliseconds>(now - hookLastUpdate).count() >= hookDelay) {
+				if (box != nullptr && !tower->isHooking())
+				{
+					tower->take(box);
+				}
+				else
+				{
+					if (tower->isHooking())
+					{
+						tower->release();
+						std::cout << "is Hooking: " << std::endl;
+					}
+					else
+					{
+						std::cout << "is not Hooking: " << std::endl;
+					}
+				}
+				hookLastUpdate = now;
+			}
+		}
+
 	}
 	Utopia::getInstance().setTimer(value, handsCollisionCallback, value);
 }

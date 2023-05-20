@@ -25,7 +25,7 @@ struct UHands::pimpl {
         m_hands{ std::shared_ptr<UMesh>(new UMesh("hand_0")), std::shared_ptr<UMesh>(new UMesh("hand_1")) },
         m_leapDownScaleFactor{ 1000.0f},
         m_handsXDistance{0.0f},
-        m_handsYDistance{-0.25f},
+        m_handsYDistance{-0.2f},
         m_handsZDistance{0.5f}
     {}
 };
