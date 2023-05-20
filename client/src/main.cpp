@@ -143,6 +143,9 @@ int main()
 	}
 	else
 	{
+		hands->setXDistanceFromCam(0.0f);
+		hands->setYDistanceFromCam(-0.4f);
+		hands->setZDistanceFromCam(0.5f);
 		towerCameraNode->setModelView(glm::rotate(towerCameraNode->getModelView(), glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f)));
 		UCamera::getMainCamera().lock()->setFar(4000.0f);
 		UCamera::getMainCamera().lock()->setNear(0.1f);
