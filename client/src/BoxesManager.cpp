@@ -1,4 +1,4 @@
-#include "ClientUtility.h"
+#include "extensions.h"
 #include "BoxesManager.h"
 #include "BoxesManager.h"
 #include "BoxesManager.h"
@@ -21,10 +21,10 @@ client::BoxesManager::~BoxesManager()
 
 std::shared_ptr<Box> client::BoxesManager::possibleBoxToHook(std::shared_ptr<utopia::UNode> hook, float distance) const
 {
-	glm::vec3 hookPosition = ClientUtility::getInstance().getWorldPosition(hook);
+	glm::vec3 hookPosition = client::extensions::getWorldPosition(hook);
 	for (auto& box : m_pimpl->m_boxes)
 	{
-		float distanceBetweenObject = glm::distance(hookPosition, ClientUtility::getInstance().getWorldPosition(box->getHookPointNode()));
+		float distanceBetweenObject = glm::distance(hookPosition, client::extensions::getWorldPosition(box->getHookPointNode()));
 		if (distanceBetweenObject <= distance)
 			return box;
 	}

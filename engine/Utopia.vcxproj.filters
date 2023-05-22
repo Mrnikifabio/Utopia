@@ -81,15 +81,6 @@
     <ClCompile Include="src\Utopia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\U2DRenderPipeline.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\U2DObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UText.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\USpecialKeys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -206,15 +197,6 @@
     <ClInclude Include="include\Utopia.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\U2DRenderPipeline.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\U2DObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\UText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\USpecialKeys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -248,7 +230,7 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\UToolkit.h">
+    <ClInclude Include="include\UExtensions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ULeap.h">
@@ -257,13 +239,13 @@
     <ClInclude Include="include\UHands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\U2DTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\UCubeMapTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\USkybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\U2DTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

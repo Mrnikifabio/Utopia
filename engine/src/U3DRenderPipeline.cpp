@@ -9,7 +9,7 @@
 #include <U2DQuad.h>
 #include <Utopia.h>
 #include "UOVRCamera.h"
-#include "UToolkit.h"
+#include "UExtensions.h"
 #include <glm/gtx/string_cast.hpp>
 #include "ovr.h"
 #include "USkybox.h"
@@ -203,7 +203,7 @@ void U3DRenderPipeline::renderInBuffer()
 				
 				// check if the node is inside the sphere
 				auto matrixEyeCoordinates= glm::inverse(camera->getFinalWorldCoordinates()) * node->node.lock()->getModelView();
-				auto distance = glm::distance(centerSphere, glm::UToolkit::getPositionByMatrix(matrixEyeCoordinates));
+				auto distance = glm::distance(centerSphere, glm::getPositionFromMatrix(matrixEyeCoordinates));
 				
 				
 				if (distance < radiousSphere + ((UMesh*)node->node.lock().get())->getRadious())

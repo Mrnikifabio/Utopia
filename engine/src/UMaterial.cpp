@@ -70,16 +70,7 @@ void utopia::UMaterial::render()
     auto matShininess = UProgramShader::getActiveProgramShader()->getParamLocation("matShininess");
     UProgramShader::getActiveProgramShader()->setFloat(matShininess, (GLfloat)m_pimpl->m_shininess);
 
-
-    /*
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, glm::value_ptr(m_pimpl->m_emission));
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_pimpl->m_ambient));
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_pimpl->m_diffuse));
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_pimpl->m_specular));
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, (GLfloat)m_pimpl->m_shininess);
-    */
     m_pimpl->m_texture->render();
-
 }
 
 void UMaterial::setEmission(const glm::vec4& emission)

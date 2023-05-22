@@ -34,7 +34,6 @@
 #endif
 
 #include "U3DRenderPipeline.h"
-#include "U2DRenderPipeline.h"
 #include "UProgramShader.h"
 #include "UVertexShader.h"
 #include "UFragmentShader.h"
