@@ -144,8 +144,8 @@ int main()
 	else
 	{
 		hands->setXDistanceFromCam(0.0f);
-		hands->setYDistanceFromCam(-0.4f);
-		hands->setZDistanceFromCam(0.5f);
+		hands->setYDistanceFromCam(-0.37f);
+		hands->setZDistanceFromCam(0.4f);
 		towerCameraNode->setModelView(glm::rotate(towerCameraNode->getModelView(), glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f)));
 		UCamera::getMainCamera().lock()->setFar(4000.0f);
 		UCamera::getMainCamera().lock()->setNear(0.1f);
@@ -198,6 +198,8 @@ int main()
 	Utopia::getInstance().setTimer(simulationDelay, boxesSimulationCounterCallback, 0);
 	
 	auto controls = client::ClientUtility::getInstance().findGameObjectByName(root, "controls");
+	controls->setModelView(glm::translate(controls->getModelView(), glm::vec3(-0.4f, 0.2f,0.0f)));
+
 	buttons = std::map<std::string, std::shared_ptr<UNode>>();
 	for (auto name : buttonsNames)
 	{
