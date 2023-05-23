@@ -2,18 +2,6 @@
 #include <gl/freeglut.h>
 #include <iostream>
 
-#ifdef _WINDOWS 	
-// Export API:
-// Specifies i/o linkage (VC++ spec):
-#ifdef UTOPIA_EXPORTS
-#define LIB_API __declspec(dllexport)
-#else
-#define LIB_API __declspec(dllimport)
-#endif      	
-#else // Under Linux
-#define LIB_API  // Dummy declaration
-#endif
-
 namespace utopia {
 
 	class UResources
