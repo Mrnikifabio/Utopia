@@ -97,6 +97,7 @@ int main()
 	hands = std::make_shared<UHands>();
 	root->addChild(hands);
 
+	std::cout << "hands init" << std::endl;
 	if (!hands->init())
 		std::cout << "error with hands maybe leap not connected/not working or hands model not present" << std::endl;
 	//else
