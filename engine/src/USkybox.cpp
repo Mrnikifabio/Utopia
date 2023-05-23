@@ -4,6 +4,9 @@
 
 #include <gl/glew.h>
 #include <gl/freeglut.h>
+#include "UResources.h"
+#include <resource.h>
+
 
 
 using namespace utopia;
@@ -50,42 +53,14 @@ USkybox::USkybox(const std::string& name) : UNode{ name }, m_pimpl{ std::unique_
     if (m_vert == nullptr)
     {
         m_vert = std::shared_ptr<UVertexShader>(new UVertexShader("skybox_vertex_shader"));
-        m_vert->loadFromMemory(R"(
-           #version 440 core
-
-           uniform mat4 projection;
-           uniform mat4 modelview;
-
-           layout(location = 0) in vec3 in_Position;      
-
-           out vec3 texCoord;
-
-           void main(void)
-           {
-              texCoord = in_Position;
-              gl_Position = projection * modelview * vec4(in_Position, 1.0f);            
-           }
-        )");
+        m_vert->loadFromMemory(UResources::getInstance().getStringResource(IDR_VERT_SKYBOX, VERT));
     }
 
     if (m_frag == nullptr)
     {
         m_frag = std::shared_ptr<UFragmentShader>(new UFragmentShader("skybox_frag_shader"));
-        m_frag->loadFromMemory(R"(
-           #version 440 core
-   
-           in vec3 texCoord;
-   
-           // Texture mapping (cubemap):
-           layout(binding = 0) uniform samplerCube cubemapSampler;
-
-           out vec4 fragOutput;
-
-           void main(void)
-           {      
-              fragOutput = texture(cubemapSampler, texCoord);
-           }
-        )");
+        m_frag->loadFromMemory(UResources::getInstance().getStringResource(IDR_FRAG_SKYBOX, FRAG));
+            
     }
 
     if (m_prog == nullptr)

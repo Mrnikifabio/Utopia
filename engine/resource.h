@@ -11,6 +11,8 @@
 #define IDR_FRAG_SPOT							 107
 #define FRAG									108
 #define VERT									109
+#define IDR_FRAG_SKYBOX							 110
+#define IDR_VERT_SKYBOX							 111
 
 // Next default values for new objects
 // 

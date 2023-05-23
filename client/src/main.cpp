@@ -436,7 +436,7 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		freeCamera->setModelView(glm::translate(freeCamera->getModelView(), cameraNewPos));
 #ifdef _DEBUG
 		std::cout << "camera" << std::endl;
-		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(freeCamera)) << std::endl;
+		std::cout << glm::to_string(client::extensions::getLocalPosition(freeCamera)) << std::endl;
 #endif // _DEBUG
 	}
 
