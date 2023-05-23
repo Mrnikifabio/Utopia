@@ -1,3 +1,5 @@
+#include "UFbo.h"
+
 // GLM:
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -7,9 +9,6 @@
 #include <GL/glew.h>
 // C/C++:
 #include <iostream>
-
-#include "UFbo.h";
-
 
 using namespace utopia;
 

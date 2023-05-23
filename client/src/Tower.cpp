@@ -1,5 +1,5 @@
 #include "Tower.h"
-#include "ClientUtility.h"
+#include "extensions.h"
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <memory>
@@ -152,7 +152,7 @@ void Tower::moveFisicalHookUpDown(float distance)
 {
 	
 
-	float currentYPosition = client::ClientUtility::getInstance().getLocalPosition(m_pimpl->m_Fisicalhook).y;
+	float currentYPosition = client::extensions::getLocalPosition(m_pimpl->m_Fisicalhook).y;
 	if (currentYPosition + distance < m_pimpl->m_hookLimitDown|| currentYPosition + distance > m_pimpl->m_hookLimitUp)
 	{
 		return;
@@ -166,7 +166,9 @@ void Tower::moveFisicalHookUpDown(float distance)
 		m_pimpl->m_cable->setModelView(glm::scale(m_pimpl->m_startCableModelView, glm::vec3(1.f, offsetFromStart, 1.f)));
 	}
 
+#ifdef _DEBUG
 	std::cout << "offset from start: " << offsetFromStart << std::endl;
+#endif //_DEBUG
 
 	m_pimpl->m_Fisicalhook->setModelView(glm::translate(m_pimpl->m_Fisicalhook->getModelView(), glm::vec3(0.f, distance, 0.f)));
 
@@ -174,7 +176,7 @@ void Tower::moveFisicalHookUpDown(float distance)
 
 void client::Tower::moveHookBackwardForward(float distance)
 {
-	float currentXPosition = client::ClientUtility::getInstance().getLocalPosition(m_pimpl->m_hook).x;
+	float currentXPosition = client::extensions::getLocalPosition(m_pimpl->m_hook).x;
 	if (currentXPosition + distance < m_pimpl->m_hookLimitBackward|| currentXPosition + distance > m_pimpl->m_hookLimitForward)
 	{
 		return;

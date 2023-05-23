@@ -1,6 +1,6 @@
 #include "Box.h"
 #include <glm/ext/matrix_transform.hpp>
-#include "ClientUtility.h"
+#include "extensions.h"
 #include "UCamera.h"
 
 using namespace client;
@@ -59,7 +59,7 @@ void client::Box::computeGravity()
 	{
 		m_pimpl->m_hookPoint->setModelView(glm::translate(m_pimpl->m_hookPoint->getModelView(), glm::vec3(0.f, -2.0f, 0.f)));
 	
-		auto boxPosition = client::ClientUtility::getInstance().getWorldPosition(m_pimpl->m_groundNode);
+		auto boxPosition = client::extensions::getWorldPosition(m_pimpl->m_groundNode);
 		
 		if (boxPosition.y < 0)
 		{

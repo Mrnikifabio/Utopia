@@ -56,40 +56,6 @@ void ULight::render()
 
 	auto lightSpecular = UProgramShader::getActiveProgramShader()->getParamLocation("lightSpecular");
 	UProgramShader::getActiveProgramShader()->setVec3(lightSpecular, glm::vec3(getSpecular()));
-
-	/*
-	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(m_pimpl->m_gAmbient));
-
-	auto modelViewEye = glm::inverse(UCamera::getMainCamera().lock()->getFinalWorldCoordinates())* getModelView();
-	auto lightPosition = UProgramShader::getActiveProgramShader()->getParamLocation("lightPosition");
-	UProgramShader::getActiveProgramShader()->setVec3(lightPosition, glm::vec3(modelViewEye[3][0], modelViewEye[3][1], modelViewEye[3][2]));
-
-	auto lightAmbient = UProgramShader::getActiveProgramShader()->getParamLocation("lightAmbient");
-	UProgramShader::getActiveProgramShader()->setVec3(lightAmbient,glm::vec3(m_pimpl->m_ambient));
-
-	auto lightDiffuse = UProgramShader::getActiveProgramShader()->getParamLocation("lightDiffuse");
-	UProgramShader::getActiveProgramShader()->setVec3(lightDiffuse,glm::vec3(m_pimpl->m_diffuse));
-
-	auto lightSpecular = UProgramShader::getActiveProgramShader()->getParamLocation("lightSpecular");
-	UProgramShader::getActiveProgramShader()->setVec3(lightSpecular,glm::vec3(m_pimpl->m_specular));
-	*/
-	/*
-	auto lightAmbient = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightAmbient");
-	Utopia::getInstance().getBasicProgramShader()->setVec3(lightAmbient,glm::vec3(1.f,1.f,1.f));
-
-	auto lightDiffuse = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightDiffuse");
-	Utopia::getInstance().getBasicProgramShader()->setVec3(lightDiffuse, glm::vec3(1.f, 1.f, 1.f));
-
-	auto lightSpecular = Utopia::getInstance().getBasicProgramShader()->getParamLocation("lightSpecular");
-	Utopia::getInstance().getBasicProgramShader()->setVec3(lightSpecular,glm::vec3(glm::vec3(1.f, 1.f, 1.f)));
-	*/
-
-	//glLightfv(getLightID(), GL_AMBIENT, glm::value_ptr(m_pimpl->m_ambient));
-	//glLightfv(getLightID(), GL_DIFFUSE, glm::value_ptr(m_pimpl->m_diffuse));
-	//glLightfv(getLightID(), GL_SPECULAR, glm::value_ptr(m_pimpl->m_specular));
-
-	//glEnable(getLightID());
 }
 
 void ULight::setAmbient(const glm::vec4& ambient)

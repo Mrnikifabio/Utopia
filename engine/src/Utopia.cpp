@@ -113,12 +113,6 @@ void displayCallback()
 
 void reshapeCallback(int width, int height)
 {
-	//glViewport(0, 0, width, height);
-	/*
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf();
-	glMatrixMode(GL_MODELVIEW);
-	*/
 	auto projLoc = UProgramShader::getActiveProgramShader()->getParamLocation("projection");
 	UProgramShader::getActiveProgramShader()->setMatrix4(projLoc, UCamera::getMainCamera().lock()->getCameraMatrix());
 

@@ -27,9 +27,7 @@
     <ClCompile Include="src\OVONodeAbstractStrategy.cpp" />
     <ClCompile Include="src\OVONodeConcreteStrategy.cpp" />
     <ClCompile Include="src\OVOStrategy.cpp" />
-    <ClCompile Include="src\U2DObject.cpp" />
     <ClCompile Include="src\U2DQuad.cpp" />
-    <ClCompile Include="src\U2DRenderPipeline.cpp" />
     <ClCompile Include="src\UCamera.cpp" />
     <ClCompile Include="src\UCubeMapTexture.cpp" />
     <ClCompile Include="src\UDirectionalLight.cpp" />
@@ -53,7 +51,6 @@
     <ClCompile Include="src\USpecialKeys.cpp" />
     <ClCompile Include="src\U3DRenderPipeline.cpp" />
     <ClCompile Include="src\USpotLight.cpp" />
-    <ClCompile Include="src\UText.cpp" />
     <ClCompile Include="src\UTexture.cpp" />
     <ClCompile Include="src\U2DTexture.cpp" />
     <ClCompile Include="src\UTextureFactory.cpp" />
@@ -71,6 +68,7 @@
     <ClInclude Include="include\OVONodeConcreteStrategy.h" />
     <ClInclude Include="include\OVOObject.h" />
     <ClInclude Include="include\OVOStrategy.h" />
+    <ClInclude Include="include\U2DTexture.h" />
     <ClInclude Include="include\UCubeMapTexture.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
@@ -78,9 +76,7 @@
     <ClInclude Include="include\ULeap.h" />
     <ClInclude Include="include\UOVRCamera.h" />
     <ClInclude Include="include\ovr.h" />
-    <ClInclude Include="include\U2DObject.h" />
     <ClInclude Include="include\U2DQuad.h" />
-    <ClInclude Include="include\U2DRenderPipeline.h" />
     <ClInclude Include="include\UCamera.h" />
     <ClInclude Include="include\UDirectionalLight.h" />
     <ClInclude Include="include\UFbo.h" />
@@ -100,11 +96,9 @@
     <ClInclude Include="include\USpecialKeys.h" />
     <ClInclude Include="include\U3DRenderPipeline.h" />
     <ClInclude Include="include\USpotLight.h" />
-    <ClInclude Include="include\UText.h" />
     <ClInclude Include="include\UTexture.h" />
-    <ClInclude Include="include\U2DTexture.h" />
     <ClInclude Include="include\UTextureFactory.h" />
-    <ClInclude Include="include\UToolkit.h" />
+    <ClInclude Include="include\UExtensions.h" />
     <ClInclude Include="include\Utopia.h" />
     <ClInclude Include="include\UVertexShader.h" />
     <ClInclude Include="resource.h" />

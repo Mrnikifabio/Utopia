@@ -15,15 +15,13 @@
 #include "UOmniLight.h"
 #include "USpecialKeys.h"
 #include "U2DTexture.h"
-#include "UText.h"
 #include "UTextureFactory.h"
 #include "UHands.h"
 
-#include "ClientUtility.h"
+#include "extensions.h"
 #include "Tower.h"
 #include "BoxesManager.h"
 #include "Box.h"
-
 
 
 using namespace utopia;
@@ -42,15 +40,13 @@ const int simulationDelay = 32; //milliseconds
 std::shared_ptr<UCamera> freeCamera;
 std::shared_ptr<UCamera> fixedCamera;
 std::shared_ptr<UCamera> towerCamera;
+std::shared_ptr<UNode> towerCameraNode;
 
 
 std::unique_ptr<client::Tower> tower = std::unique_ptr<client::Tower>(new client::Tower());
 std::unique_ptr <client::BoxesManager> boxesManager = std::unique_ptr<client::BoxesManager>(new  client::BoxesManager());
 
 float sensibility = 0.5f;
-
-std::shared_ptr<UText> anisotLevelLabel = std::make_shared<UText>("anisotLevelLabel");
-std::shared_ptr<UText> textureFilterModeLabel = std::make_shared<UText>("textureFilterMode");
 
 std::shared_ptr<UHands> hands;
 void handsUpdateCallback(int value);
@@ -74,9 +70,7 @@ int main()
 	Utopia::getInstance().setCloseCallback(closeCallback);
 	Utopia::getInstance().setPassiveMotionCallback(passiveMotionCallback);
 
-	auto _2DRenderPipeline = std::unique_ptr<U2DRenderPipeline>(new U2DRenderPipeline("2DRenderPipeline"));
 	auto _3DRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("3DRenderPipeline"));
-	auto shadowRenderPipeline = std::unique_ptr<U3DRenderPipeline>(new U3DRenderPipeline("shadowRenderPipeline"));
 
 	maxAnisotropyLevel = UTexture::getMaxAnisotropicLevel();
 
@@ -126,14 +120,14 @@ int main()
 	std::shared_ptr<UNode> towerNode;
 	std::shared_ptr<UNode> fisicalHookNode;
 	std::shared_ptr<UNode> cableNode;
-	std::shared_ptr<UNode> towerCameraNode;
 
 
-	hookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "hook");
-	towerNode = client::ClientUtility::getInstance().findGameObjectByName(root, "tower");
-	fisicalHookNode = client::ClientUtility::getInstance().findGameObjectByName(root, "fisicalHook");
-	cableNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cable");
+	hookNode = client::extensions::findGameObjectByName(root, "hook");
+	towerNode = client::extensions::findGameObjectByName(root, "tower");
+	fisicalHookNode = client::extensions::findGameObjectByName(root, "fisicalHook");
+	cableNode = client::extensions::findGameObjectByName(root, "cable");
 
+	/*
 	towerCameraNode = client::ClientUtility::getInstance().findGameObjectByName(root, "cameraTowerNoStereo");
 
 	if (!Utopia::getInstance().isStereoscopicEnabled()) //if the openvr mode is enabled under conf/global.conf the camera will be internally setted by the engine
@@ -151,10 +145,30 @@ int main()
 		UCamera::getMainCamera().lock()->setNear(0.1f);
 		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
 	}
+	*/
+
+	if (!Utopia::getInstance().isStereoscopicEnabled()) //if the openvr mode is enabled under conf/global.conf the camera will be internally setted by the engine
+	{
+		towerCameraNode = client::extensions::findGameObjectByName(root, "cameraTowerNoStereo");
+		towerCameraNode->addChild(towerCamera);
+		UCamera::setMainCamera(fixedCamera);
+	}
+	else
+	{
+		hands->setXDistanceFromCam(0.0f);
+		hands->setYDistanceFromCam(-0.37f);
+		hands->setZDistanceFromCam(0.4f);
+		towerCameraNode = client::extensions::findGameObjectByName(root, "cameraTower");
+		towerCameraNode->setModelView(glm::rotate(towerCameraNode->getModelView(), glm::radians(90.f), glm::vec3(0.f, 1.f, 0.f))); //the point as defined in 3ds is wrongly rotated of -90 degrees. We cancel back the rotation.
+		UCamera::getMainCamera().lock()->setFar(4000.0f);
+		UCamera::getMainCamera().lock()->setNear(0.1f);
+		towerCameraNode->addChild(UCamera::getMainCamera().lock()); //in openvr mode we fix the camera position into the cabin
+	}
+
 
 	//Node associated to all the boxes
 
-	auto hookPoints = client::ClientUtility::getInstance().findGameObjectsByName(root, "hookPoint");
+	auto hookPoints = client::extensions::findGameObjectsByName(root, "hookPoint");
 	std::cout << "hook points size: " << hookPoints.size() << std::endl;
 	std::vector<std::shared_ptr<client::Box>> boxesVector;
 
@@ -162,8 +176,8 @@ int main()
 	{
 		auto box = std::make_shared<client::Box>();
 		box->setHookPointNode(hookPoint);
-		box->setTopNode(client::ClientUtility::getInstance().findGameObjectByName(hookPoint, "top"));
-		box->setGroundNode(client::ClientUtility::getInstance().findGameObjectByName(hookPoint, "ground"));
+		box->setTopNode(client::extensions::findGameObjectByName(hookPoint, "top"));
+		box->setGroundNode(client::extensions::findGameObjectByName(hookPoint, "ground"));
 		boxesVector.push_back(box);
 	}
 
@@ -189,21 +203,18 @@ int main()
 		texture->updateAnisotropyLevel(maxAnisotropyLevel);
 	});
 
-	anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(maxAnisotropyLevel));
-	textureFilterModeLabel->setText("[v] textureFilterMode: LinearBitmapLinear");
-
 	std::cout << "Lights used: " << ULight::getnLightsUsed() << std::endl;
 	std::cout << "Starting main loop" << std::endl;
 
 	Utopia::getInstance().setTimer(simulationDelay, boxesSimulationCounterCallback, 0);
 	
-	auto controls = client::ClientUtility::getInstance().findGameObjectByName(root, "controls");
+	auto controls = client::extensions::findGameObjectByName(root, "controls");
 	controls->setModelView(glm::translate(controls->getModelView(), glm::vec3(-0.4f, 0.2f,0.0f)));
 
 	buttons = std::map<std::string, std::shared_ptr<UNode>>();
 	for (auto name : buttonsNames)
 	{
-		buttons[name] = client::ClientUtility::getInstance().findGameObjectByName(controls, name);
+		buttons[name] = client::extensions::findGameObjectByName(controls, name);
 	}
 	Utopia::getInstance().setTimer(buttonUpdate, handsCollisionCallback, buttonUpdate);
 	while (Utopia::getInstance().isRunning())
@@ -256,7 +267,7 @@ void passiveMotionCallback(int x, int y)
 	previousPositionX = x;
 	previousPositionY = y;
 
-	glm::vec3 cameraLocalPosition = client::ClientUtility::getInstance().getLocalPosition(currentCamera);
+	glm::vec3 cameraLocalPosition = client::extensions::getLocalPosition(currentCamera);
 	glm::mat4 newCameraMatrix = glm::translate(glm::mat4(1.f), cameraLocalPosition);
 
 	glm::mat4 matRotationX = glm::rotate(newCameraMatrix, glm::radians(angleX), glm::vec3(0.f, 1.f, 0.f));
@@ -278,6 +289,8 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 
 	glm::vec3 cameraNewPos = glm::vec4(0, 0, 0, 1);
 	glm::vec3 lightNewPos = glm::vec4(0, 0, 0, 1);
+
+	glm::vec3 towerCameraNodeNewPos = glm::vec4(0, 0, 0, 1);
 
 	bool isLightMoved=false;
 
@@ -316,8 +329,6 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		break;
 
 	case 'c':
-		U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->updateAnisotropyLevel(++currentAniLevel); });
-		anisotLevelLabel->setText("[c] AnisotropicLevel: " + std::to_string(currentAniLevel));
 		if (currentAniLevel >= maxAnisotropyLevel)
 			currentAniLevel = 0;
 		break;
@@ -327,23 +338,18 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 		{
 		case 0:
 			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableNearestFilter(); });
-			textureFilterModeLabel->setText("[v] textureFilterMode: Nearest");
 			break;
 		case 1:
 			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableNearestBitmapNearestFilter(); });
-			textureFilterModeLabel->setText("[v] textureFilterMode: NearestBitmapNearest");
 			break;
 		case 2:
 			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableLinearFilter(); });
-			textureFilterModeLabel->setText("[v] textureFilterMode: Linear");
 			break;
 		case 3:
 			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableLinearBitmapNearestFilter(); });
-			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBitmapNearest");
 			break;
 		case 4:
 			U2DTexture::forEach([](std::shared_ptr<U2DTexture> texture) { texture->enableLinearBitmapLinearFilter(); });
-			textureFilterModeLabel->setText("[v] textureFilterMode: LinearBitmapLinear");
 			break;
 		}
 		if (currentTexturesVisualization > 4)
@@ -373,12 +379,16 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 			if (tower->isHooking())
 			{
 				tower->release();
+#ifdef _DEBUG
 				std::cout << "is Hooking: " << std::endl;
+#endif // _DEBUG
 			}
+#ifdef _DEBUG
 			else
 			{
 				std::cout << "is not Hooking: " << std::endl;
 			}
+#endif // _DEBUG
 		}
 
 		break;
@@ -390,15 +400,46 @@ void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 	case '+':
 		tower->moveFisicalHookUpDown(+0.3f);
 		break;
+
+	case 'n':
+		towerCameraNodeNewPos.x -= 0.025f;
+		break;
+
+	case 'u':
+		towerCameraNodeNewPos.y += 0.025f;
+
+		break;
+
+
+	case 'j':
+		towerCameraNodeNewPos.y -= 0.025f;
+		break;
+
+
+	case 'm':
+		towerCameraNodeNewPos.x += 0.025f;
+		break;
+
+	case 'h':
+		towerCameraNodeNewPos.z -= 0.025f;
+		break;
+
+	case 'k':
+		towerCameraNodeNewPos.z += 0.025f;
+		break;
+
 	}
 
 	if (UCamera::getMainCamera().lock()->getName() == "freeCamera")
 	{
 		freeCamera->setModelView(glm::translate(freeCamera->getModelView(), cameraNewPos));
+#ifdef _DEBUG
 		std::cout << "camera" << std::endl;
 		std::cout << glm::to_string(client::ClientUtility::getInstance().getLocalPosition(freeCamera)) << std::endl;
-	}	
+#endif // _DEBUG
+	}
 
+	towerCameraNode->setModelView(glm::translate(towerCameraNode->getModelView(), towerCameraNodeNewPos));
 }
 
 void boxesSimulationCounterCallback(int value)
@@ -455,12 +496,16 @@ void handsCollisionCallback(int value) {
 					if (tower->isHooking())
 					{
 						tower->release();
+#ifdef _DEBUG
 						std::cout << "is Hooking: " << std::endl;
+#endif // _DEBUG
 					}
+#ifdef _DEBUG
 					else
 					{
 						std::cout << "is not Hooking: " << std::endl;
 					}
+#endif // _DEBUG
 				}
 				hookLastUpdate = now;
 			}
