@@ -249,8 +249,8 @@ bool LIB_API Utopia::init()
 	std::cout << "   vendor . . . : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "   renderer . . : " << glGetString(GL_RENDERER) << std::endl;
 
-	m_pimpl->m_basicVertShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_VERT_DEFAULT, VERT));
-	m_pimpl->m_basicFragShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_FRAG_DEFAULT, FRAG));
+	m_pimpl->m_basicVertShader->loadFromMemory(*UResources::getInstance().getStringResource(IDR_VERT_DEFAULT, VERT));
+	m_pimpl->m_basicFragShader->loadFromMemory(*UResources::getInstance().getStringResource(IDR_FRAG_DEFAULT, FRAG));
 
 	UProgramShader::setActiveProgramShader(m_pimpl->m_basicProgShader);
 	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
@@ -258,8 +258,8 @@ bool LIB_API Utopia::init()
 	m_pimpl->m_basicProgShader->bind(0, "in_Position");
 	m_pimpl->m_basicProgShader->bind(1, "in_Normal");
 
-	m_pimpl->m_passThroughVertShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_VERT_PASS_THROUGH, VERT));
-	m_pimpl->m_passThroughFragShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_FRAG_PASS_THROUGH, FRAG));
+	m_pimpl->m_passThroughVertShader->loadFromMemory(*UResources::getInstance().getStringResource(IDR_VERT_PASS_THROUGH, VERT));
+	m_pimpl->m_passThroughFragShader->loadFromMemory(*UResources::getInstance().getStringResource(IDR_FRAG_PASS_THROUGH, FRAG));
 	m_pimpl->m_passThroughProgShader->build(*m_pimpl->m_passThroughVertShader, *m_pimpl->m_passThroughFragShader);
 
 	// Done:

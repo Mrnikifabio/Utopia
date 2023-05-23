@@ -8,13 +8,13 @@ namespace utopia {
 	{
 	private:
 		UResources() {};
-		~UResources() {};
+		~UResources();
 		
 	public:
 		static UResources& getInstance();
 		UResources(UResources const&) = delete;
 		void operator=(UResources const&) = delete;
-		std::string& getStringResource(int resourceId, int resourceType)
+		std::unique_ptr<std::string> getStringResource(int resourceId, int resourceType)
 	;
 	};
 

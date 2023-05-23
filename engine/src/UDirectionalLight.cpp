@@ -19,10 +19,10 @@ UDirectionalLight::UDirectionalLight(const std::string& name) : ULight {name} {
 		m_programShader = std::shared_ptr<UProgramShader>(new UProgramShader("progOmni"));
 
 		std::unique_ptr<UFragmentShader> m_fragmentShader = std::unique_ptr<UFragmentShader>(new UFragmentShader("fragOmni"));
-		m_fragmentShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_FRAG_DIRECTIONAL, FRAG));
+		m_fragmentShader->loadFromMemory(*UResources::getInstance().getStringResource(IDR_FRAG_DIRECTIONAL, FRAG));
 
 		std::unique_ptr<UVertexShader> m_vertexShader = std::unique_ptr<UVertexShader>(new UVertexShader("vertOmni"));
-		m_vertexShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_VERT_DEFAULT, VERT));
+		m_vertexShader->loadFromMemory(*UResources::getInstance().getStringResource(IDR_VERT_DEFAULT, VERT));
 
 		m_programShader->build(*m_vertexShader, *m_fragmentShader);
 	}

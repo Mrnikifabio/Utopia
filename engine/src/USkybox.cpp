@@ -53,13 +53,13 @@ USkybox::USkybox(const std::string& name) : UNode{ name }, m_pimpl{ std::unique_
     if (m_vert == nullptr)
     {
         m_vert = std::shared_ptr<UVertexShader>(new UVertexShader("skybox_vertex_shader"));
-        m_vert->loadFromMemory(UResources::getInstance().getStringResource(IDR_VERT_SKYBOX, VERT));
+        m_vert->loadFromMemory(*UResources::getInstance().getStringResource(IDR_VERT_SKYBOX, VERT));
     }
 
     if (m_frag == nullptr)
     {
         m_frag = std::shared_ptr<UFragmentShader>(new UFragmentShader("skybox_frag_shader"));
-        m_frag->loadFromMemory(UResources::getInstance().getStringResource(IDR_FRAG_SKYBOX, FRAG));
+        m_frag->loadFromMemory(*UResources::getInstance().getStringResource(IDR_FRAG_SKYBOX, FRAG));
             
     }
 
