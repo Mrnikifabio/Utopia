@@ -47,6 +47,7 @@
     <ClCompile Include="src\UOVRCamera.cpp" />
     <ClCompile Include="src\UPerspectiveCamera.cpp" />
     <ClCompile Include="src\UProgramShader.cpp" />
+    <ClCompile Include="src\UResources.cpp" />
     <ClCompile Include="src\UShader.cpp" />
     <ClCompile Include="src\USkybox.cpp" />
     <ClCompile Include="src\USpecialKeys.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="include\UOrthographicCamera.h" />
     <ClInclude Include="include\UPerspectiveCamera.h" />
     <ClInclude Include="include\UProgramShader.h" />
+    <ClInclude Include="include\UResources.h" />
     <ClInclude Include="include\UShader.h" />
     <ClInclude Include="include\USkybox.h" />
     <ClInclude Include="include\USpecialKeys.h" />
@@ -109,6 +111,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="shaders\defaultShader.frag" />
+    <None Include="shaders\defaultShader.vert" />
+    <None Include="shaders\directionalShader.frag" />
+    <None Include="shaders\omniShader.frag" />
+    <None Include="shaders\passThroughShader.frag" />
+    <None Include="shaders\passThroughShader.vert" />
+    <None Include="shaders\spotShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Utopia.rc" />
@@ -228,7 +237,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\dependencies\openvr\include;..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include;..\dependencies\glew\include;..\dependencies\leap\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\openvr\include;..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include;..\dependencies\glew\include;..\dependencies\leap\include;.\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -254,7 +263,7 @@ xcopy ..\dependencies\leap\bin\x64\LeapC.dll ..\client\bin\$(Configuration)  /Y 
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\dependencies\openvr\include;..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include;..\dependencies\glew\include;..\dependencies\leap\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\openvr\include;..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;include;..\dependencies\glew\include;..\dependencies\leap\include;.\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

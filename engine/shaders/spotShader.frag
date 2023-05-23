@@ -1,3 +1,4 @@
+//spot fragment shader
 #version 440 core
 
 uniform vec3 lightPosition;

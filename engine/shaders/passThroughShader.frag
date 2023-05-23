@@ -1,3 +1,4 @@
+   // passThrough fragment shader
    #version 440 core
    
    in vec2 texCoord;

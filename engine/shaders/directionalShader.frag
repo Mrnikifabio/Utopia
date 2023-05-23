@@ -1,3 +1,4 @@
+//directional fragment shader
 #version 440 core
 
 in vec4 fragPosition;

@@ -14,7 +14,7 @@ uniform vec3 matAmbient;
 uniform vec3 matDiffuse;
 uniform vec3 matSpecular;
 uniform float matShininess;
-
+// omni fragment shader
 uniform int nLightUsed;
 
 // Light properties:

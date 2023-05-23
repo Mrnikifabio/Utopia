@@ -23,6 +23,8 @@
 #include "UOVRCamera.h"
 #include <UFbo.h>
 #include "U2DTexture.h"
+#include "UResources.h"
+
 
 
 #include <glm/glm.hpp>
@@ -36,6 +38,7 @@
 
 #ifdef _WINDOWS
 #include <Windows.h>
+#include <resource.h>
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * DLL entry point. Avoid to rely on it for easier code portability (Linux doesn't use this method).
@@ -252,10 +255,8 @@ bool LIB_API Utopia::init()
 	std::cout << "   vendor . . . : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "   renderer . . : " << glGetString(GL_RENDERER) << std::endl;
 
-	std::string vertShaderFileName = "shaders/" + std::string("defaultShader.vert");
-	m_pimpl->m_basicVertShader->loadFromFile(vertShaderFileName);
-	std::string fragShaderFileName = "shaders/" + std::string("defaultShader.frag");
-	m_pimpl->m_basicFragShader->loadFromFile(fragShaderFileName);
+	m_pimpl->m_basicVertShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_VERT_DEFAULT, VERT));
+	m_pimpl->m_basicFragShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_FRAG_DEFAULT, FRAG));
 
 	UProgramShader::setActiveProgramShader(m_pimpl->m_basicProgShader);
 	m_pimpl->m_basicProgShader->build(*m_pimpl->m_basicVertShader, *m_pimpl->m_basicFragShader);
@@ -263,10 +264,8 @@ bool LIB_API Utopia::init()
 	m_pimpl->m_basicProgShader->bind(0, "in_Position");
 	m_pimpl->m_basicProgShader->bind(1, "in_Normal");
 
-	std::string passThroughVertShaderFileName = "shaders/" + std::string("passThroughShader.vert");
-	m_pimpl->m_passThroughVertShader->loadFromFile(passThroughVertShaderFileName);
-	std::string passThroughFragShaderFileName = "shaders/" + std::string("passThroughShader.frag");
-	m_pimpl->m_passThroughFragShader->loadFromFile(passThroughFragShaderFileName);
+	m_pimpl->m_passThroughVertShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_VERT_PASS_THROUGH, VERT));
+	m_pimpl->m_passThroughFragShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_FRAG_PASS_THROUGH, FRAG));
 	m_pimpl->m_passThroughProgShader->build(*m_pimpl->m_passThroughVertShader, *m_pimpl->m_passThroughFragShader);
 
 	// Done:

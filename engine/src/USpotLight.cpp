@@ -6,7 +6,8 @@
 #include "UVertexShader.h"
 #include "Utopia.h"
 #include "UCamera.h"
-
+#include "resource.h"
+#include "UResources.h"
 
 using namespace utopia;
 
@@ -82,10 +83,9 @@ USpotLight::USpotLight(const std::string& name, const float cutoff, const glm::v
 	{
 		m_programShader = std::shared_ptr<UProgramShader>(new UProgramShader("spotProg"));
 		std::unique_ptr<UFragmentShader> fragShader = std::unique_ptr<UFragmentShader>(new UFragmentShader("spotFrag"));
-		fragShader->loadFromFile("shaders/spotShader.frag");
-
+		fragShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_FRAG_SPOT, FRAG));
 		std::unique_ptr<UVertexShader> m_vertexShader = std::unique_ptr<UVertexShader>(new UVertexShader("vertSpot"));
-		m_vertexShader->loadFromFile("shaders/defaultShader.vert");
+		m_vertexShader->loadFromMemory(UResources::getInstance().getStringResource(IDR_VERT_DEFAULT,VERT));
 
 		m_programShader->build(*m_vertexShader, *fragShader);
 	}
