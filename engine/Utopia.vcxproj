@@ -105,13 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="shaders\defaultShader.frag" />
-    <None Include="shaders\defaultShader.vert" />
-    <None Include="shaders\directionalShader.frag" />
-    <None Include="shaders\omniShader.frag" />
-    <None Include="shaders\passThroughShader.frag" />
-    <None Include="shaders\passThroughShader.vert" />
-    <None Include="shaders\spotShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Utopia.rc" />

@@ -230,9 +230,6 @@
     <ClInclude Include="include\UOVRCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\UToolkit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ULeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -251,16 +248,15 @@
     <ClInclude Include="include\UResources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\U2DTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UExtensions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="shaders\defaultShader.frag" />
-    <None Include="shaders\directionalShader.frag" />
-    <None Include="shaders\omniShader.frag" />
-    <None Include="shaders\passThroughShader.frag" />
-    <None Include="shaders\spotShader.frag" />
-    <None Include="shaders\defaultShader.vert" />
-    <None Include="shaders\passThroughShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Utopia.rc">
