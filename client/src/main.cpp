@@ -52,7 +52,16 @@ std::shared_ptr<UHands> hands;
 void handsUpdateCallback(int value);
 //int handsUpdateTime = 1; //milliseconds
 
-std::map<std::string, std::shared_ptr<UNode>> buttons;
+//buttons
+struct CraneButton {
+	std::shared_ptr<UMesh> m_button;
+	bool m_isActive;
+	std::shared_ptr<UMaterial> m_oldMaterial;
+	//void (*m_handler)();
+	CraneButton(std::shared_ptr<UMesh> button, bool isActive, std::shared_ptr<UMaterial> oldMaterial) : m_button{ button }, m_isActive{ isActive }, m_oldMaterial{ oldMaterial } {}//, m_handler{ [](){} } {}
+};
+std::map<std::string, std::shared_ptr<CraneButton>> buttons;
+std::shared_ptr<UMaterial> activeMaterial;
 std::vector<std::string> buttonsNames = { "cart_backward", "cart_forward", "crane_down", "crane_up", "left", "pick", "right" };
 int buttonUpdate = 50; //milliseconds
 int hookDelay = 1000; //milliseconds
@@ -209,14 +218,19 @@ int main()
 
 	Utopia::getInstance().setTimer(simulationDelay, boxesSimulationCounterCallback, 0);
 	
+	//buttons 
 	auto controls = client::extensions::findGameObjectByName(root, "controls");
 	controls->setModelView(glm::translate(controls->getModelView(), glm::vec3(-0.4f, 0.2f,0.0f)));
 
-	buttons = std::map<std::string, std::shared_ptr<UNode>>();
+	buttons = std::map<std::string, std::shared_ptr<CraneButton>>();
 	for (auto name : buttonsNames)
 	{
-		buttons[name] = client::extensions::findGameObjectByName(controls, name);
+		auto b = std::dynamic_pointer_cast<UMesh>(client::extensions::findGameObjectByName(controls, name));
+		buttons[name] = std::make_shared<CraneButton>(b, false, b->getMaterial());
 	}
+	//"cart_backward", "cart_forward", "crane_down", "crane_up", "left", "pick", "right"
+	//buttons["cart_backward"]->m_handler = []() {};
+	activeMaterial = std::make_shared<UMaterial>("activeMat", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 128);
 	Utopia::getInstance().setTimer(buttonUpdate, handsCollisionCallback, buttonUpdate);
 	while (Utopia::getInstance().isRunning())
 	{
@@ -456,8 +470,19 @@ void handsUpdateCallback(int value) {
 
 std::vector<std::string> getButtonNameCollisons() {
 	std::vector<std::string> hitted = {};
+	bool in;
+	std::shared_ptr<CraneButton> craneButton;
 	for (auto name : buttonsNames) {
-		if (hands->checkIfHandsAreIn(std::dynamic_pointer_cast<UMesh>(buttons[name])))
+		craneButton = buttons[name];
+		in = hands->checkIfHandsAreIn(craneButton->m_button);
+		if (craneButton->m_isActive && !in) {
+			craneButton->m_button->setMaterial(craneButton->m_oldMaterial);
+		}
+		else if (!craneButton->m_isActive && in) {
+			craneButton->m_button->setMaterial(activeMaterial);
+		}
+		craneButton->m_isActive = in;
+		if (in)
 			hitted.push_back(name);
 	}
 	return hitted;
@@ -465,7 +490,6 @@ std::vector<std::string> getButtonNameCollisons() {
 
 void handsCollisionCallback(int value) {
 	for (std::string name : getButtonNameCollisons()) {
-		std::cout << name << std::endl;
 		auto box = boxesManager->possibleBoxToHook(tower->getFisicalHook(), 3);
 		if (name == "cart_backward") {
 			tower->moveHookBackwardForward(-0.3f);
