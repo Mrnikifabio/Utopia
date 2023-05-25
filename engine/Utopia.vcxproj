@@ -48,7 +48,6 @@
     <ClCompile Include="src\UResources.cpp" />
     <ClCompile Include="src\UShader.cpp" />
     <ClCompile Include="src\USkybox.cpp" />
-    <ClCompile Include="src\USpecialKeys.cpp" />
     <ClCompile Include="src\U3DRenderPipeline.cpp" />
     <ClCompile Include="src\USpotLight.cpp" />
     <ClCompile Include="src\UTexture.cpp" />

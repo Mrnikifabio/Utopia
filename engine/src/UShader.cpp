@@ -43,11 +43,6 @@ void UShader::addUniform(const std::string name, int rID)
 	m_uniforms.insert(std::pair<std::string, int>(name, rID));
 }
 
-void UShader::render()
-{
-	//does nothing
-}
-
 int UShader::getID() const
 {
 	return glId;

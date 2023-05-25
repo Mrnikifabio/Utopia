@@ -129,9 +129,10 @@ void U2DQuad::render() {
 	glBindVertexArray(m_pimpl->m_vao);
   
 	glm::mat4 f = glm::mat4(1.0f);
+	auto old = UProgramShader::getActiveProgramShader();
 
-	// Setup the passthrough shader:
-	std::shared_ptr<UProgramShader> shader = Utopia::getInstance().getPassThroughProgamShader();
+	auto shader = Utopia::getInstance().getPassThroughProgamShader();
+	UProgramShader::setActiveProgramShader(shader);
 	shader->render();
 
 	int ptProjLoc = shader->getParamLocation("projection");
@@ -146,4 +147,6 @@ void U2DQuad::render() {
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0);
+	UProgramShader::setActiveProgramShader(old);
+	UProgramShader::getActiveProgramShader()->render();
 }

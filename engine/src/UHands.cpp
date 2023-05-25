@@ -70,8 +70,6 @@ bool UHands::init() {
         }
     }
 
-
-
     m_pimpl->m_initiated = m_pimpl->m_leap->init();
     if (!m_pimpl->m_initiated)
         std::cout << "[ERROR] Unable to init Leap Motion" << std::endl;
@@ -181,7 +179,6 @@ UHands::~UHands() {
 
 bool isIn(std::shared_ptr<UNode> sphere, std::shared_ptr<UMesh> ob) {
     std::shared_ptr<UMesh> sphereMesh = std::dynamic_pointer_cast<UMesh>(sphere);
-    //std::cout << "Mesh: " << getRadiusOfSphere(ob) << ", elbow: " << getRadiusOfSphere(sphereMesh) << std::endl;
     auto sphereMatrix = sphereMesh->getFinalWorldCoordinates();
     glm::vec3 sphereCenter = glm::vec3(sphereMatrix[3][0], sphereMatrix[3][1], sphereMatrix[3][2]);
 
@@ -195,43 +192,10 @@ bool isIn(std::shared_ptr<UNode> sphere, std::shared_ptr<UMesh> ob) {
     return distance < radiusSum;
 }
 
+//check if in index node
 bool UHands::checkIfHandsAreIn(std::shared_ptr<UMesh> mesh) {
     for (unsigned int h = 0; h < 2; h++)
     {
-        /*//check if hands are attached
-        if (m_pimpl->m_hands[h]->getParent() != nullptr) {
-            // Elbow:
-            auto elbow = m_pimpl->m_hands[h]->getChild(0);
-            if (isIn(elbow.lock(), mesh))
-                return true;
-
-            // Wrist:
-            auto wirstNode = elbow.lock()->getChild(0);
-            if (isIn(wirstNode.lock(), mesh))
-                return true;
-
-            // Palm:
-            auto palmNode = wirstNode.lock()->getChild(0);
-            if (isIn(palmNode.lock(), mesh))
-                return true;
-
-            // Distal ends of bones for each digit:
-            for (unsigned int d = 0; d < 5; d++)
-            {
-                auto fingerNode = palmNode;
-                for (unsigned int b = 0; b < 4; b++)
-                {
-                    if (b == 0) {
-                        fingerNode = fingerNode.lock()->getChild(d); // choose the finger
-                    }
-                    else {
-                        fingerNode = fingerNode.lock()->getChild(0); // choose the joint
-                    }
-                    if (isIn(fingerNode.lock(), mesh))
-                        return true;
-                }
-            }
-        }*/
         if (m_pimpl->m_hands[h]->getParent() != nullptr) {
             // Elbow:
             auto elbow = m_pimpl->m_hands[h]->getChild(0);
@@ -242,10 +206,7 @@ bool UHands::checkIfHandsAreIn(std::shared_ptr<UMesh> mesh) {
 
             auto indexNode = palmNode.lock()->getChild(1);
             for (unsigned int b = 1; b < 4; b++)
-            {
                 indexNode = indexNode.lock()->getChild(0); // choose the last joint of the finger
-
-            }
             if (isIn(indexNode.lock(), mesh))
                 return true;
         }

@@ -57,8 +57,8 @@ struct CraneButton {
 	std::shared_ptr<UMesh> m_button;
 	bool m_isActive;
 	std::shared_ptr<UMaterial> m_oldMaterial;
-	//void (*m_handler)();
-	CraneButton(std::shared_ptr<UMesh> button, bool isActive, std::shared_ptr<UMaterial> oldMaterial) : m_button{ button }, m_isActive{ isActive }, m_oldMaterial{ oldMaterial } {}//, m_handler{ [](){} } {}
+	void (*m_handler)();
+	CraneButton(std::shared_ptr<UMesh> button, bool isActive, std::shared_ptr<UMaterial> oldMaterial) : m_button{ button }, m_isActive{ isActive }, m_oldMaterial{ oldMaterial }, m_handler{ [](){} } {}
 };
 std::map<std::string, std::shared_ptr<CraneButton>> buttons;
 std::shared_ptr<UMaterial> activeMaterial;
@@ -228,8 +228,23 @@ int main()
 		auto b = std::dynamic_pointer_cast<UMesh>(client::extensions::findGameObjectByName(controls, name));
 		buttons[name] = std::make_shared<CraneButton>(b, false, b->getMaterial());
 	}
-	//"cart_backward", "cart_forward", "crane_down", "crane_up", "left", "pick", "right"
-	//buttons["cart_backward"]->m_handler = []() {};
+	buttons["cart_backward"]->m_handler = []() {tower->moveHookBackwardForward(-0.3f);};
+	buttons["cart_forward"]->m_handler = []() {tower->moveHookBackwardForward(0.3f); };
+	buttons["crane_down"]->m_handler = []() {tower->moveFisicalHookUpDown(-0.3f); };
+	buttons["crane_up"]->m_handler = []() {tower->moveFisicalHookUpDown(+0.3f); };
+	buttons["left"]->m_handler = []() {tower->rotateTower(glm::radians(0.5f)); };
+	buttons["right"]->m_handler = []() {tower->rotateTower(glm::radians(-0.5f)); };
+	buttons["pick"]->m_handler = []() {	
+		auto box = boxesManager->possibleBoxToHook(tower->getFisicalHook(), 3);
+		auto now = std::chrono::high_resolution_clock::now();
+		if (std::chrono::duration_cast<std::chrono::milliseconds>(now - hookLastUpdate).count() >= hookDelay) {
+			if (box != nullptr && !tower->isHooking())
+				tower->take(box);
+			else if (tower->isHooking())
+					tower->release();
+			hookLastUpdate = now;
+		}
+	};
 	activeMaterial = std::make_shared<UMaterial>("activeMat", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 128);
 	Utopia::getInstance().setTimer(buttonUpdate, handsCollisionCallback, buttonUpdate);
 	while (Utopia::getInstance().isRunning())
@@ -468,8 +483,7 @@ void handsUpdateCallback(int value) {
 	Utopia::getInstance().setTimer(value, handsUpdateCallback, value);
 }
 
-std::vector<std::string> getButtonNameCollisons() {
-	std::vector<std::string> hitted = {};
+void handsCollisionCallback(int value) {
 	bool in;
 	std::shared_ptr<CraneButton> craneButton;
 	for (auto name : buttonsNames) {
@@ -483,59 +497,7 @@ std::vector<std::string> getButtonNameCollisons() {
 		}
 		craneButton->m_isActive = in;
 		if (in)
-			hitted.push_back(name);
-	}
-	return hitted;
-}
-
-void handsCollisionCallback(int value) {
-	for (std::string name : getButtonNameCollisons()) {
-		auto box = boxesManager->possibleBoxToHook(tower->getFisicalHook(), 3);
-		if (name == "cart_backward") {
-			tower->moveHookBackwardForward(-0.3f);
-		}
-		else if (name == "cart_forward") {
-			tower->moveHookBackwardForward(0.3f);
-		}
-		if( name == "crane_down") {
-			tower->moveFisicalHookUpDown(-0.3f);
-		}
-		else if (name == "crane_up") {
-			tower->moveFisicalHookUpDown(+0.3f);
-		}
-		if (name == "left") {
-			tower->rotateTower(glm::radians(0.5f));
-		}
-		else if (name == "right") {
-			tower->rotateTower(glm::radians(-0.5f));
-		}
-		if (name == "pick") {
-			auto now = std::chrono::high_resolution_clock::now();
-			if (std::chrono::duration_cast<std::chrono::milliseconds>(now - hookLastUpdate).count() >= hookDelay) {
-				if (box != nullptr && !tower->isHooking())
-				{
-					tower->take(box);
-				}
-				else
-				{
-					if (tower->isHooking())
-					{
-						tower->release();
-#ifdef _DEBUG
-						std::cout << "is Hooking: " << std::endl;
-#endif // _DEBUG
-					}
-#ifdef _DEBUG
-					else
-					{
-						std::cout << "is not Hooking: " << std::endl;
-					}
-#endif // _DEBUG
-				}
-				hookLastUpdate = now;
-			}
-		}
-
+			craneButton->m_handler();
 	}
 	Utopia::getInstance().setTimer(value, handsCollisionCallback, value);
 }

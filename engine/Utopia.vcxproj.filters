@@ -81,9 +81,6 @@
     <ClCompile Include="src\Utopia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\USpecialKeys.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\IUProgrammableShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -48,7 +48,6 @@ namespace utopia
 		void bind(int location, const char* attribName);
 
 		// Rendering:				
-		LIB_API virtual void render()=0;
 		LIB_API int getID() const;
 
 		void setID(unsigned int id);
