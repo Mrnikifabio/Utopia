@@ -24,11 +24,8 @@ struct U3DRenderPipeline::pimpl {
 	std::unique_ptr<USkybox> m_skybox;
 	bool m_first;
 
-	pimpl() : m_first { true } {
-		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("left eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f))));
-		m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("right eye", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX / 2.0f, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::translate(glm::mat4(1.0f), glm::vec3(APP_WINDOWSIZEX / 2.0f, 0.0f, 0.0f)))));
-		m_screen = std::unique_ptr<U2DQuad>(new U2DQuad("screen", glm::vec2(0.0f, 0.0f), glm::vec2(APP_WINDOWSIZEX, APP_WINDOWSIZEY), APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f)));
-		m_skybox = nullptr;
+	pimpl() : m_first{ true }, m_skybox{ nullptr } {
+		
 	}
 };
 
@@ -109,9 +106,20 @@ void U3DRenderPipeline::render()
 
 	bool isStereoscopic = Utopia::getInstance().isStereoscopicEnabled();
 	if (m_pimpl->m_first) {
-		for (auto& eye : m_pimpl->m_eyes)
-			eye->init();
-		m_pimpl->m_screen->init();
+		if (isStereoscopic) {
+			auto uvr = Utopia::getInstance().getOpenVRWrapper();
+			//the lines commented are the eyes for a window in the screen
+			//m_pimpl->m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("left eye", APP_WINDOWSIZEX / 2, APP_WINDOWSIZEY, APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f))));
+			//m_pimpl->m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("right eye", APP_WINDOWSIZEX / 2, APP_WINDOWSIZEY, APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::translate(glm::mat4(1.0f), glm::vec3(APP_WINDOWSIZEX / 2.0f, 0.0f, 0.0f)))));
+			m_pimpl->m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("left eye", uvr->getHmdIdealHorizRes(), uvr->getHmdIdealVertRes(), uvr->getHmdIdealHorizRes()*2, uvr->getHmdIdealVertRes(), glm::mat4(1.0f))));
+			m_pimpl->m_eyes.push_back(std::unique_ptr<U2DQuad>(new U2DQuad("right eye", uvr->getHmdIdealHorizRes(), uvr->getHmdIdealVertRes(), uvr->getHmdIdealHorizRes()*2, uvr->getHmdIdealVertRes(), glm::translate(glm::mat4(1.0f), glm::vec3(uvr->getHmdIdealHorizRes(), 0.0f, 0.0f)))));
+			for (auto& eye : m_pimpl->m_eyes)
+				eye->init();
+		}
+		else {
+			m_pimpl->m_screen = std::unique_ptr<U2DQuad>(new U2DQuad("screen", APP_WINDOWSIZEX, APP_WINDOWSIZEY, APP_WINDOWSIZEX, APP_WINDOWSIZEY, glm::mat4(1.0f)));
+			m_pimpl->m_screen->init();
+		}
 		m_pimpl->m_first = false;
 	}
 
@@ -151,7 +159,9 @@ void U3DRenderPipeline::render()
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
 	if (isStereoscopic) {
+		//render in vr device (pass texture)
 		ovr->render();
+		//render in screen
 		for (auto& eye : m_pimpl->m_eyes)
 			eye->render();
 	}

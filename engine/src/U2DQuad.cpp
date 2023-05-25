@@ -8,8 +8,8 @@
 using namespace utopia;
 
 struct U2DQuad::pimpl {
-	glm::vec2 m_bottomLeftPosition;
-	glm::vec2 m_topRightPosition;
+	int m_width;
+	int m_height;
 	unsigned int m_vao = -1;
 	unsigned int m_texId = -1;
 	unsigned int m_orthoWidth;
@@ -18,13 +18,13 @@ struct U2DQuad::pimpl {
 
 	std::unique_ptr<UFbo> m_fbo;
 	pimpl(const std::string& name,
-		const glm::vec2& bottomLeftPosition, 
-		const glm::vec2& topRightPosition, 
+		const int width,
+		const int height,
 		const unsigned int orthoWidth, 
 		const unsigned int orthoHeight,
 		const glm::mat4& postionMatrix) : 
-		m_bottomLeftPosition{ bottomLeftPosition }, 
-		m_topRightPosition{ topRightPosition },
+		m_width {width},
+		m_height{height},
 		m_orthoWidth{orthoWidth},
 		m_orthoHeight{orthoHeight},
 		m_positionMatrix{postionMatrix}
@@ -32,13 +32,13 @@ struct U2DQuad::pimpl {
 };
 
 U2DQuad::U2DQuad(const std::string& name, 
-	const glm::vec2& startPosition, 
-	const glm::vec2& endPosition,
+	const int width, 
+	const int height,
 	const unsigned int orthoWidth, 
 	const unsigned int orthoHeight,
 	const glm::mat4& postionMatrix) :
 	UObject(name),
-	m_pimpl{ std::unique_ptr<pimpl>(new pimpl(name, startPosition, endPosition, orthoWidth, orthoHeight, postionMatrix)) } {}
+	m_pimpl{ std::unique_ptr<pimpl>(new pimpl(name, width, height, orthoWidth, orthoHeight, postionMatrix)) } {}
 
 U2DQuad::~U2DQuad() = default;
 
@@ -47,10 +47,10 @@ bool U2DQuad::init()
 	glGenVertexArrays(1, &m_pimpl->m_vao);
 	glBindVertexArray(m_pimpl->m_vao);
 
-	glm::vec2 v1 = m_pimpl->m_bottomLeftPosition;
-	glm::vec2 v2 = glm::vec2(m_pimpl->m_topRightPosition.x, m_pimpl->m_bottomLeftPosition.y);
-	glm::vec2 v3 = glm::vec2(m_pimpl->m_bottomLeftPosition.x, m_pimpl->m_topRightPosition.y);
-	glm::vec2 v4 = m_pimpl->m_topRightPosition;
+	glm::vec2 v1 = glm::vec2(0.0f, 0.0f);
+	glm::vec2 v2 = glm::vec2(m_pimpl->m_width, 0.0f);
+	glm::vec2 v3 = glm::vec2(0.0f, m_pimpl->m_height);
+	glm::vec2 v4 = glm::vec2(m_pimpl->m_width, m_pimpl->m_height);
 	std::vector<glm::vec2> quadCoord = { v1, v2, v3, v4 };
 
 	unsigned int quadCoordVbo;
@@ -77,20 +77,7 @@ bool U2DQuad::init()
 	glGenTextures(1, &m_pimpl->m_texId);
 	glBindTexture(GL_TEXTURE_2D, m_pimpl->m_texId);
 
-
-
-	
-	int width = (int)(m_pimpl->m_topRightPosition.x - m_pimpl->m_bottomLeftPosition.x);
-	int height = (int)(m_pimpl->m_topRightPosition.y - m_pimpl->m_bottomLeftPosition.y);
-	
-	if (Utopia::getInstance().isStereoscopicEnabled())
-	{
-		auto uvr = Utopia::getInstance().getOpenVRWrapper();
-		width = uvr->getHmdIdealHorizRes();
-		height = uvr->getHmdIdealVertRes();
-	}
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_pimpl->m_width, m_pimpl->m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -98,7 +85,7 @@ bool U2DQuad::init()
 
 	m_pimpl->m_fbo = std::unique_ptr<UFbo>(new UFbo());
 	m_pimpl->m_fbo->bindTexture(0, UFbo::BIND_COLORTEXTURE, m_pimpl->m_texId);
-	m_pimpl->m_fbo->bindRenderBuffer(1, UFbo::BIND_DEPTHBUFFER, width, height);
+	m_pimpl->m_fbo->bindRenderBuffer(1, UFbo::BIND_DEPTHBUFFER, m_pimpl->m_width, m_pimpl->m_height);
 
 	bool isOk = m_pimpl->m_fbo->isOk();
 	UFbo::disable();

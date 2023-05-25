@@ -11,8 +11,8 @@ namespace utopia {
 		std::unique_ptr<pimpl> m_pimpl;
 	public:
 		U2DQuad(const std::string& name, 
-			const glm::vec2& startPosition, 
-			const glm::vec2& endPosition, 
+			const int width,
+			const int height,
 			const unsigned int orthoWidth,
 			const unsigned int orthoHeight,
 			const glm::mat4& postionMatrix);
